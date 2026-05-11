@@ -8,9 +8,41 @@ function todayJST() {
   return new Date(Date.now() + 9 * 60 * 60 * 1000).toISOString().slice(0, 10)
 }
 
+function groupDates(dates: string[], today: string) {
+  const todayGroup = dates.filter((d) => d === today)
+  const weekGroup = dates.filter((d) => {
+    if (d === today) return false
+    const diff = (new Date(today).getTime() - new Date(d).getTime()) / 86400000
+    return diff <= 7
+  })
+  const olderGroup = dates.filter((d) => {
+    if (d === today) return false
+    const diff = (new Date(today).getTime() - new Date(d).getTime()) / 86400000
+    return diff > 7
+  })
+  return { todayGroup, weekGroup, olderGroup }
+}
+
+function SidebarGroup({ label, dates, today }: { label: string; dates: string[]; today: string }) {
+  if (!dates.length) return null
+  return (
+    <div className="mb-3">
+      <p style={{ color: 'var(--text-muted)' }} className="mb-1 px-2 text-xs font-semibold uppercase tracking-wider">
+        {label}
+      </p>
+      <div className="space-y-0.5">
+        {dates.map((date) => (
+          <SidebarDateLink key={date} date={date} isToday={date === today} />
+        ))}
+      </div>
+    </div>
+  )
+}
+
 export async function Sidebar() {
   const dates = await getDigestDates()
   const today = todayJST()
+  const { todayGroup, weekGroup, olderGroup } = groupDates(dates, today)
 
   return (
     <aside
@@ -30,7 +62,7 @@ export async function Sidebar() {
       </div>
 
       {/* Actions */}
-      <div className="px-3 pb-2">
+      <div className="px-3 pb-3">
         <GenerateButton compact />
         <Link
           href="/input"
@@ -43,28 +75,19 @@ export async function Sidebar() {
       </div>
 
       {/* Digest list */}
-      <div className="px-3 pb-2">
-        <p
-          style={{ color: 'var(--text-muted)' }}
-          className="mb-1 px-2 text-xs font-semibold uppercase tracking-wider"
-        >
-          Digest
-        </p>
+      <div className="flex-1 overflow-y-auto px-3 pb-2">
         {dates.length === 0 ? (
           <p style={{ color: 'var(--text-muted)' }} className="px-2 text-xs">
             まだありません
           </p>
         ) : (
-          <div className="space-y-0.5">
-            {dates.map((date) => (
-              <SidebarDateLink key={date} date={date} isToday={date === today} />
-            ))}
-          </div>
+          <>
+            <SidebarGroup label="今日" dates={todayGroup} today={today} />
+            <SidebarGroup label="今週" dates={weekGroup} today={today} />
+            <SidebarGroup label="それ以前" dates={olderGroup} today={today} />
+          </>
         )}
       </div>
-
-      {/* Spacer */}
-      <div className="flex-1" />
 
       {/* Footer */}
       <div style={{ borderTop: '1px solid var(--border)' }} className="px-3 py-2">
