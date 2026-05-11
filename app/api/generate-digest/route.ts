@@ -1,4 +1,5 @@
 import { generateDigest } from '@/lib/anthropic'
+import { fetchArticles } from '@/lib/feeds'
 import { getInput, saveDigest } from '@/lib/storage'
 
 // Called by Vercel Cron (GET) or manual dashboard button (POST)
@@ -15,10 +16,10 @@ async function run() {
   const now = new Date(Date.now() + 9 * 60 * 60 * 1000)
   const date = now.toISOString().slice(0, 10)
 
-  const input = await getInput(date)
+  const [input, articles] = await Promise.all([getInput(date), fetchArticles()])
   const userNotes = input?.notes ?? []
 
-  const digest = await generateDigest(date, userNotes)
+  const digest = await generateDigest(date, userNotes, articles)
   await saveDigest({ ...digest, createdAt: new Date().toISOString() })
 
   return Response.json({ success: true, date })

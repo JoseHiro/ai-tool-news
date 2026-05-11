@@ -1,5 +1,6 @@
 import OpenAI from 'openai'
 import type { Digest } from '@/types/digest'
+import type { Article } from '@/lib/feeds'
 
 const client = new OpenAI({ apiKey: process.env.OPENAI_API_KEY })
 
@@ -45,14 +46,21 @@ const SYSTEM_PROMPT = `あなたは「Claude開発者特化ニュースキュレ
 ---XPOST---
 X投稿用テキスト（140〜280文字、ハッシュタグ付き）`
 
-export async function generateDigest(date: string, userNotes: string[]): Promise<Omit<Digest, 'createdAt'>> {
+export async function generateDigest(date: string, userNotes: string[], articles: Article[]): Promise<Omit<Digest, 'createdAt'>> {
   const notesSection = userNotes.length > 0
     ? `\n\n【今日の手動入力メモ】\n${userNotes.map((n, i) => `${i + 1}. ${n}`).join('\n')}`
     : ''
 
-  const userMessage = `今日の日付: ${date}${notesSection}
+  const articlesSection = articles.length > 0
+    ? `\n\n【取得した最新記事】\n${articles.map((a) => `- [${a.source}] ${a.title}\n  URL: ${a.url}`).join('\n')}`
+    : ''
 
-上記の情報をもとに、今日のDaily Digestを生成してください。手動メモがある場合はそれを重点的に取り上げ、あなたのトレーニングデータの知識でコンテキストを補完してください。手動メモがない場合は、Claude/Anthropic関連の重要な開発者向け情報とベストプラクティスを中心に生成してください。`
+  const userMessage = `今日の日付: ${date}${notesSection}${articlesSection}
+
+上記の情報をもとに、今日のDaily Digestを生成してください。
+- 手動メモがある場合は最優先で取り上げる
+- 取得した記事がある場合はその内容を中心にまとめ、URLを参照元として記載する
+- 記事・メモがない場合のみ、学習データの知識を使う（その場合は「情報ソースなし」と明記）`
 
   const response = await client.chat.completions.create({
     model: 'gpt-4o-mini',
