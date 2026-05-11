@@ -1,33 +1,21 @@
-export const dynamic = 'force-dynamic'
-
+import { notFound } from 'next/navigation'
 import { getDigest } from '@/lib/storage'
-import { GenerateButton } from '@/components/GenerateButton'
 import { DigestContent } from '@/components/DigestContent'
 import { XPostButton } from '@/components/XPostButton'
-
-function todayJST() {
-  return new Date(Date.now() + 9 * 60 * 60 * 1000).toISOString().slice(0, 10)
-}
 
 function formatDate(date: string) {
   const [y, m, d] = date.split('-')
   return `${y}年${m}月${d}日`
 }
 
-export default async function Dashboard() {
-  const today = todayJST()
-  const digest = await getDigest(today)
-
-  if (!digest) {
-    return (
-      <div className="flex h-full flex-col items-center justify-center gap-4 px-8">
-        <p style={{ color: 'var(--text-muted)' }} className="text-sm">
-          {formatDate(today)} のDigestはまだありません
-        </p>
-        <GenerateButton />
-      </div>
-    )
-  }
+export default async function DigestPage({
+  params,
+}: {
+  params: Promise<{ date: string }>
+}) {
+  const { date } = await params
+  const digest = await getDigest(date)
+  if (!digest) notFound()
 
   return (
     <div className="mx-auto max-w-2xl px-8 py-10">
@@ -35,7 +23,7 @@ export default async function Dashboard() {
         Daily Digest
       </p>
       <h1 style={{ color: 'var(--text)' }} className="mb-8 text-2xl font-bold">
-        {formatDate(today)}
+        {formatDate(date)}
       </h1>
       <DigestContent content={digest.content} />
       {digest.xPost && (
