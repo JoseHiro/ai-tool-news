@@ -2,7 +2,7 @@
 
 import { useState } from 'react'
 
-export function GenerateButton({ compact = false }: { compact?: boolean }) {
+export function GenerateButton({ compact = false, regenerate = false }: { compact?: boolean; regenerate?: boolean }) {
   const [loading, setLoading] = useState(false)
   const [error, setError] = useState('')
 
@@ -18,6 +18,22 @@ export function GenerateButton({ compact = false }: { compact?: boolean }) {
     } finally {
       setLoading(false)
     }
+  }
+
+  if (regenerate) {
+    return (
+      <div>
+        <button
+          onClick={handleGenerate}
+          disabled={loading}
+          style={{ color: 'var(--text-muted)', border: '1px solid var(--border)' }}
+          className="rounded-md px-3 py-1 text-xs transition hover:bg-[var(--hover)] hover:text-[var(--text)] disabled:opacity-50"
+        >
+          {loading ? '生成中...' : '🔄 再生成'}
+        </button>
+        {error && <p className="mt-1 text-xs text-red-500">{error}</p>}
+      </div>
+    )
   }
 
   if (compact) {

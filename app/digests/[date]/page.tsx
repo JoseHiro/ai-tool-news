@@ -2,6 +2,7 @@ import { notFound } from 'next/navigation'
 import { getDigest } from '@/lib/storage'
 import { DigestContent } from '@/components/DigestContent'
 import { XPostButton } from '@/components/XPostButton'
+import { GenerateButton } from '@/components/GenerateButton'
 
 function formatDate(date: string) {
   const [y, m, d] = date.split('-')
@@ -22,9 +23,12 @@ export default async function DigestPage({
       <p style={{ color: 'var(--accent)' }} className="mb-1 text-xs font-semibold uppercase tracking-widest">
         Daily Digest
       </p>
-      <h1 style={{ color: 'var(--text)' }} className="mb-8 text-2xl font-bold">
-        {formatDate(date)}
-      </h1>
+      <div className="mb-8 flex items-center gap-3">
+        <h1 style={{ color: 'var(--text)' }} className="text-2xl font-bold">
+          {formatDate(date)}
+        </h1>
+        <GenerateButton regenerate />
+      </div>
       <DigestContent content={digest.content} />
       {digest.xPost && (
         <div style={{ borderTop: '1px solid var(--border)' }} className="mt-10 pt-8">
