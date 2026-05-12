@@ -1,8 +1,9 @@
 import { notFound } from 'next/navigation'
+import Link from 'next/link'
 import { getIronSession } from 'iron-session'
 import { cookies } from 'next/headers'
 import { getDigest } from '@/lib/storage'
-import { readDocFile, extractSubHeadings } from '@/lib/docs'
+import { readDocFile, extractSubHeadings, getAdjacentDates } from '@/lib/docs'
 import { sessionOptions, type SessionData } from '@/lib/session'
 import { DigestContent, parseSectionHeadings } from '@/components/DigestContent'
 import { MarkdownDoc } from '@/components/MarkdownDoc'
@@ -15,17 +16,23 @@ function formatDate(date: string) {
   return `${y}年${m}月${d}日`
 }
 
+function formatShort(date: string) {
+  const [, m, d] = date.split('-')
+  return `${parseInt(m)}月${parseInt(d)}日`
+}
+
 export default async function DigestPage({
   params,
 }: {
   params: Promise<{ date: string }>
 }) {
   const { date } = await params
-  const [digest, session, claudeDoc, ideasDoc] = await Promise.all([
+  const [digest, session, claudeDoc, ideasDoc, adjacent] = await Promise.all([
     getDigest(date),
     getIronSession<SessionData>(await cookies(), sessionOptions),
     readDocFile('claude', date),
     readDocFile('ideas', date),
+    getAdjacentDates(date),
   ])
 
   const hasContent = digest || claudeDoc || ideasDoc
@@ -53,6 +60,7 @@ export default async function DigestPage({
             </h1>
             <GenerateButton regenerate isAuthed={isAuthed} />
           </div>
+
           <div className="space-y-4">
             {claudeDoc && <MarkdownDoc content={claudeDoc} type="claude" id="section-0" />}
             {ideasDoc && <MarkdownDoc content={ideasDoc} type="ideas" id={`section-${claudeDoc ? 1 : 0}`} />}
@@ -63,6 +71,7 @@ export default async function DigestPage({
               />
             )}
           </div>
+
           {digest?.xPost && (
             <div style={{ borderTop: '1px solid var(--border)' }} className="mt-10 pt-8">
               <p style={{ color: 'var(--text-muted)' }} className="mb-3 text-xs font-semibold uppercase tracking-widest">
@@ -71,7 +80,37 @@ export default async function DigestPage({
               <XPostButton text={digest.xPost} />
             </div>
           )}
+
+          {/* Prev / Next navigation */}
+          <div style={{ borderTop: '1px solid var(--border)' }} className="mt-10 flex items-center justify-between pt-6">
+            {adjacent.prev ? (
+              <Link
+                href={`/digests/${adjacent.prev}`}
+                style={{ color: 'var(--text-muted)', border: '1px solid var(--border)' }}
+                className="flex items-center gap-2 rounded-lg px-4 py-2 text-sm transition-colors hover:bg-[var(--hover)] hover:text-[var(--text)]"
+              >
+                <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+                  <polyline points="15 18 9 12 15 6" />
+                </svg>
+                {formatShort(adjacent.prev)}
+              </Link>
+            ) : <div />}
+
+            {adjacent.next ? (
+              <Link
+                href={`/digests/${adjacent.next}`}
+                style={{ color: 'var(--text-muted)', border: '1px solid var(--border)' }}
+                className="flex items-center gap-2 rounded-lg px-4 py-2 text-sm transition-colors hover:bg-[var(--hover)] hover:text-[var(--text)]"
+              >
+                {formatShort(adjacent.next)}
+                <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+                  <polyline points="9 18 15 12 9 6" />
+                </svg>
+              </Link>
+            ) : <div />}
+          </div>
         </div>
+
         {/* Right ToC */}
         <div className="hidden w-40 shrink-0 xl:block">
           <DigestToC sections={tocSections} />

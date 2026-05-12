@@ -26,6 +26,16 @@ export async function getDocDates(): Promise<string[]> {
   return [...dateSet].sort().reverse()
 }
 
+export async function getAdjacentDates(date: string): Promise<{ prev: string | null; next: string | null }> {
+  const dates = await getDocDates() // sorted desc
+  const idx = dates.indexOf(date)
+  if (idx === -1) return { prev: null, next: null }
+  return {
+    prev: dates[idx + 1] ?? null,  // older
+    next: dates[idx - 1] ?? null,  // newer
+  }
+}
+
 export type SubHeading = { label: string; subIndex: number }
 
 export function extractSubHeadings(content: string, type?: DocType): SubHeading[] {

@@ -4,7 +4,6 @@ import { cookies } from 'next/headers'
 import { getDocDates } from '@/lib/docs'
 import { sessionOptions, type SessionData } from '@/lib/session'
 import { SidebarDateLink } from './SidebarDateLink'
-import { GenerateButton } from './GenerateButton'
 import { ThemeToggle } from './ThemeToggle'
 import { LogoutButton } from './LogoutButton'
 
@@ -90,11 +89,6 @@ export async function Sidebar() {
 
       {/* Footer */}
       <div style={{ borderTop: '1px solid var(--border)' }} className="px-3 py-3">
-        {isAuthed && (
-          <div className="mb-2">
-            <GenerateButton compact isAuthed />
-          </div>
-        )}
         <div className="flex items-center gap-2">
           <div className="min-w-0 flex-1">
             {isAuthed ? (
