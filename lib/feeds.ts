@@ -5,10 +5,9 @@ export interface Article {
   score: number
 }
 
-async function fetchHN(): Promise<Article[]> {
-  // Algolia HN search API - stories mentioning Claude or Anthropic in last 48h
+async function fetchHN(query: string): Promise<Article[]> {
   const since = Math.floor((Date.now() - 48 * 60 * 60 * 1000) / 1000)
-  const url = `https://hn.algolia.com/api/v1/search?query=claude+anthropic&tags=story&numericFilters=created_at_i>${since}&hitsPerPage=8`
+  const url = `https://hn.algolia.com/api/v1/search?query=${encodeURIComponent(query)}&tags=story&numericFilters=created_at_i>${since}&hitsPerPage=8`
   const res = await fetch(url, { next: { revalidate: 0 } })
   if (!res.ok) return []
   const data = await res.json()
@@ -39,9 +38,12 @@ async function fetchReddit(subreddit: string, sort: 'new' | 'top', timeframe?: s
 
 export async function fetchArticles(): Promise<Article[]> {
   const results = await Promise.allSettled([
-    fetchHN(),
+    fetchHN('claude code developer'),
+    fetchHN('anthropic claude api feature'),
     fetchReddit('ClaudeAI', 'new'),
     fetchReddit('SideProject', 'top', 'week'),
+    fetchReddit('indiehackers', 'top', 'week'),
+    fetchReddit('entrepreneur', 'top', 'week'),
   ])
   return results.flatMap((r) => (r.status === 'fulfilled' ? r.value : []))
 }

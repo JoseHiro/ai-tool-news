@@ -1,8 +1,9 @@
 'use client'
 
 import { useState } from 'react'
+import Link from 'next/link'
 
-export function GenerateButton({ compact = false, regenerate = false }: { compact?: boolean; regenerate?: boolean }) {
+export function GenerateButton({ compact = false, regenerate = false, isAuthed = false }: { compact?: boolean; regenerate?: boolean; isAuthed?: boolean }) {
   const [loading, setLoading] = useState(false)
   const [error, setError] = useState('')
 
@@ -21,6 +22,7 @@ export function GenerateButton({ compact = false, regenerate = false }: { compac
   }
 
   if (regenerate) {
+    if (!isAuthed) return null
     return (
       <div>
         <button
@@ -33,6 +35,18 @@ export function GenerateButton({ compact = false, regenerate = false }: { compac
         </button>
         {error && <p className="mt-1 text-xs text-red-500">{error}</p>}
       </div>
+    )
+  }
+
+  if (!isAuthed) {
+    return (
+      <Link
+        href="/login"
+        style={{ color: 'var(--text-muted)' }}
+        className="text-sm underline hover:text-[var(--text)]"
+      >
+        ログインして生成
+      </Link>
     )
   }
 

@@ -1,16 +1,16 @@
 import type { ReactNode } from 'react'
 
-const SECTION_COLORS: [string, string][] = [
-  ['🆕', '#7c3aed'],
-  ['💡', '#16a34a'],
-  ['💰', '#d97706'],
-]
+const SECTION_META: Record<string, { tag: string; label: string }> = {
+  '🆕': { tag: 'UPDATE', label: 'Claude / Claude Code' },
+  '💡': { tag: 'STORIES', label: '個人開発成功事例' },
+  '💰': { tag: 'IDEAS', label: 'マネタイズアイデア' },
+}
 
-function sectionColor(heading: string): string {
-  for (const [emoji, color] of SECTION_COLORS) {
-    if (heading.includes(emoji)) return color
+function getSectionMeta(heading: string) {
+  for (const [emoji, meta] of Object.entries(SECTION_META)) {
+    if (heading.includes(emoji)) return meta
   }
-  return '#6b7280'
+  return { tag: 'NOTE', label: heading }
 }
 
 function parseInline(text: string): ReactNode[] {
@@ -29,7 +29,7 @@ function parseInline(text: string): ReactNode[] {
         </a>
       )
     } else {
-      nodes.push(<strong key={m.index} style={{ color: 'var(--text)' }}>{m[2]}</strong>)
+      nodes.push(<strong key={m.index} style={{ color: 'var(--text)', fontWeight: 600 }}>{m[2]}</strong>)
     }
     last = m.index + m[0].length
   }
@@ -74,11 +74,10 @@ function renderLines(lines: string[]): ReactNode {
           <li key={i} style={{ color: 'var(--text)' }} className="text-sm leading-relaxed">
             <span>{parseInline(buffer[i].text)}</span>
             {subs.length > 0 && (
-              <ul className="mt-1 space-y-0.5 pl-3">
+              <ul className="mt-1.5 space-y-1 pl-3 border-l" style={{ borderColor: 'var(--border)' }}>
                 {subs.map((s, si) => (
-                  <li key={si} className="flex gap-1.5 text-xs leading-relaxed" style={{ color: 'var(--text-muted)' }}>
-                    <span className="mt-0.5 shrink-0">·</span>
-                    <span>{parseInline(s)}</span>
+                  <li key={si} className="text-xs leading-relaxed" style={{ color: 'var(--text-muted)' }}>
+                    {parseInline(s)}
                   </li>
                 ))}
               </ul>
@@ -90,7 +89,7 @@ function renderLines(lines: string[]): ReactNode {
         i++
       }
     }
-    nodes.push(<ul key={key} className="space-y-2">{items}</ul>)
+    nodes.push(<ul key={key} className="space-y-3">{items}</ul>)
     buffer = []
   }
 
@@ -111,31 +110,47 @@ function renderLines(lines: string[]): ReactNode {
   })
   flushList('ul-end')
 
-  return <div className="space-y-2">{nodes}</div>
+  return <div className="space-y-3">{nodes}</div>
 }
 
-export function DigestContent({ content }: { content: string }) {
+export function parseSectionHeadings(content: string): string[] {
+  return content.split('\n').filter((l) => l.startsWith('### ')).map((l) => l.slice(4))
+}
+
+export function DigestContent({ content, indexOffset = 0 }: { content: string; indexOffset?: number }) {
   const sections = parseSections(content)
   if (!sections.length) return null
 
   return (
     <div className="space-y-4">
       {sections.map((section, i) => {
-        const color = sectionColor(section.heading)
+        const meta = getSectionMeta(section.heading)
         return (
           <div
             key={i}
-            style={{
-              background: 'var(--sidebar-bg)',
-              border: '1px solid var(--border)',
-              borderTop: `3px solid ${color}`,
-            }}
-            className="rounded-lg p-5"
+            id={`section-${indexOffset + i}`}
+            style={{ border: '1px solid var(--border)' }}
+            className="overflow-hidden rounded-xl"
           >
-            <h3 style={{ color: 'var(--text)' }} className="mb-3 text-sm font-semibold">
-              {section.heading}
-            </h3>
-            {renderLines(section.lines)}
+            {/* Card header */}
+            <div
+              style={{ background: 'var(--sidebar-bg)', borderBottom: '1px solid var(--border)' }}
+              className="flex items-center gap-2.5 px-5 py-3"
+            >
+              <span
+                style={{ color: 'var(--text-muted)', border: '1px solid var(--border)' }}
+                className="rounded px-1.5 py-0.5 text-[9px] font-bold uppercase tracking-widest"
+              >
+                {meta.tag}
+              </span>
+              <h3 style={{ color: 'var(--text)' }} className="text-sm font-semibold">
+                {meta.label}
+              </h3>
+            </div>
+            {/* Card body */}
+            <div style={{ background: 'var(--bg)' }} className="px-5 py-4">
+              {renderLines(section.lines)}
+            </div>
           </div>
         )
       })}

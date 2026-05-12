@@ -1,8 +1,12 @@
 import Link from 'next/link'
-import { getDigestDates } from '@/lib/storage'
+import { getIronSession } from 'iron-session'
+import { cookies } from 'next/headers'
+import { getDocDates } from '@/lib/docs'
+import { sessionOptions, type SessionData } from '@/lib/session'
 import { SidebarDateLink } from './SidebarDateLink'
 import { GenerateButton } from './GenerateButton'
 import { ThemeToggle } from './ThemeToggle'
+import { LogoutButton } from './LogoutButton'
 
 function todayJST() {
   return new Date(Date.now() + 9 * 60 * 60 * 1000).toISOString().slice(0, 10)
@@ -12,22 +16,23 @@ function groupDates(dates: string[], today: string) {
   const todayGroup = dates.filter((d) => d === today)
   const weekGroup = dates.filter((d) => {
     if (d === today) return false
-    const diff = (new Date(today).getTime() - new Date(d).getTime()) / 86400000
-    return diff <= 7
+    return (new Date(today).getTime() - new Date(d).getTime()) / 86400000 <= 7
   })
   const olderGroup = dates.filter((d) => {
     if (d === today) return false
-    const diff = (new Date(today).getTime() - new Date(d).getTime()) / 86400000
-    return diff > 7
+    return (new Date(today).getTime() - new Date(d).getTime()) / 86400000 > 7
   })
   return { todayGroup, weekGroup, olderGroup }
 }
 
-function SidebarGroup({ label, dates, today }: { label: string; dates: string[]; today: string }) {
+function SidebarSection({ label, dates, today }: { label: string; dates: string[]; today: string }) {
   if (!dates.length) return null
   return (
-    <div className="mb-3">
-      <p style={{ color: 'var(--text-muted)' }} className="mb-1 px-2 text-xs font-semibold uppercase tracking-wider">
+    <div className="mb-4">
+      <p
+        style={{ color: 'var(--text-muted)' }}
+        className="mb-1 px-3 text-[10px] font-semibold uppercase tracking-widest"
+      >
         {label}
       </p>
       <div className="space-y-0.5">
@@ -40,58 +45,76 @@ function SidebarGroup({ label, dates, today }: { label: string; dates: string[];
 }
 
 export async function Sidebar() {
-  const dates = await getDigestDates()
+  const dates = await getDocDates()
   const today = todayJST()
   const { todayGroup, weekGroup, olderGroup } = groupDates(dates, today)
+  const session = await getIronSession<SessionData>(await cookies(), sessionOptions)
+  const isAuthed = !!session.userId
 
   return (
     <aside
       style={{ background: 'var(--sidebar-bg)', borderRight: '1px solid var(--border)' }}
-      className="flex h-screen w-56 shrink-0 flex-col"
+      className="flex h-screen w-52 shrink-0 flex-col"
     >
       {/* Header */}
-      <div className="px-3 py-4">
+      <div className="px-4 py-5">
         <Link
           href="/"
           style={{ color: 'var(--text)' }}
-          className="flex items-center gap-2 rounded-md px-2 py-1 text-sm font-semibold hover:bg-[var(--hover)]"
+          className="block text-sm font-semibold tracking-tight hover:opacity-70 transition-opacity"
         >
-          <span>📰</span>
-          <span className="truncate">Claude Daily Digest</span>
+          Claude Daily Digest
         </Link>
+        <p style={{ color: 'var(--text-muted)' }} className="mt-0.5 text-[11px]">
+          開発者向けニュース
+        </p>
       </div>
 
-      {/* Actions */}
-      <div className="px-3 pb-3">
-        <GenerateButton compact />
-        <Link
-          href="/input"
-          style={{ color: 'var(--text-muted)' }}
-          className="mt-0.5 flex items-center gap-2.5 rounded-md px-2 py-1.5 text-sm transition-colors hover:bg-[var(--hover)] hover:text-[var(--text)]"
-        >
-          <span className="text-base">✏️</span>
-          <span>メモを追加</span>
-        </Link>
-      </div>
+      {/* Divider */}
+      <div style={{ borderTop: '1px solid var(--border)' }} className="mx-4 mb-4" />
 
       {/* Digest list */}
-      <div className="flex-1 overflow-y-auto px-3 pb-2">
+      <div className="flex-1 overflow-y-auto px-1 pb-2">
         {dates.length === 0 ? (
-          <p style={{ color: 'var(--text-muted)' }} className="px-2 text-xs">
+          <p style={{ color: 'var(--text-muted)' }} className="px-3 text-xs">
             まだありません
           </p>
         ) : (
           <>
-            <SidebarGroup label="今日" dates={todayGroup} today={today} />
-            <SidebarGroup label="今週" dates={weekGroup} today={today} />
-            <SidebarGroup label="それ以前" dates={olderGroup} today={today} />
+            <SidebarSection label="Today" dates={todayGroup} today={today} />
+            <SidebarSection label="今週" dates={weekGroup} today={today} />
+            <SidebarSection label="それ以前" dates={olderGroup} today={today} />
           </>
         )}
       </div>
 
       {/* Footer */}
-      <div style={{ borderTop: '1px solid var(--border)' }} className="px-3 py-2">
-        <ThemeToggle />
+      <div style={{ borderTop: '1px solid var(--border)' }} className="px-3 py-3">
+        {isAuthed && (
+          <div className="mb-2">
+            <GenerateButton compact isAuthed />
+          </div>
+        )}
+        <div className="flex items-center gap-2">
+          <div className="min-w-0 flex-1">
+            {isAuthed ? (
+              <LogoutButton email={session.email!} />
+            ) : (
+              <Link
+                href="/login"
+                style={{ color: 'var(--text-muted)' }}
+                className="flex items-center gap-2 rounded-md px-2 py-1.5 text-xs transition-colors hover:bg-[var(--hover)] hover:text-[var(--text)]"
+              >
+                <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+                  <rect x="3" y="11" width="18" height="11" rx="2" ry="2" />
+                  <path d="M7 11V7a5 5 0 0 1 10 0v4" />
+                </svg>
+                <span>ログイン</span>
+              </Link>
+            )}
+          </div>
+          <ThemeToggle />
+        </div>
       </div>
     </aside>
   )
