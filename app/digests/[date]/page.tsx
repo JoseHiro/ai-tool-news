@@ -5,11 +5,14 @@ import { cookies } from 'next/headers'
 import { getDigest } from '@/lib/storage'
 import { readDocFile, extractSubHeadings, getAdjacentDates } from '@/lib/docs'
 import { sessionOptions, type SessionData } from '@/lib/session'
+import { getUserById, getSubscribedUntil } from '@/lib/users'
+import { canViewContent } from '@/lib/access'
 import { DigestContent, parseSectionHeadings } from '@/components/DigestContent'
 import { MarkdownDoc } from '@/components/MarkdownDoc'
 import { DigestToC } from '@/components/DigestToC'
 import { XPostButton } from '@/components/XPostButton'
 import { GenerateButton } from '@/components/GenerateButton'
+import { Paywall } from '@/components/Paywall'
 
 function formatDate(date: string) {
   const [y, m, d] = date.split('-')
@@ -39,6 +42,9 @@ export default async function DigestPage({
   if (!hasContent) notFound()
 
   const isAuthed = !!session.userId
+  const user = session.userId ? await getUserById(session.userId) : null
+  const subscribedUntil = user ? getSubscribedUntil(user) : null
+  const canView = canViewContent(session, subscribedUntil)
 
   const tocSections = [
     ...(claudeDoc ? [{ heading: '🆕 Claude / Claude Code アップデート', sub: extractSubHeadings(claudeDoc, 'claude') }] : []),
@@ -61,18 +67,22 @@ export default async function DigestPage({
             <GenerateButton regenerate isAuthed={isAuthed} />
           </div>
 
-          <div className="space-y-4">
-            {claudeDoc && <MarkdownDoc content={claudeDoc} type="claude" id="section-0" />}
-            {ideasDoc && <MarkdownDoc content={ideasDoc} type="ideas" id={`section-${claudeDoc ? 1 : 0}`} />}
-            {digest && (
-              <DigestContent
-                content={digest.content}
-                indexOffset={(claudeDoc ? 1 : 0) + (ideasDoc ? 1 : 0)}
-              />
-            )}
-          </div>
+          {canView ? (
+            <div className="space-y-4">
+              {claudeDoc && <MarkdownDoc content={claudeDoc} type="claude" id="section-0" />}
+              {ideasDoc && <MarkdownDoc content={ideasDoc} type="ideas" id={`section-${claudeDoc ? 1 : 0}`} />}
+              {digest && (
+                <DigestContent
+                  content={digest.content}
+                  indexOffset={(claudeDoc ? 1 : 0) + (ideasDoc ? 1 : 0)}
+                />
+              )}
+            </div>
+          ) : (
+            <Paywall />
+          )}
 
-          {digest?.xPost && (
+          {canView && digest?.xPost && (
             <div style={{ borderTop: '1px solid var(--border)' }} className="mt-10 pt-8">
               <p style={{ color: 'var(--text-muted)' }} className="mb-3 text-xs font-semibold uppercase tracking-widest">
                 X投稿用テキスト
@@ -111,10 +121,11 @@ export default async function DigestPage({
           </div>
         </div>
 
-        {/* Right ToC */}
-        <div className="hidden w-40 shrink-0 xl:block">
-          <DigestToC sections={tocSections} />
-        </div>
+        {canView && (
+          <div className="hidden w-40 shrink-0 xl:block">
+            <DigestToC sections={tocSections} />
+          </div>
+        )}
       </div>
     </div>
   )

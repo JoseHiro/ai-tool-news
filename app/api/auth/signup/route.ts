@@ -3,6 +3,7 @@ import { cookies } from 'next/headers'
 import { hash } from 'bcryptjs'
 import { validateSignupInput } from '@/lib/auth'
 import { createUser, findUserByEmail } from '@/lib/users'
+import { isAdmin } from '@/lib/access'
 import { sessionOptions, type SessionData } from '@/lib/session'
 
 export async function POST(req: Request) {
@@ -30,6 +31,7 @@ export async function POST(req: Request) {
     const session = await getIronSession<SessionData>(await cookies(), sessionOptions)
     session.userId = user.id as number
     session.email = user.email as string
+    session.isAdmin = isAdmin(user.email as string)
     await session.save()
 
     return Response.json({ ok: true, email: user.email })

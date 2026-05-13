@@ -2,6 +2,7 @@ import { getIronSession } from 'iron-session'
 import { cookies } from 'next/headers'
 import { sessionOptions, type SessionData } from '@/lib/session'
 import { findUserByEmail, seedAdminIfNeeded } from '@/lib/users'
+import { isAdmin } from '@/lib/access'
 import { compare } from 'bcryptjs'
 
 export async function POST(req: Request) {
@@ -18,6 +19,7 @@ export async function POST(req: Request) {
     const session = await getIronSession<SessionData>(await cookies(), sessionOptions)
     session.userId = user.id as number
     session.email = user.email as string
+    session.isAdmin = isAdmin(user.email as string)
     await session.save()
 
     return Response.json({ ok: true, email: user.email })
