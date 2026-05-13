@@ -3,6 +3,7 @@
 import { useState } from 'react'
 import { useRouter } from 'next/navigation'
 import Link from 'next/link'
+import { PasswordInput } from '@/components/PasswordInput'
 
 export default function LoginPage() {
   const [email, setEmail] = useState('')
@@ -63,13 +64,10 @@ export default function LoginPage() {
             <label style={{ color: 'var(--text-muted)' }} className="mb-1.5 block text-xs font-medium">
               パスワード
             </label>
-            <input
-              type="password"
+            <PasswordInput
               value={password}
               onChange={(e) => setPassword(e.target.value)}
               required
-              style={{ background: 'var(--sidebar-bg)', color: 'var(--text)', border: '1px solid var(--border)' }}
-              className="w-full rounded-lg px-3 py-2.5 text-sm outline-none focus:ring-2 focus:ring-[var(--accent)]"
             />
           </div>
           {error && <p className="text-xs text-red-500">{error}</p>}
