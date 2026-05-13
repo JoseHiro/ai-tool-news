@@ -40,11 +40,18 @@ export type SubHeading = { label: string; subIndex: number }
 
 export function extractSubHeadings(content: string, type?: DocType): SubHeading[] {
   if (type !== 'ideas') {
-    return content
-      .split('\n')
-      .filter(l => /^## /.test(l))
-      .map((l, i) => ({ label: l.slice(3).trim(), subIndex: i }))
-      .filter(h => h.label)
+    const lines = content.split('\n')
+    let inCode = false
+    const headings: SubHeading[] = []
+    let subIndex = 0
+    for (const l of lines) {
+      if (l.startsWith('```')) { inCode = !inCode; continue }
+      if (!inCode && /^## /.test(l)) {
+        const label = l.slice(3).trim()
+        if (label) headings.push({ label, subIndex: subIndex++ })
+      }
+    }
+    return headings
   }
   // ideas: h3 app entries only, using global h3 index to match MarkdownDoc IDs
   const allH3 = content.split('\n').filter(l => /^### /.test(l))

@@ -14,6 +14,22 @@ const CLAUDE_CONTENT = `# Claude Code アップデート
 ## 🛠 おすすめワークフロー
 内容`
 
+const CLAUDE_WITH_CODE_FENCE = `# Claude Code アップデート
+
+## 🆕 今週のアップデート
+内容
+
+## ⚡ 実践Tips
+
+\`\`\`markdown
+## コーディング規約
+## 禁止事項
+## ファイル命名
+\`\`\`
+
+## 🛠 ワークフロー
+内容`
+
 const IDEAS_CONTENT = `# 個人開発アイデア
 
 ## 前提：基本知識
@@ -40,6 +56,16 @@ describe('extractSubHeadings — claude', () => {
 
   it('uses sequential subIndex starting from 0', () => {
     const result = extractSubHeadings(CLAUDE_CONTENT, 'claude')
+    expect(result.map(h => h.subIndex)).toEqual([0, 1, 2])
+  })
+
+  it('ignores ## lines inside code fences', () => {
+    const result = extractSubHeadings(CLAUDE_WITH_CODE_FENCE, 'claude')
+    expect(result.map(h => h.label)).toEqual([
+      '🆕 今週のアップデート',
+      '⚡ 実践Tips',
+      '🛠 ワークフロー',
+    ])
     expect(result.map(h => h.subIndex)).toEqual([0, 1, 2])
   })
 })
