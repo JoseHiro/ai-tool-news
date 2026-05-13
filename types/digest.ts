@@ -10,3 +10,15 @@ export interface DailyInput {
   notes: string[]   // User-added raw notes / URLs
   updatedAt: string
 }
+
+export interface User {
+  id: number
+  email: string
+  passwordHash: string
+  stripeCustomerId: string | null
+  stripeSubscriptionId: string | null
+  subscribedUntil: Date | null
+  createdAt: Date
+}
+
+export type NewUser = Pick<User, 'email' | 'passwordHash'>
