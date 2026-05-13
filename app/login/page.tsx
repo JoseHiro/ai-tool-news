@@ -1,7 +1,6 @@
 'use client'
 
 import { useState } from 'react'
-import { useRouter } from 'next/navigation'
 import Link from 'next/link'
 import { PasswordInput } from '@/components/PasswordInput'
 
@@ -10,7 +9,6 @@ export default function LoginPage() {
   const [password, setPassword] = useState('')
   const [error, setError] = useState('')
   const [loading, setLoading] = useState(false)
-  const router = useRouter()
 
   async function handleSubmit(e: React.FormEvent) {
     e.preventDefault()
@@ -27,8 +25,7 @@ export default function LoginPage() {
         setError(data.error)
         return
       }
-      router.push('/')
-      router.refresh()
+      window.location.href = '/'
     } catch {
       setError('ログインに失敗しました')
     } finally {
