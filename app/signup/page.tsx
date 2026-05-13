@@ -4,9 +4,10 @@ import { useState } from 'react'
 import { useRouter } from 'next/navigation'
 import Link from 'next/link'
 
-export default function LoginPage() {
+export default function SignupPage() {
   const [email, setEmail] = useState('')
   const [password, setPassword] = useState('')
+  const [confirm, setConfirm] = useState('')
   const [error, setError] = useState('')
   const [loading, setLoading] = useState(false)
   const router = useRouter()
@@ -16,10 +17,10 @@ export default function LoginPage() {
     setLoading(true)
     setError('')
     try {
-      const res = await fetch('/api/auth/login', {
+      const res = await fetch('/api/auth/signup', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ email, password }),
+        body: JSON.stringify({ email, password, confirm }),
       })
       const data = await res.json()
       if (!res.ok) {
@@ -29,7 +30,7 @@ export default function LoginPage() {
       router.push('/')
       router.refresh()
     } catch {
-      setError('ログインに失敗しました')
+      setError('アカウント作成に失敗しました')
     } finally {
       setLoading(false)
     }
@@ -39,7 +40,7 @@ export default function LoginPage() {
     <div className="flex h-full items-center justify-center px-8">
       <div style={{ border: '1px solid var(--border)' }} className="w-full max-w-sm rounded-xl p-8">
         <h1 style={{ color: 'var(--text)' }} className="mb-1 text-xl font-bold">
-          ログイン
+          アカウント作成
         </h1>
         <p style={{ color: 'var(--text-muted)' }} className="mb-6 text-sm">
           Claude Daily Digest
@@ -61,12 +62,25 @@ export default function LoginPage() {
           </div>
           <div>
             <label style={{ color: 'var(--text-muted)' }} className="mb-1.5 block text-xs font-medium">
-              パスワード
+              パスワード（8文字以上）
             </label>
             <input
               type="password"
               value={password}
               onChange={(e) => setPassword(e.target.value)}
+              required
+              style={{ background: 'var(--sidebar-bg)', color: 'var(--text)', border: '1px solid var(--border)' }}
+              className="w-full rounded-lg px-3 py-2.5 text-sm outline-none focus:ring-2 focus:ring-[var(--accent)]"
+            />
+          </div>
+          <div>
+            <label style={{ color: 'var(--text-muted)' }} className="mb-1.5 block text-xs font-medium">
+              パスワード（確認）
+            </label>
+            <input
+              type="password"
+              value={confirm}
+              onChange={(e) => setConfirm(e.target.value)}
               required
               style={{ background: 'var(--sidebar-bg)', color: 'var(--text)', border: '1px solid var(--border)' }}
               className="w-full rounded-lg px-3 py-2.5 text-sm outline-none focus:ring-2 focus:ring-[var(--accent)]"
@@ -78,13 +92,13 @@ export default function LoginPage() {
             disabled={loading}
             className="w-full rounded-lg bg-[var(--accent)] py-2.5 text-sm font-semibold text-white transition hover:opacity-90 disabled:opacity-60"
           >
-            {loading ? 'ログイン中...' : 'ログイン'}
+            {loading ? '作成中...' : 'アカウントを作成'}
           </button>
         </form>
         <p style={{ color: 'var(--text-muted)' }} className="mt-4 text-center text-xs">
-          アカウントをお持ちでないですか？{' '}
-          <Link href="/signup" style={{ color: 'var(--accent)' }} className="hover:underline">
-            新規登録
+          すでにアカウントをお持ちですか？{' '}
+          <Link href="/login" style={{ color: 'var(--accent)' }} className="hover:underline">
+            ログイン
           </Link>
         </p>
       </div>

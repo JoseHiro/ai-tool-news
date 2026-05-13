@@ -2,8 +2,10 @@ import { NextRequest, NextResponse } from 'next/server'
 
 const PUBLIC_PATHS = [
   '/login',
+  '/signup',
   '/api/auth/login',
   '/api/auth/logout',
+  '/api/auth/signup',
 ]
 
 export function middleware(req: NextRequest) {
