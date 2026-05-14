@@ -1,4 +1,29 @@
+'use client'
+
+import { useState } from 'react'
+
 export function Paywall() {
+  const [loading, setLoading] = useState(false)
+  const [error, setError] = useState('')
+
+  async function handleSubscribe() {
+    setLoading(true)
+    setError('')
+    try {
+      const res = await fetch('/api/stripe/checkout', { method: 'POST' })
+      const data = await res.json()
+      if (!res.ok) {
+        setError(data.error ?? 'エラーが発生しました')
+        return
+      }
+      window.location.href = data.url
+    } catch {
+      setError('エラーが発生しました')
+    } finally {
+      setLoading(false)
+    }
+  }
+
   return (
     <div
       style={{ border: '1px solid var(--border)', background: 'var(--sidebar-bg)' }}
@@ -33,16 +58,15 @@ export function Paywall() {
         毎日更新される Claude Code・AI ツール情報をすべて閲覧できます。
       </p>
 
-      <button
-        disabled
-        className="w-full rounded-lg bg-[var(--accent)] py-2.5 text-sm font-semibold text-white opacity-50 cursor-not-allowed"
-      >
-        プランを見る（準備中）
-      </button>
+      {error && <p className="mb-3 text-xs text-red-500">{error}</p>}
 
-      <p style={{ color: 'var(--text-muted)' }} className="mt-4 text-xs">
-        サブスクリプション機能は近日公開予定です。
-      </p>
+      <button
+        onClick={handleSubscribe}
+        disabled={loading}
+        className="w-full rounded-lg bg-[var(--accent)] py-2.5 text-sm font-semibold text-white transition hover:opacity-90 disabled:opacity-60"
+      >
+        {loading ? '処理中...' : 'プランを見る'}
+      </button>
     </div>
   )
 }

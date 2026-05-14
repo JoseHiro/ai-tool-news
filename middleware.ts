@@ -6,6 +6,8 @@ const PUBLIC_PATHS = [
   '/api/auth/login',
   '/api/auth/logout',
   '/api/auth/signup',
+  '/api/stripe/webhook',  // Stripe からのリクエストはセッションなし
+  '/stripe/success',
 ]
 
 export function middleware(req: NextRequest) {

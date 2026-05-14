@@ -89,6 +89,20 @@ export function getSubscribedUntil(user: UserRow): Date | null {
   return user.subscribed_until ? new Date(user.subscribed_until) : null
 }
 
+export async function getUserByStripeCustomerId(customerId: string): Promise<UserRow | null> {
+  const sql = getSql()
+  const rows = await sql`
+    SELECT id, email, password_hash, stripe_customer_id, stripe_subscription_id, subscribed_until, created_at
+    FROM users WHERE stripe_customer_id = ${customerId}
+  `
+  return (rows[0] as UserRow) ?? null
+}
+
+export async function expireSubscription(userId: number): Promise<void> {
+  const sql = getSql()
+  await sql`UPDATE users SET subscribed_until = now() WHERE id = ${userId}`
+}
+
 // Creates admin user from env vars if DB is empty
 export async function seedAdminIfNeeded(): Promise<void> {
   const count = await getUserCount()

@@ -127,20 +127,41 @@ CREATE TABLE users (
 
 ---
 
-## 8. 今後の実装（Stripe 連携）
+## 8. Stripe 連携（実装済み）
 
 ```
 ユーザーが「プランを見る」をクリック
   → POST /api/stripe/checkout
-  → Stripe Checkout セッション作成（checkout.sessions.create）
+  → Stripe Checkout セッション作成（metadata に userId を埋め込み）
   → stripe-hosted の支払いページへリダイレクト
-  → 支払い完了
-  → Stripe が POST /api/stripe/webhook を叩く
-  → イベント検証（stripe.webhooks.constructEvent）
-  → customer.subscription.created / updated
-  → users.subscribed_until を更新（updateSubscription()）
-  → customer.subscription.deleted
-  → users.subscribed_until を過去の日付に更新（実質無効化）
+  → 支払い完了 → /stripe/success にリダイレクト
+  → Stripe が POST /api/stripe/webhook を叩く（セッション不要・公開パス）
+  → stripe.webhooks.constructEvent で署名検証
+  → checkout.session.completed: updateSubscription() で subscribed_until を更新
+  → customer.subscription.updated: 更新時に subscribed_until を延長
+  → customer.subscription.deleted: expireSubscription() で即時無効化
+```
+
+### Stripe セットアップ手順
+
+1. [Stripe Dashboard](https://dashboard.stripe.com) でサブスクリプション商品・価格を作成
+2. Webhook エンドポイントを登録: `https://your-domain.vercel.app/api/stripe/webhook`
+   - イベント: `checkout.session.completed`, `customer.subscription.updated`, `customer.subscription.deleted`
+3. 以下の環境変数を設定:
+
+| 変数名 | 取得場所 |
+|--------|---------|
+| `STRIPE_SECRET_KEY` | Dashboard → API keys → Secret key |
+| `STRIPE_PRICE_ID` | Dashboard → Products → 価格の ID（`price_xxx`） |
+| `STRIPE_WEBHOOK_SECRET` | Dashboard → Webhooks → Signing secret |
+
+### ローカルテスト（Stripe CLI）
+
+```bash
+# Stripe CLI をインストール後
+stripe listen --forward-to localhost:3000/api/stripe/webhook
+# 別ターミナルでテストイベントを送信
+stripe trigger checkout.session.completed
 ```
 
 ---
