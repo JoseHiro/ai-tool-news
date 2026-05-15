@@ -10,7 +10,7 @@ const PUBLIC_PATHS = [
   '/stripe/success',
 ]
 
-export function middleware(req: NextRequest) {
+export function proxy(req: NextRequest) {
   const { pathname } = req.nextUrl
 
   if (PUBLIC_PATHS.some(p => pathname.startsWith(p))) {
