@@ -13,6 +13,7 @@ import { DigestToC } from '@/components/DigestToC'
 import { XPostButton } from '@/components/XPostButton'
 import { GenerateButton } from '@/components/GenerateButton'
 import { Paywall } from '@/components/Paywall'
+import { ContentDisclaimer } from '@/components/ContentDisclaimer'
 
 function formatDate(date: string) {
   const [y, m, d] = date.split('-')
@@ -58,7 +59,7 @@ export default async function DigestPage({
         {/* Main */}
         <div className="min-w-0 flex-1">
           <p style={{ color: 'var(--accent)' }} className="mb-1 text-xs font-semibold uppercase tracking-widest">
-            Daily Digest
+            DevKnow
           </p>
           <div className="mb-8 flex items-center gap-3">
             <h1 style={{ color: 'var(--text)' }} className="text-2xl font-bold">
@@ -68,16 +69,19 @@ export default async function DigestPage({
           </div>
 
           {canView ? (
-            <div className="space-y-4">
-              {claudeDoc && <MarkdownDoc content={claudeDoc} type="claude" id="section-0" />}
-              {ideasDoc && <MarkdownDoc content={ideasDoc} type="ideas" id={`section-${claudeDoc ? 1 : 0}`} />}
-              {digest && (
-                <DigestContent
-                  content={digest.content}
-                  indexOffset={(claudeDoc ? 1 : 0) + (ideasDoc ? 1 : 0)}
-                />
-              )}
-            </div>
+            <>
+              <ContentDisclaimer />
+              <div className="mt-6 space-y-4">
+                {claudeDoc && <MarkdownDoc content={claudeDoc} type="claude" id="section-0" />}
+                {ideasDoc && <MarkdownDoc content={ideasDoc} type="ideas" id={`section-${claudeDoc ? 1 : 0}`} />}
+                {digest && (
+                  <DigestContent
+                    content={digest.content}
+                    indexOffset={(claudeDoc ? 1 : 0) + (ideasDoc ? 1 : 0)}
+                  />
+                )}
+              </div>
+            </>
           ) : (
             <Paywall />
           )}

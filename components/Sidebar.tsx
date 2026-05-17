@@ -1,4 +1,5 @@
 import Link from 'next/link'
+import { BrandMark } from '@/components/BrandMark'
 import { getIronSession } from 'iron-session'
 import { cookies } from 'next/headers'
 import { getDocDates } from '@/lib/docs'
@@ -57,20 +58,36 @@ export async function Sidebar() {
     >
       {/* Header */}
       <div className="px-4 py-5">
-        <Link
-          href="/"
-          style={{ color: 'var(--text)' }}
-          className="block text-sm font-semibold tracking-tight hover:opacity-70 transition-opacity"
-        >
-          Claude Daily Digest
-        </Link>
-        <p style={{ color: 'var(--text-muted)' }} className="mt-0.5 text-[11px]">
+        <BrandMark variant="sidebar" />
+        <p style={{ color: 'var(--text-muted)' }} className="mt-3 text-[11px]">
           開発者向けニュース
         </p>
       </div>
 
       {/* Divider */}
-      <div style={{ borderTop: '1px solid var(--border)' }} className="mx-4 mb-4" />
+      <div style={{ borderTop: '1px solid var(--border)' }} className="mx-4 mb-3" />
+
+      {/* Quick nav */}
+      <div className="mb-3 space-y-0.5 px-1">
+        <Link
+          href="/ideas"
+          style={{ color: 'var(--text-muted)' }}
+          className="flex items-center gap-2 rounded-md px-3 py-1.5 text-xs transition-colors hover:bg-[var(--hover)] hover:text-[var(--text)]"
+        >
+          <span>💡</span>
+          <span>アイデア一覧</span>
+        </Link>
+        <Link
+          href="/tips"
+          style={{ color: 'var(--text-muted)' }}
+          className="flex items-center gap-2 rounded-md px-3 py-1.5 text-xs transition-colors hover:bg-[var(--hover)] hover:text-[var(--text)]"
+        >
+          <span>⚡</span>
+          <span>Claude Tips</span>
+        </Link>
+      </div>
+
+      <div style={{ borderTop: '1px solid var(--border)' }} className="mx-4 mb-3" />
 
       {/* Digest list */}
       <div className="flex-1 overflow-y-auto px-1 pb-2">

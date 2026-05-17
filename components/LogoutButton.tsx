@@ -23,7 +23,7 @@ export function LogoutButton({ email }: { email: string }) {
       style={{ color: 'var(--text-muted)' }}
       className="flex w-full items-center gap-2 rounded-md px-2 py-1.5 text-xs transition-colors hover:bg-[var(--hover)] hover:text-[var(--text)]"
     >
-      <span className="min-w-0 flex-1 truncate text-left">{email}</span>
+      <span className="min-w-0 flex-1 truncate text-left">ログアウト</span>
       <LogoutIcon />
     </button>
   )
