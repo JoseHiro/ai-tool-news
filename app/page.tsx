@@ -9,6 +9,7 @@ import { canViewContent } from '@/lib/access'
 import { MarkdownDoc } from '@/components/MarkdownDoc'
 import { DigestToC } from '@/components/DigestToC'
 import { Paywall } from '@/components/Paywall'
+import { ContentDisclaimer } from '@/components/ContentDisclaimer'
 
 function todayJST() {
   return new Date(Date.now() + 9 * 60 * 60 * 1000).toISOString().slice(0, 10)
@@ -55,17 +56,20 @@ export default async function Dashboard() {
       <div className="mx-auto flex max-w-4xl gap-10">
         <div className="min-w-0 flex-1">
           <p style={{ color: 'var(--accent)' }} className="mb-1 text-xs font-semibold uppercase tracking-widest">
-            Daily Digest
+            DevKnow
           </p>
           <h1 style={{ color: 'var(--text)' }} className="mb-8 text-2xl font-bold">
             {formatDate(today)}
           </h1>
 
           {canView ? (
-            <div className="space-y-4">
-              {claudeDoc && <MarkdownDoc content={claudeDoc} type="claude" id="section-0" />}
-              {ideasDoc && <MarkdownDoc content={ideasDoc} type="ideas" id={`section-${claudeDoc ? 1 : 0}`} />}
-            </div>
+            <>
+              <div className="space-y-4">
+                {claudeDoc && <MarkdownDoc content={claudeDoc} type="claude" id="section-0" />}
+                {ideasDoc && <MarkdownDoc content={ideasDoc} type="ideas" id={`section-${claudeDoc ? 1 : 0}`} />}
+              </div>
+              <ContentDisclaimer />
+            </>
           ) : (
             <Paywall />
           )}

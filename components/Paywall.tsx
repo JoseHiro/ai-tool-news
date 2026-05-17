@@ -1,6 +1,7 @@
 'use client'
 
 import { useState } from 'react'
+import { DISCLAIMER_PAYWALL } from '@/lib/disclaimer'
 
 export function Paywall() {
   const [loading, setLoading] = useState(false)
@@ -55,7 +56,7 @@ export function Paywall() {
       <p style={{ color: 'var(--text-muted)' }} className="mb-6 text-sm leading-relaxed">
         このコンテンツを読むには有料プランへの登録が必要です。
         <br />
-        毎日更新される Claude Code・AI ツール情報をすべて閲覧できます。
+        毎日更新される AI・個人開発・エンジニア向け情報をすべて閲覧できます。
       </p>
 
       {error && <p className="mb-3 text-xs text-red-500">{error}</p>}
@@ -67,6 +68,10 @@ export function Paywall() {
       >
         {loading ? '処理中...' : 'プランを見る'}
       </button>
+
+      <p style={{ color: 'var(--text-muted)' }} className="mt-4 text-[11px] leading-relaxed">
+        {DISCLAIMER_PAYWALL}
+      </p>
     </div>
   )
 }

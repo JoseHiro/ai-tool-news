@@ -23,7 +23,7 @@ async function fetchReddit(subreddit: string, sort: 'new' | 'top', timeframe?: s
   const path = sort === 'top' ? `top.json?t=${timeframe ?? 'week'}&limit=8` : 'new.json?limit=8'
   const url = `https://www.reddit.com/r/${subreddit}/${path}`
   const res = await fetch(url, {
-    headers: { 'User-Agent': 'ClaudeDigest/1.0 (personal dashboard)' },
+    headers: { 'User-Agent': 'DevKnow/1.0 (personal dashboard)' },
     next: { revalidate: 0 },
   })
   if (!res.ok) return []
