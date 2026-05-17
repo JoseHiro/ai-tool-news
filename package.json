@@ -8,13 +8,17 @@
     "start": "next start",
     "lint": "eslint",
     "test": "vitest run",
-    "test:watch": "vitest"
+    "test:watch": "vitest",
+    "build:index": "tsx scripts/build-index.ts"
   },
   "dependencies": {
     "@anthropic-ai/sdk": "^0.95.1",
     "@neondatabase/serverless": "^1.1.0",
     "@vercel/kv": "^3.0.0",
     "bcryptjs": "^3.0.3",
+    "date-fns": "^4.1.0",
+    "date-fns-tz": "^3.2.0",
+    "gray-matter": "^4.0.3",
     "iron-session": "^8.0.4",
     "next": "16.2.6",
     "openai": "^6.37.0",
@@ -39,6 +43,7 @@
     "eslint": "^9",
     "eslint-config-next": "16.2.6",
     "tailwindcss": "^4",
+    "tsx": "^4.22.0",
     "typescript": "^5",
     "vitest": "^2.1.9"
   }
