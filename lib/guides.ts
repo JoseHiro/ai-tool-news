@@ -55,17 +55,17 @@ export async function getGuides(): Promise<GuideMetadata[]> {
 
 export async function readGuide(slug: string): Promise<Guide | null> {
   try {
-    const raw = await readFile(join(GUIDES_DIR, `${slug}.md`), 'utf-8')
-    const { data, content } = matter(raw)
+    const fileContent = await readFile(join(GUIDES_DIR, `${slug}.md`), 'utf-8')
+    const { data, content } = matter(fileContent)
     const category = (data.category ?? 'workflow') as GuideCategory
-    const raw = data.updatedAt
+    const rawDate = data.updatedAt
     return {
       slug,
       title: data.title ?? slug,
       description: data.description ?? '',
       emoji: data.emoji ?? '📖',
       category,
-      updatedAt: raw instanceof Date ? raw.toISOString().slice(0, 10) : (raw ? String(raw) : ''),
+      updatedAt: rawDate instanceof Date ? rawDate.toISOString().slice(0, 10) : (rawDate ? String(rawDate) : ''),
       order: CATEGORY_ORDER[category] ?? 99,
       content,
     }
