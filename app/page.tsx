@@ -1,8 +1,9 @@
 export const dynamic = 'force-dynamic'
 
+import { redirect } from 'next/navigation'
 import { getIronSession } from 'iron-session'
 import { cookies } from 'next/headers'
-import { readDocFile, extractSubHeadings } from '@/lib/docs'
+import { readDocFile, extractSubHeadings, getDocDates } from '@/lib/docs'
 import { sessionOptions, type SessionData } from '@/lib/session'
 import { getUserById, getSubscribedUntil } from '@/lib/users'
 import { canViewContent } from '@/lib/access'
@@ -39,6 +40,8 @@ export default async function Dashboard() {
   ]
 
   if (!hasContent) {
+    const dates = await getDocDates()
+    if (dates.length > 0) redirect(`/digests/${dates[0]}`)
     return (
       <div className="flex h-full flex-col items-center justify-center gap-2 px-8">
         <p style={{ color: 'var(--text)' }} className="text-sm font-medium">

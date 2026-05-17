@@ -11,7 +11,7 @@ export default function LoginPage() {
   const [error, setError] = useState('')
   const [loading, setLoading] = useState(false)
 
-  async function handleSubmit(e: React.FormEvent) {
+  async function handleSubmit(e: React.SyntheticEvent<HTMLFormElement>) {
     e.preventDefault()
     setLoading(true)
     setError('')
@@ -78,6 +78,11 @@ export default function LoginPage() {
           </button>
         </form>
         <p style={{ color: 'var(--text-muted)' }} className="mt-4 text-center text-xs">
+          <Link href="/forgot-password" style={{ color: 'var(--text-muted)' }} className="hover:text-[var(--accent)] hover:underline">
+            パスワードを忘れた方
+          </Link>
+        </p>
+        <p style={{ color: 'var(--text-muted)' }} className="mt-2 text-center text-xs">
           アカウントをお持ちでないですか？{' '}
           <Link href="/signup" style={{ color: 'var(--accent)' }} className="hover:underline">
             新規登録
