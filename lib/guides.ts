@@ -35,17 +35,17 @@ export async function getGuides(): Promise<GuideMetadata[]> {
     files
       .filter(f => f.endsWith('.md'))
       .map(async f => {
-        const raw = await readFile(join(GUIDES_DIR, f), 'utf-8')
-        const { data } = matter(raw)
+        const fileContent = await readFile(join(GUIDES_DIR, f), 'utf-8')
+        const { data } = matter(fileContent)
         const category = (data.category ?? 'workflow') as GuideCategory
-        const raw = data.updatedAt
+        const rawDate = data.updatedAt
         return {
           slug: f.slice(0, -3),
           title: data.title ?? f.slice(0, -3),
           description: data.description ?? '',
           emoji: data.emoji ?? '📖',
           category,
-          updatedAt: raw instanceof Date ? raw.toISOString().slice(0, 10) : (raw ? String(raw) : ''),
+          updatedAt: rawDate instanceof Date ? rawDate.toISOString().slice(0, 10) : (rawDate ? String(rawDate) : ''),
           order: CATEGORY_ORDER[category] ?? 99,
         } as GuideMetadata
       })
