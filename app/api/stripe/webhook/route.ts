@@ -1,5 +1,5 @@
 import type Stripe from 'stripe'
-import { stripe } from '@/lib/stripe'
+import { getStripe } from '@/lib/stripe'
 import { updateSubscription, getUserByStripeCustomerId, expireSubscription } from '@/lib/users'
 
 // Stripe requires the raw body for signature verification
@@ -16,7 +16,7 @@ export async function POST(req: Request) {
 
   let event: Stripe.Event
   try {
-    event = stripe.webhooks.constructEvent(body, sig, secret)
+    event = getStripe().webhooks.constructEvent(body, sig, secret)
   } catch {
     return Response.json({ error: 'Invalid signature' }, { status: 400 })
   }
@@ -30,7 +30,7 @@ export async function POST(req: Request) {
         const userId = parseInt(session.metadata?.userId ?? '')
         if (!userId) break
 
-        const subscription = await stripe.subscriptions.retrieve(session.subscription as string, {
+        const subscription = await getStripe().subscriptions.retrieve(session.subscription as string, {
           expand: ['items'],
         })
         const periodEnd = subscription.items.data[0]?.current_period_end

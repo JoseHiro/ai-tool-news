@@ -1,7 +1,7 @@
 import { getIronSession } from 'iron-session'
 import { cookies } from 'next/headers'
 import { sessionOptions, type SessionData } from '@/lib/session'
-import { stripe, getBaseUrl } from '@/lib/stripe'
+import { getStripe, getBaseUrl } from '@/lib/stripe'
 
 export async function POST(req: Request) {
   const session = await getIronSession<SessionData>(await cookies(), sessionOptions)
@@ -16,7 +16,7 @@ export async function POST(req: Request) {
 
   const base = getBaseUrl(req)
 
-  const checkoutSession = await stripe.checkout.sessions.create({
+  const checkoutSession = await getStripe().checkout.sessions.create({
     mode: 'subscription',
     customer_email: session.email,
     line_items: [{ price: priceId, quantity: 1 }],
