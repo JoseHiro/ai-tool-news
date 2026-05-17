@@ -3,9 +3,13 @@ import { NextRequest, NextResponse } from 'next/server'
 const PUBLIC_PATHS = [
   '/login',
   '/signup',
+  '/forgot-password',
+  '/reset-password',
   '/api/auth/login',
   '/api/auth/logout',
   '/api/auth/signup',
+  '/api/auth/forgot-password',
+  '/api/auth/reset-password',
   '/api/stripe/webhook',  // Stripe からのリクエストはセッションなし
   '/stripe/success',
 ]
