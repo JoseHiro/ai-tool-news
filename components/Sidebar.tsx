@@ -70,6 +70,14 @@ export async function Sidebar() {
       {/* Quick nav */}
       <div className="mb-3 space-y-0.5 px-1">
         <Link
+          href="/guides"
+          style={{ color: 'var(--text-muted)' }}
+          className="flex items-center gap-2 rounded-md px-3 py-1.5 text-xs transition-colors hover:bg-[var(--hover)] hover:text-[var(--text)]"
+        >
+          <span>📚</span>
+          <span>ガイド</span>
+        </Link>
+        <Link
           href="/ideas"
           style={{ color: 'var(--text-muted)' }}
           className="flex items-center gap-2 rounded-md px-3 py-1.5 text-xs transition-colors hover:bg-[var(--hover)] hover:text-[var(--text)]"
