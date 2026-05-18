@@ -7,12 +7,12 @@ import type { Components } from 'react-markdown'
 import { splitByH2, splitIdeas } from '@/lib/markdown'
 import type { ClaudeSection, IdeasBlock } from '@/lib/markdown'
 
-// ── Shared ─────────────────────────────────────────────────────────────────
+// ── Helpers ─────────────────────────────────────────────────────────────────
 
 function ChevronIcon({ open }: { open: boolean }) {
   return (
     <svg
-      width="12" height="12" viewBox="0 0 24 24" fill="none"
+      width="11" height="11" viewBox="0 0 24 24" fill="none"
       stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round"
       style={{ transform: open ? 'rotate(0deg)' : 'rotate(-90deg)', transition: 'transform 0.2s ease' }}
     >
@@ -26,23 +26,54 @@ function Collapsible({ open, children }: { open: boolean; children: React.ReactN
     <div style={{
       display: 'grid',
       gridTemplateRows: open ? '1fr' : '0fr',
-      transition: 'grid-template-rows 0.2s ease',
+      transition: 'grid-template-rows 0.22s ease',
     }}>
-      <div style={{ minHeight: 0, overflow: 'hidden' }}>
-        {children}
-      </div>
+      <div style={{ minHeight: 0, overflow: 'hidden' }}>{children}</div>
     </div>
   )
 }
 
-// ── CLAUDE — h2 accordion ──────────────────────────────────────────────────
+function extractExcerpt(markdown: string, maxLength = 110): string {
+  let inCode = false
+  for (const line of markdown.split('\n')) {
+    const t = line.trim()
+    if (t.startsWith('```')) { inCode = !inCode; continue }
+    if (inCode || !t || t.startsWith('#') || t.startsWith('>') || t.startsWith('|')) continue
+    const cleaned = t
+      .replace(/\*\*([^*]+)\*\*/g, '$1')
+      .replace(/`([^`]+)`/g, '$1')
+      .replace(/\[([^\]]+)\]\([^)]+\)/g, '$1')
+      .replace(/^[-*+]\s+/, '')
+    if (cleaned.length < 15) continue
+    return cleaned.length > maxLength ? cleaned.slice(0, maxLength) + '...' : cleaned
+  }
+  return ''
+}
 
-function H2AccordionSection({ section, components }: { section: ClaudeSection; components: Components }) {
-  const [open, setOpen] = useState(true)
+function detectTag(heading: string): string {
+  if (heading.includes('⚡')) return 'TIPS'
+  if (heading.includes('🆕')) return 'NEW'
+  if (heading.includes('🛠')) return 'FLOW'
+  if (heading.includes('💡')) return 'TIP'
+  if (heading.includes('📊') || heading.includes('📋')) return 'GUIDE'
+  return 'UPDATE'
+}
+
+function scoreColor(n: number): string {
+  if (n >= 90) return '#10b981'
+  if (n >= 80) return '#3b82f6'
+  if (n >= 70) return '#f59e0b'
+  return 'var(--text-muted)'
+}
+
+// ── Claude news card ─────────────────────────────────────────────────────────
+
+function ClaudeNewsCard({ section, components }: { section: ClaudeSection; components: Components }) {
+  const [open, setOpen] = useState(false)
 
   if (!section.heading) {
     return (
-      <div className="pb-1">
+      <div className="pb-2">
         <ReactMarkdown remarkPlugins={[remarkGfm]} components={components}>
           {section.body}
         </ReactMarkdown>
@@ -50,22 +81,49 @@ function H2AccordionSection({ section, components }: { section: ClaudeSection; c
     )
   }
 
+  const excerpt = extractExcerpt(section.body)
+  const tag = detectTag(section.heading)
+
   return (
-    <div style={{ borderTop: '1px solid var(--border)' }}>
+    <div style={{ border: '1px solid var(--border)' }} className="mb-2 overflow-hidden rounded-xl">
       <button
         id={section.id}
         aria-expanded={open}
         onClick={() => setOpen(o => !o)}
-        style={{ color: 'var(--text)' }}
-        className="flex w-full items-center justify-between py-2.5 text-sm font-semibold transition-opacity hover:opacity-70"
+        style={{ background: 'var(--sidebar-bg)' }}
+        className="w-full px-5 py-4 text-left transition-colors hover:bg-[var(--hover)]"
       >
-        <span className="text-left">{section.heading}</span>
-        <span style={{ color: 'var(--text-muted)' }} className="ml-3 shrink-0">
-          <ChevronIcon open={open} />
-        </span>
+        <div className="mb-2.5">
+          <span
+            style={{ color: 'var(--text-muted)', border: '1px solid var(--border)' }}
+            className="rounded px-1.5 py-0.5 text-[9px] font-bold uppercase tracking-widest"
+          >
+            {tag}
+          </span>
+        </div>
+        <p style={{ color: 'var(--text)' }} className="mb-2 text-sm font-semibold leading-snug">
+          {section.heading}
+        </p>
+        {!open && excerpt && (
+          <p
+            style={{ display: '-webkit-box', WebkitLineClamp: 2, WebkitBoxOrient: 'vertical', overflow: 'hidden', color: 'var(--text-muted)' }}
+            className="mb-3 text-xs leading-relaxed"
+          >
+            {excerpt}
+          </p>
+        )}
+        <div className="flex items-center justify-end gap-1.5">
+          <span style={{ color: 'var(--accent)' }} className="text-xs font-medium">
+            {open ? '閉じる' : '続きを読む'}
+          </span>
+          <span style={{ color: 'var(--accent)' }}>
+            <ChevronIcon open={open} />
+          </span>
+        </div>
       </button>
+
       <Collapsible open={open}>
-        <div className="pb-4 pt-1">
+        <div style={{ borderTop: '1px solid var(--border)', background: 'var(--bg)' }} className="px-5 py-4">
           <ReactMarkdown remarkPlugins={[remarkGfm]} components={components}>
             {section.body}
           </ReactMarkdown>
@@ -75,37 +133,66 @@ function H2AccordionSection({ section, components }: { section: ClaudeSection; c
   )
 }
 
-// ── IDEAS — h3 app accordion ───────────────────────────────────────────────
+// ── Idea news card ───────────────────────────────────────────────────────────
 
-function AppCard({ block, components }: { block: Extract<IdeasBlock, { kind: 'app' }>; components: Components }) {
+function IdeaNewsCard({ block, components }: { block: Extract<IdeasBlock, { kind: 'app' }>; components: Components }) {
   const [open, setOpen] = useState(false)
+  const score = block.score ? parseInt(block.score) : 0
+  const color = scoreColor(score)
+  const excerpt = extractExcerpt(block.body)
 
   return (
-    <div style={{ border: '1px solid var(--border)', borderRadius: '8px' }} className="mb-2 overflow-hidden">
+    <div style={{ border: '1px solid var(--border)' }} className="mb-2 overflow-hidden rounded-xl">
       <button
         id={block.id}
         aria-expanded={open}
         onClick={() => setOpen(o => !o)}
-        style={{ background: 'var(--sidebar-bg)', color: 'var(--text)' }}
-        className="flex w-full items-center justify-between px-4 py-3 text-sm font-medium transition-opacity hover:opacity-80"
+        style={{ background: 'var(--sidebar-bg)' }}
+        className="w-full px-5 py-4 text-left transition-colors hover:bg-[var(--hover)]"
       >
-        <span className="text-left">{block.displayName}</span>
-        <span className="ml-3 flex shrink-0 items-center gap-2">
+        <div className="mb-2.5 flex items-center gap-2">
+          <span
+            style={{ color: 'var(--text-muted)', border: '1px solid var(--border)' }}
+            className="rounded px-1.5 py-0.5 text-[9px] font-bold uppercase tracking-widest"
+          >
+            IDEAS
+          </span>
           {block.score && (
             <span
-              style={{ color: 'var(--text-muted)', border: '1px solid var(--border)', background: 'var(--bg)' }}
+              style={{
+                color,
+                border: `1px solid ${color}50`,
+                background: `${color}14`,
+              }}
               className="rounded px-1.5 py-0.5 text-[10px] font-semibold tabular-nums"
             >
               {block.score}
             </span>
           )}
-          <span style={{ color: 'var(--text-muted)' }}>
+        </div>
+        <p style={{ color: 'var(--text)' }} className="mb-2 text-sm font-semibold leading-snug">
+          {block.displayName}
+        </p>
+        {!open && excerpt && (
+          <p
+            style={{ display: '-webkit-box', WebkitLineClamp: 2, WebkitBoxOrient: 'vertical', overflow: 'hidden', color: 'var(--text-muted)' }}
+            className="mb-3 text-xs leading-relaxed"
+          >
+            {excerpt}
+          </p>
+        )}
+        <div className="flex items-center justify-end gap-1.5">
+          <span style={{ color: 'var(--accent)' }} className="text-xs font-medium">
+            {open ? '閉じる' : '続きを読む'}
+          </span>
+          <span style={{ color: 'var(--accent)' }}>
             <ChevronIcon open={open} />
           </span>
-        </span>
+        </div>
       </button>
+
       <Collapsible open={open}>
-        <div style={{ borderTop: '1px solid var(--border)' }} className="px-4 py-4">
+        <div style={{ borderTop: '1px solid var(--border)', background: 'var(--bg)' }} className="px-5 py-4">
           <ReactMarkdown remarkPlugins={[remarkGfm]} components={components}>
             {block.body}
           </ReactMarkdown>
@@ -115,21 +202,25 @@ function AppCard({ block, components }: { block: Extract<IdeasBlock, { kind: 'ap
   )
 }
 
+// ── Ideas renderer ────────────────────────────────────────────────────────────
+
 function IdeasRenderer({ blocks, components }: { blocks: IdeasBlock[]; components: Components }) {
   return (
     <>
       {blocks.map((block, i) => {
         if (block.kind === 'h2') {
           return (
-            <h2 key={i}
+            <h2
+              key={i}
               style={{ color: 'var(--text)', borderBottom: '1px solid var(--border)' }}
-              className="mb-3 mt-6 pb-2 text-sm font-semibold first:mt-0">
+              className="mb-3 mt-6 pb-2 text-sm font-semibold first:mt-0"
+            >
               {block.text}
             </h2>
           )
         }
         if (block.kind === 'app') {
-          return <AppCard key={i} block={block} components={components} />
+          return <IdeaNewsCard key={i} block={block} components={components} />
         }
         return (
           <div key={i}>
@@ -143,7 +234,7 @@ function IdeasRenderer({ blocks, components }: { blocks: IdeasBlock[]; component
   )
 }
 
-// ── Shared markdown components ─────────────────────────────────────────────
+// ── Shared markdown components ────────────────────────────────────────────────
 
 function makeComponents(): Components {
   return {
@@ -249,7 +340,7 @@ function makeComponents(): Components {
   }
 }
 
-// ── Card ───────────────────────────────────────────────────────────────────
+// ── MarkdownDoc ───────────────────────────────────────────────────────────────
 
 const DOC_META = {
   claude: { tag: 'UPDATE', label: 'Claude / Claude Code' },
@@ -266,25 +357,26 @@ export function MarkdownDoc({ content, type, id }: { content: string; type: 'cla
   const components = makeComponents()
 
   return (
-    <div id={id} style={{ border: '1px solid var(--border)' }} className="overflow-hidden rounded-xl">
-      <div style={{ background: 'var(--sidebar-bg)', borderBottom: '1px solid var(--border)' }}
-        className="flex items-center gap-2.5 px-5 py-3">
-        <span style={{ color: 'var(--text-muted)', border: '1px solid var(--border)' }}
-          className="rounded px-1.5 py-0.5 text-[9px] font-bold uppercase tracking-widest">
+    <div id={id}>
+      {/* Section label */}
+      <div style={{ borderBottom: '1px solid var(--border)' }} className="mb-3 flex items-center gap-2.5 pb-2.5">
+        <span
+          style={{ color: 'var(--text-muted)', border: '1px solid var(--border)' }}
+          className="rounded px-1.5 py-0.5 text-[9px] font-bold uppercase tracking-widest"
+        >
           {meta.tag}
         </span>
         <h3 style={{ color: 'var(--text)' }} className="text-sm font-semibold">
           {meta.label}
         </h3>
       </div>
-      <div style={{ background: 'var(--bg)' }} className="px-5 py-4">
-        {type === 'claude' && splitByH2(body, id).map((s, i) => (
-          <H2AccordionSection key={i} section={s} components={components} />
-        ))}
-        {type === 'ideas' && (
-          <IdeasRenderer blocks={splitIdeas(body, id)} components={components} />
-        )}
-      </div>
+
+      {type === 'claude' && splitByH2(body, id).map((s, i) => (
+        <ClaudeNewsCard key={i} section={s} components={components} />
+      ))}
+      {type === 'ideas' && (
+        <IdeasRenderer blocks={splitIdeas(body, id)} components={components} />
+      )}
     </div>
   )
 }
