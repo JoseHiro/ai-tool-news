@@ -7,6 +7,7 @@ import { getDigest } from '@/lib/storage'
 import { readDocFile, extractSubHeadings, getAdjacentDates } from '@/lib/docs'
 import { sessionOptions, type SessionData } from '@/lib/session'
 import { getUserById, getSubscribedUntil } from '@/lib/users'
+import { getUserLikedKeys } from '@/lib/likes'
 import { canViewContent } from '@/lib/access'
 import { DigestContent, parseSectionHeadings } from '@/components/DigestContent'
 import { MarkdownDoc } from '@/components/MarkdownDoc'
@@ -87,6 +88,7 @@ export default async function DigestPage({
   const user = session.userId ? await getUserById(session.userId) : null
   const subscribedUntil = user ? getSubscribedUntil(user) : null
   const canView = canViewContent(session, subscribedUntil)
+  const likedKeys = session.userId ? await getUserLikedKeys(session.userId) : undefined
 
   const tocSections = [
     ...(claudeDoc ? [{ heading: '🆕 Claude / Claude Code アップデート', sub: extractSubHeadings(claudeDoc, 'claude') }] : []),
@@ -113,8 +115,8 @@ export default async function DigestPage({
             <>
               <ContentDisclaimer />
               <div className="mt-6 space-y-4">
-                {claudeDoc && <MarkdownDoc content={claudeDoc} type="claude" id="section-0" />}
-                {ideasDoc && <MarkdownDoc content={ideasDoc} type="ideas" id={`section-${claudeDoc ? 1 : 0}`} />}
+                {claudeDoc && <MarkdownDoc content={claudeDoc} type="claude" id="section-0" date={date} likedKeys={likedKeys} />}
+                {ideasDoc && <MarkdownDoc content={ideasDoc} type="ideas" id={`section-${claudeDoc ? 1 : 0}`} date={date} likedKeys={likedKeys} />}
                 {digest && (
                   <DigestContent
                     content={digest.content}
