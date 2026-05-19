@@ -1,6 +1,5 @@
 'use client'
 
-import { useState } from 'react'
 import ReactMarkdown from 'react-markdown'
 import remarkGfm from 'remark-gfm'
 import type { Components } from 'react-markdown'
@@ -8,47 +7,11 @@ import { splitByH2, splitIdeas } from '@/lib/markdown'
 import type { ClaudeSection, IdeasBlock } from '@/lib/markdown'
 import { LikeButton } from '@/components/LikeButton'
 
-// ── Helpers ─────────────────────────────────────────────────────────────────
-
-function ChevronIcon({ open }: { open: boolean }) {
-  return (
-    <svg
-      width="11" height="11" viewBox="0 0 24 24" fill="none"
-      stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round"
-      style={{ transform: open ? 'rotate(0deg)' : 'rotate(-90deg)', transition: 'transform 0.2s ease' }}
-    >
-      <polyline points="6 9 12 15 18 9" />
-    </svg>
-  )
-}
-
-function Collapsible({ open, children }: { open: boolean; children: React.ReactNode }) {
-  return (
-    <div style={{
-      display: 'grid',
-      gridTemplateRows: open ? '1fr' : '0fr',
-      transition: 'grid-template-rows 0.22s ease',
-    }}>
-      <div style={{ minHeight: 0, overflow: 'hidden' }}>{children}</div>
-    </div>
-  )
-}
-
-function extractExcerpt(markdown: string, maxLength = 110): string {
-  let inCode = false
-  for (const line of markdown.split('\n')) {
-    const t = line.trim()
-    if (t.startsWith('```')) { inCode = !inCode; continue }
-    if (inCode || !t || t.startsWith('#') || t.startsWith('>') || t.startsWith('|')) continue
-    const cleaned = t
-      .replace(/\*\*([^*]+)\*\*/g, '$1')
-      .replace(/`([^`]+)`/g, '$1')
-      .replace(/\[([^\]]+)\]\([^)]+\)/g, '$1')
-      .replace(/^[-*+]\s+/, '')
-    if (cleaned.length < 15) continue
-    return cleaned.length > maxLength ? cleaned.slice(0, maxLength) + '...' : cleaned
-  }
-  return ''
+function scoreColor(n: number): string {
+  if (n >= 90) return '#10b981'
+  if (n >= 80) return '#3b82f6'
+  if (n >= 70) return '#f59e0b'
+  return 'var(--text-muted)'
 }
 
 function detectTag(heading: string): string {
@@ -60,23 +23,14 @@ function detectTag(heading: string): string {
   return 'UPDATE'
 }
 
-function scoreColor(n: number): string {
-  if (n >= 90) return '#10b981'
-  if (n >= 80) return '#3b82f6'
-  if (n >= 70) return '#f59e0b'
-  return 'var(--text-muted)'
-}
+// ── Claude section card ───────────────────────────────────────────────────────
 
-// ── Claude news card ─────────────────────────────────────────────────────────
-
-function ClaudeNewsCard({ section, components, date, likedKeys }: {
+function ClaudeCard({ section, components, date, likedKeys }: {
   section: ClaudeSection
   components: Components
   date?: string
   likedKeys?: Set<string>
 }) {
-  const [open, setOpen] = useState(false)
-
   if (!section.heading) {
     return (
       <div className="pb-2">
@@ -87,158 +41,113 @@ function ClaudeNewsCard({ section, components, date, likedKeys }: {
     )
   }
 
-  const excerpt = extractExcerpt(section.body)
   const tag = detectTag(section.heading)
   const contentKey = section.heading.trim().slice(0, 80)
   const liked = likedKeys?.has(`tip:${date}:${contentKey}`) ?? false
 
   return (
-    <div style={{ border: '1px solid var(--border)' }} className="mb-2 overflow-hidden rounded-xl">
-      <div style={{ background: 'var(--sidebar-bg)' }} className="relative">
-        {date && likedKeys !== undefined && (
-          <div className="absolute right-2 top-2 z-10">
-            <LikeButton
-              contentType="tip"
-              contentDate={date}
-              contentKey={contentKey}
-              title={section.heading}
-              initialLiked={liked}
-            />
-          </div>
-        )}
-        <div
-          id={section.id}
-          role="button"
-          tabIndex={0}
-          aria-expanded={open}
-          onClick={() => setOpen(o => !o)}
-          onKeyDown={e => { if (e.key === 'Enter' || e.key === ' ') setOpen(o => !o) }}
-          className="w-full cursor-pointer px-5 py-4 pr-10 text-left transition-colors hover:bg-[var(--hover)]"
-        >
-          <div className="mb-2.5">
-            <span
-              style={{ color: 'var(--text-muted)', border: '1px solid var(--border)' }}
-              className="rounded px-1.5 py-0.5 text-[9px] font-bold uppercase tracking-widest"
-            >
-              {tag}
-            </span>
-          </div>
-          <p style={{ color: 'var(--text)' }} className="mb-2 text-sm font-semibold leading-snug">
+    <div
+      id={section.id}
+      style={{ border: '1px solid var(--border)' }}
+      className="mb-3 overflow-hidden rounded-xl"
+    >
+      {/* Header */}
+      <div
+        style={{ background: 'var(--sidebar-bg)', borderBottom: '1px solid var(--border)' }}
+        className="flex items-center justify-between px-5 py-3"
+      >
+        <div className="flex items-center gap-2">
+          <span
+            style={{ color: 'var(--text-muted)', border: '1px solid var(--border)' }}
+            className="rounded px-1.5 py-0.5 text-[9px] font-bold uppercase tracking-widest"
+          >
+            {tag}
+          </span>
+          <span style={{ color: 'var(--text)' }} className="text-sm font-semibold leading-snug">
             {section.heading}
-          </p>
-          {!open && excerpt && (
-            <p
-              style={{ display: '-webkit-box', WebkitLineClamp: 2, WebkitBoxOrient: 'vertical', overflow: 'hidden', color: 'var(--text-muted)' }}
-              className="mb-3 text-xs leading-relaxed"
-            >
-              {excerpt}
-            </p>
-          )}
-          <div className="flex items-center justify-end gap-1.5">
-            <span style={{ color: 'var(--accent)' }} className="text-xs font-medium">
-              {open ? '閉じる' : '続きを読む'}
-            </span>
-            <span style={{ color: 'var(--accent)' }}>
-              <ChevronIcon open={open} />
-            </span>
-          </div>
+          </span>
         </div>
+        {date && likedKeys !== undefined && (
+          <LikeButton
+            contentType="tip"
+            contentDate={date}
+            contentKey={contentKey}
+            title={section.heading}
+            initialLiked={liked}
+          />
+        )}
       </div>
 
-      <Collapsible open={open}>
-        <div style={{ borderTop: '1px solid var(--border)', background: 'var(--bg)' }} className="px-5 py-4">
-          <ReactMarkdown remarkPlugins={[remarkGfm]} components={components}>
-            {section.body}
-          </ReactMarkdown>
-        </div>
-      </Collapsible>
+      {/* Body */}
+      <div style={{ background: 'var(--bg)' }} className="px-5 py-4">
+        <ReactMarkdown remarkPlugins={[remarkGfm]} components={components}>
+          {section.body}
+        </ReactMarkdown>
+      </div>
     </div>
   )
 }
 
-// ── Idea news card ───────────────────────────────────────────────────────────
+// ── Idea card ─────────────────────────────────────────────────────────────────
 
-function IdeaNewsCard({ block, components, date, likedKeys }: {
+function IdeaCard({ block, components, date, likedKeys }: {
   block: Extract<IdeasBlock, { kind: 'app' }>
   components: Components
   date?: string
   likedKeys?: Set<string>
 }) {
-  const [open, setOpen] = useState(false)
   const score = block.score ? parseInt(block.score) : 0
   const color = scoreColor(score)
-  const excerpt = extractExcerpt(block.body)
   const contentKey = block.displayName.trim().slice(0, 80)
   const liked = likedKeys?.has(`idea:${date}:${contentKey}`) ?? false
 
   return (
-    <div style={{ border: '1px solid var(--border)' }} className="mb-2 overflow-hidden rounded-xl">
-      <div style={{ background: 'var(--sidebar-bg)' }} className="relative">
-        {date && likedKeys !== undefined && (
-          <div className="absolute right-2 top-2 z-10">
-            <LikeButton
-              contentType="idea"
-              contentDate={date}
-              contentKey={contentKey}
-              title={block.displayName}
-              initialLiked={liked}
-            />
-          </div>
-        )}
-        <div
-          id={block.id}
-          role="button"
-          tabIndex={0}
-          aria-expanded={open}
-          onClick={() => setOpen(o => !o)}
-          onKeyDown={e => { if (e.key === 'Enter' || e.key === ' ') setOpen(o => !o) }}
-          className="w-full cursor-pointer px-5 py-4 pr-10 text-left transition-colors hover:bg-[var(--hover)]"
-        >
-          <div className="mb-2.5 flex items-center gap-2">
+    <div
+      id={block.id}
+      style={{ border: '1px solid var(--border)' }}
+      className="mb-3 overflow-hidden rounded-xl"
+    >
+      {/* Header */}
+      <div
+        style={{ background: 'var(--sidebar-bg)', borderBottom: '1px solid var(--border)' }}
+        className="flex items-center justify-between px-5 py-3"
+      >
+        <div className="flex items-center gap-2">
+          <span
+            style={{ color: 'var(--text-muted)', border: '1px solid var(--border)' }}
+            className="rounded px-1.5 py-0.5 text-[9px] font-bold uppercase tracking-widest"
+          >
+            IDEAS
+          </span>
+          {block.score && (
             <span
-              style={{ color: 'var(--text-muted)', border: '1px solid var(--border)' }}
-              className="rounded px-1.5 py-0.5 text-[9px] font-bold uppercase tracking-widest"
+              style={{ color, border: `1px solid ${color}50`, background: `${color}14` }}
+              className="rounded px-1.5 py-0.5 text-[10px] font-semibold tabular-nums"
             >
-              IDEAS
+              {block.score}
             </span>
-            {block.score && (
-              <span
-                style={{ color, border: `1px solid ${color}50`, background: `${color}14` }}
-                className="rounded px-1.5 py-0.5 text-[10px] font-semibold tabular-nums"
-              >
-                {block.score}
-              </span>
-            )}
-          </div>
-          <p style={{ color: 'var(--text)' }} className="mb-2 text-sm font-semibold leading-snug">
-            {block.displayName}
-          </p>
-          {!open && excerpt && (
-            <p
-              style={{ display: '-webkit-box', WebkitLineClamp: 2, WebkitBoxOrient: 'vertical', overflow: 'hidden', color: 'var(--text-muted)' }}
-              className="mb-3 text-xs leading-relaxed"
-            >
-              {excerpt}
-            </p>
           )}
-          <div className="flex items-center justify-end gap-1.5">
-            <span style={{ color: 'var(--accent)' }} className="text-xs font-medium">
-              {open ? '閉じる' : '続きを読む'}
-            </span>
-            <span style={{ color: 'var(--accent)' }}>
-              <ChevronIcon open={open} />
-            </span>
-          </div>
+          <span style={{ color: 'var(--text)' }} className="text-sm font-semibold leading-snug">
+            {block.displayName}
+          </span>
         </div>
+        {date && likedKeys !== undefined && (
+          <LikeButton
+            contentType="idea"
+            contentDate={date}
+            contentKey={contentKey}
+            title={block.displayName}
+            initialLiked={liked}
+          />
+        )}
       </div>
 
-      <Collapsible open={open}>
-        <div style={{ borderTop: '1px solid var(--border)', background: 'var(--bg)' }} className="px-5 py-4">
-          <ReactMarkdown remarkPlugins={[remarkGfm]} components={components}>
-            {block.body}
-          </ReactMarkdown>
-        </div>
-      </Collapsible>
+      {/* Body */}
+      <div style={{ background: 'var(--bg)' }} className="px-5 py-4">
+        <ReactMarkdown remarkPlugins={[remarkGfm]} components={components}>
+          {block.body}
+        </ReactMarkdown>
+      </div>
     </div>
   )
 }
@@ -266,7 +175,7 @@ function IdeasRenderer({ blocks, components, date, likedKeys }: {
           )
         }
         if (block.kind === 'app') {
-          return <IdeaNewsCard key={i} block={block} components={components} date={date} likedKeys={likedKeys} />
+          return <IdeaCard key={i} block={block} components={components} date={date} likedKeys={likedKeys} />
         }
         return (
           <div key={i}>
@@ -411,7 +320,7 @@ export function MarkdownDoc({ content, type, id, date, likedKeys }: {
   return (
     <div id={id}>
       {/* Section label */}
-      <div style={{ borderBottom: '1px solid var(--border)' }} className="mb-3 flex items-center gap-2.5 pb-2.5">
+      <div style={{ borderBottom: '1px solid var(--border)' }} className="mb-4 flex items-center gap-2.5 pb-2.5">
         <span
           style={{ color: 'var(--text-muted)', border: '1px solid var(--border)' }}
           className="rounded px-1.5 py-0.5 text-[9px] font-bold uppercase tracking-widest"
@@ -424,7 +333,7 @@ export function MarkdownDoc({ content, type, id, date, likedKeys }: {
       </div>
 
       {type === 'claude' && splitByH2(body, id).map((s, i) => (
-        <ClaudeNewsCard key={i} section={s} components={components} date={date} likedKeys={likedKeys} />
+        <ClaudeCard key={i} section={s} components={components} date={date} likedKeys={likedKeys} />
       ))}
       {type === 'ideas' && (
         <IdeasRenderer blocks={splitIdeas(body, id)} components={components} date={date} likedKeys={likedKeys} />
