@@ -10,8 +10,8 @@ function formatSidebarDate(date: string) {
 
 export function SidebarDateLink({ date, isToday }: { date: string; isToday: boolean }) {
   const pathname = usePathname()
-  const href = isToday ? '/' : `/digests/${date}`
-  const isActive = isToday ? pathname === '/' : pathname === `/digests/${date}`
+  const href = `/digests/${date}`
+  const isActive = pathname === `/digests/${date}`
 
   return (
     <Link
