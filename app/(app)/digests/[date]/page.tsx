@@ -8,7 +8,7 @@ import { readDocFile, extractSubHeadings, getAdjacentDates } from '@/lib/docs'
 import { sessionOptions, type SessionData } from '@/lib/session'
 import { getUserById, getSubscribedUntil } from '@/lib/users'
 import { getUserLikedKeys } from '@/lib/likes'
-import { canViewDate } from '@/lib/access'
+import { canViewDate, isSubscribed } from '@/lib/access'
 import { DigestContent, parseSectionHeadings } from '@/components/DigestContent'
 import { MarkdownDoc } from '@/components/MarkdownDoc'
 import { DigestToC } from '@/components/DigestToC'
@@ -89,7 +89,8 @@ export default async function DigestPage({
   const user = session.userId ? await getUserById(session.userId) : null
   const subscribedUntil = user ? getSubscribedUntil(user) : null
   const canView = canViewDate(session, subscribedUntil, date, todayJST)
-  const likedKeys = session.userId ? await getUserLikedKeys(session.userId) : undefined
+  const canLike = session.isAdmin || isSubscribed(subscribedUntil)
+  const likedKeys = canLike && session.userId ? await getUserLikedKeys(session.userId) : undefined
 
   const tocSections = [
     ...(claudeDoc ? [{ heading: '🆕 Claude / Claude Code アップデート', sub: extractSubHeadings(claudeDoc, 'claude') }] : []),

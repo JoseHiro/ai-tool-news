@@ -3,7 +3,10 @@ import Link from 'next/link'
 import { getIronSession } from 'iron-session'
 import { cookies } from 'next/headers'
 import { sessionOptions, type SessionData } from '@/lib/session'
+import { getUserById, getSubscribedUntil } from '@/lib/users'
 import { getUserLikes, type LikeEntry } from '@/lib/likes'
+import { isSubscribed } from '@/lib/access'
+import { Paywall } from '@/components/Paywall'
 import { redirect } from 'next/navigation'
 
 export const metadata: Metadata = {
@@ -34,6 +37,22 @@ const TYPE_LABEL: Record<string, string> = {
 export default async function LikesPage() {
   const session = await getIronSession<SessionData>(await cookies(), sessionOptions)
   if (!session.userId) redirect('/login')
+
+  const user = await getUserById(session.userId)
+  const subscribedUntil = user ? getSubscribedUntil(user) : null
+  const canView = session.isAdmin || isSubscribed(subscribedUntil)
+
+  if (!canView) {
+    return (
+      <div className="px-8 py-10">
+        <div className="mx-auto max-w-2xl">
+          <p style={{ color: 'var(--accent)' }} className="mb-1 text-xs font-semibold uppercase tracking-widest">Collection</p>
+          <h1 style={{ color: 'var(--text)' }} className="mb-8 text-2xl font-bold">いいかも一覧</h1>
+          <Paywall />
+        </div>
+      </div>
+    )
+  }
 
   const likes = await getUserLikes(session.userId)
   const grouped = groupByDate(likes)
