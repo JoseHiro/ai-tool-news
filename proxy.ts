@@ -26,7 +26,7 @@ export function proxy(req: NextRequest) {
   const session = req.cookies.get('digest-auth')
   if (!session?.value) {
     const url = req.nextUrl.clone()
-    url.pathname = '/login'
+    url.pathname = '/signup'
     return NextResponse.redirect(url)
   }
 
