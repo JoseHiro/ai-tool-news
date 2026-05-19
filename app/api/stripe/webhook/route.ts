@@ -68,6 +68,12 @@ export async function POST(req: Request) {
         await expireSubscription(user.id)
         break
       }
+
+      case 'invoice.payment_failed': {
+        const invoice = event.data.object as Stripe.Invoice
+        console.error(`[stripe] payment failed — customer: ${invoice.customer}, invoice: ${invoice.id}`)
+        break
+      }
     }
   } catch (e) {
     console.error('Webhook handler error:', e)

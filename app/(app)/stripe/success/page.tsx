@@ -1,6 +1,54 @@
-import Link from 'next/link'
+export const dynamic = 'force-dynamic'
 
-export default function StripeSuccessPage() {
+import Link from 'next/link'
+import { redirect } from 'next/navigation'
+import { getIronSession } from 'iron-session'
+import { cookies } from 'next/headers'
+import type Stripe from 'stripe'
+import { getStripe } from '@/lib/stripe'
+import { updateSubscription } from '@/lib/users'
+import { sessionOptions, type SessionData } from '@/lib/session'
+
+export default async function StripeSuccessPage({
+  searchParams,
+}: {
+  searchParams: Promise<{ session_id?: string }>
+}) {
+  const { session_id } = await searchParams
+  const session = await getIronSession<SessionData>(await cookies(), sessionOptions)
+
+  if (!session.userId) redirect('/login')
+
+  // Verify payment and update DB directly — webhook may not have fired yet
+  if (session_id) {
+    try {
+      const checkoutSession = await getStripe().checkout.sessions.retrieve(session_id, {
+        expand: ['subscription', 'subscription.items'],
+      })
+
+      if (
+        checkoutSession.payment_status === 'paid' &&
+        checkoutSession.mode === 'subscription' &&
+        checkoutSession.metadata?.userId
+      ) {
+        const userId = parseInt(checkoutSession.metadata.userId)
+        const sub = checkoutSession.subscription as Stripe.Subscription
+        const periodEnd =
+          sub?.items?.data[0]?.current_period_end ??
+          Math.floor(Date.now() / 1000) + 30 * 24 * 60 * 60
+
+        await updateSubscription(
+          userId,
+          checkoutSession.customer as string,
+          sub.id,
+          new Date(periodEnd * 1000),
+        )
+      }
+    } catch (e) {
+      console.error('[stripe/success] verification failed:', e)
+    }
+  }
+
   return (
     <div className="flex h-full items-center justify-center px-8">
       <div className="w-full max-w-sm text-center">

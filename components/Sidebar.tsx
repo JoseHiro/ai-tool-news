@@ -87,6 +87,19 @@ export async function Sidebar() {
             <span>いいかも</span>
           </Link>
         )}
+        {isAuthed && (
+          <Link
+            href="/account"
+            style={{ color: 'var(--text-muted)' }}
+            className="flex items-center gap-2 rounded-md px-3 py-1.5 text-xs transition-colors hover:bg-[var(--hover)] hover:text-[var(--text)]"
+          >
+            <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+              <circle cx="12" cy="8" r="4" />
+              <path d="M4 20c0-4 3.6-7 8-7s8 3 8 7" />
+            </svg>
+            <span>アカウント</span>
+          </Link>
+        )}
         <Link
           href="/ideas"
           style={{ color: 'var(--text-muted)' }}

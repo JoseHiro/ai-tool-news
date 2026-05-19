@@ -21,6 +21,19 @@ export function canViewContent(
   return isSubscribed(subscribedUntil)
 }
 
+// Free tier: logged-in users can view today's digest without subscribing
+export function canViewDate(
+  session: SessionData,
+  subscribedUntil: Date | null | undefined,
+  date: string,
+  today: string,
+): boolean {
+  if (!session.userId) return false
+  if (session.isAdmin) return true
+  if (isSubscribed(subscribedUntil)) return true
+  return date === today
+}
+
 export function getAccessLevel(
   session: SessionData,
   subscribedUntil?: Date | null,

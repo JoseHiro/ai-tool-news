@@ -51,12 +51,12 @@ export function Paywall() {
       </div>
 
       <h2 style={{ color: 'var(--text)' }} className="mb-2 text-lg font-bold">
-        サブスクリプションが必要です
+        プロプランで閲覧できます
       </h2>
       <p style={{ color: 'var(--text-muted)' }} className="mb-6 text-sm leading-relaxed">
-        このコンテンツを読むには有料プランへの登録が必要です。
+        過去のダイジェストと個人開発アイデア分析は
         <br />
-        毎日更新される AI・個人開発・エンジニア向け情報をすべて閲覧できます。
+        プロプランで閲覧できます。今日分は無料です。
       </p>
 
       {error && <p className="mb-3 text-xs text-red-500">{error}</p>}

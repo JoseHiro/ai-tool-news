@@ -8,7 +8,7 @@ import { readDocFile, extractSubHeadings, getAdjacentDates } from '@/lib/docs'
 import { sessionOptions, type SessionData } from '@/lib/session'
 import { getUserById, getSubscribedUntil } from '@/lib/users'
 import { getUserLikedKeys } from '@/lib/likes'
-import { canViewContent } from '@/lib/access'
+import { canViewDate } from '@/lib/access'
 import { DigestContent, parseSectionHeadings } from '@/components/DigestContent'
 import { MarkdownDoc } from '@/components/MarkdownDoc'
 import { DigestToC } from '@/components/DigestToC'
@@ -84,10 +84,11 @@ export default async function DigestPage({
   const hasContent = digest || claudeDoc || ideasDoc
   if (!hasContent) notFound()
 
+  const todayJST = new Date(Date.now() + 9 * 60 * 60 * 1000).toISOString().slice(0, 10)
   const isAuthed = !!session.userId
   const user = session.userId ? await getUserById(session.userId) : null
   const subscribedUntil = user ? getSubscribedUntil(user) : null
-  const canView = canViewContent(session, subscribedUntil)
+  const canView = canViewDate(session, subscribedUntil, date, todayJST)
   const likedKeys = session.userId ? await getUserLikedKeys(session.userId) : undefined
 
   const tocSections = [
