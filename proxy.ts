@@ -18,7 +18,7 @@ const PUBLIC_PATHS = [
 export function proxy(req: NextRequest) {
   const { pathname } = req.nextUrl
 
-  if (PUBLIC_PATHS.some(p => pathname.startsWith(p))) {
+  if (pathname === '/' || PUBLIC_PATHS.some(p => pathname.startsWith(p))) {
     return NextResponse.next()
   }
 
