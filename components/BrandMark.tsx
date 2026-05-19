@@ -2,6 +2,9 @@
 
 import Image from 'next/image'
 import Link from 'next/link'
+import { DM_Sans } from 'next/font/google'
+
+const dmSans = DM_Sans({ subsets: ['latin'], weight: ['300'], display: 'swap' })
 
 export const SITE_NAME = 'DevKnow'
 
@@ -34,11 +37,7 @@ export function BrandMark({ variant = 'sidebar' }: BrandMarkProps) {
       />
       <span
         style={{ color: 'var(--text)' }}
-        className={
-          auth
-            ? 'text-lg font-semibold tracking-tight'
-            : 'text-sm font-semibold tracking-tight'
-        }
+        className={`${dmSans.className} ${auth ? 'text-xl tracking-wide' : 'text-sm tracking-wide'}`}
       >
         {SITE_NAME}
       </span>
