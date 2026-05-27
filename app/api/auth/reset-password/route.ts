@@ -2,13 +2,14 @@ import { NextRequest } from 'next/server'
 import { findUserByEmail } from '@/lib/users'
 import { verifyResetToken } from '@/lib/reset-token'
 import { hash } from 'bcryptjs'
+import postgres from 'postgres'
 
+let _sql: ReturnType<typeof postgres> | null = null
 function getSql() {
-  // eslint-disable-next-line @typescript-eslint/no-require-imports
-  const { neon } = require('@neondatabase/serverless')
   const url = process.env.DATABASE_URL ?? process.env.POSTGRES_URL
   if (!url) throw new Error('DATABASE_URL not set')
-  return neon(url)
+  if (!_sql) _sql = postgres(url, { ssl: 'require', max: 5 })
+  return _sql
 }
 
 export async function POST(req: NextRequest) {
