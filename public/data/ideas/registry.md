@@ -9,6 +9,7 @@
 
 | 日付 | テーマ | ドメイン |
 |---|---|---|
+| 2026-05-27 | 登山・アウトドアの「安全・記録・準備」をAIで個人開発 | health / fitness / outdoor |
 | 2026-05-26 | Grok リサーチ発掘の「趣味・学習・日常の小さな不満」に刺さるアプリ | entertainment / education / lifestyle |
 | 2026-05-25 | フリーランス・個人事業主の「見えない事務作業」をAIで自動化 | fintech / legal |
 | 2026-05-24 | クリエイター・コンテンツ制作の「手間のかかる繰り返し作業」をAIで自動化 | content-creation |
@@ -21,6 +22,7 @@
 
 ## 使用済みターゲット層
 
+- 登山者・アウトドア愛好家（40〜60代、非IT）
 - アニメファン（10〜30代）
 - アルバイト・パート従業員（飲食・小売）
 - 大学生・資格受験者
@@ -38,6 +40,7 @@
 
 ## 使用済み競合起点（直近30日）
 
+YAMAP / ヤマレコ / Strava / PackPoint / GoodNotes / コンパス /
 Toggl / Canva / Notta / freee / DocuSign / Restream / Clerk / Auth0 /
 Misoca / Keeper Tax / BetterStack / Doppler / Locize / Mockoon /
 Castmagic / Beamer / ReadMe / Pocket / Readwise / Sunsama / Calendly /
@@ -47,33 +50,34 @@ HotSchedules / 英検公式アプリ / スタディサプリ英語
 
 ---
 
-## プラットフォーム使用回数（5/20〜5/25）
+## プラットフォーム使用回数（5/20〜5/27）
 
 | platform | 回数 |
 |---|---|
-| web | 18 |
+| web | 19 |
 | cli | 5 |
-| extension | 4 |
-| mobile | 5 |
+| extension | 5 |
+| mobile | 13 |
 
-→ web を抑えて mobile / extension を続けること
+→ mobile が増加中。extension も引き続き意識する
 
 ---
 
-## direction 使用回数（5/20〜5/25）
+## direction 使用回数（5/20〜5/27）
 
 | direction | 回数 |
 |---|---|
-| cheaper-alternative | 17 |
-| overseas-to-japan | 8 |
-| japan-to-overseas | 7 |
+| cheaper-alternative | 19 |
+| overseas-to-japan | 12 |
+| japan-to-overseas | 10 |
 
-→ cheaper-alternative を抑えて overseas-to-japan / japan-to-overseas を引き続き優先
+→ cheaper-alternative を引き続き抑える。overseas/japan-to-overseas のバランスを維持
 
 ---
 
 ## 使用済みアイデア名
 
+YamaAlert JP / MapInk / TrailLog JP / PackRight JP /
 MemoMinutes / DanshariSnap / YoyakuJP / PassLink / TechDigestJP /
 MeetSnap / FocusBlock / Shipfast JP / PasteLocal / ReviewPilot /
 SlackWiki / ReadLater AI / APIDoc Live / ChangelogBot /
