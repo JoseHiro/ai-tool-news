@@ -1,0 +1,98 @@
+{
+  "date": "2026-05-19",
+  "updates": [
+    {
+      "title": "GitHub MCP で Issue から実装・PR 作成まで一気通貫",
+      "body": "GitHub MCP サーバーを使うと自然言語で Issue の読み込み・実装・PR 作成が連続してできる。従来は「ブラウザで GitHub を開く→Issue を読む→内容をコピー→Claude に貼り付け→実装→PR 文を書く」の多段階が必要だったが、MCP により「Issue #15 を読んで実装して PR を作って」の一言に集約できる。コンテキスト切り替えがなくなるのが最大の恩恵。",
+      "importance": "high",
+      "code": {
+        "lang": "json",
+        "code": "{\n  \"mcpServers\": {\n    \"github\": {\n      \"command\": \"npx\",\n      \"args\": [\"-y\", \"@modelcontextprotocol/server-github\"],\n      \"env\": { \"GITHUB_PERSONAL_ACCESS_TOKEN\": \"ghp_xxxxx\" }\n    }\n  }\n}"
+      }
+    },
+    {
+      "title": "PostgreSQL MCP — DB を直接クエリして開発中に状態を確認する",
+      "body": "Neon や Supabase などの PostgreSQL を Claude に直接クエリさせる。「users テーブルのスキーマを確認して、最近30日間登録したユーザーのうち一度もログインしていない人数を教えて」が自然言語で実行できる。本番 DB への接続は読み取り専用ユーザーを使うことを強く推奨。",
+      "importance": "medium",
+      "code": {
+        "lang": "json",
+        "code": "{\n  \"mcpServers\": {\n    \"postgres\": {\n      \"command\": \"npx\",\n      \"args\": [\"-y\", \"@modelcontextprotocol/server-postgres\", \"postgresql://user:pass@host/dbname\"]\n    }\n  }\n}"
+      }
+    }
+  ],
+  "tips": [
+    {
+      "title": "MCP サーバーを .claude/settings.json に追加する",
+      "description": "MCP サーバーはプロジェクトの .claude/settings.json（プロジェクト限定）またはグローバルの ~/.claude/settings.json に登録する。登録後に Claude Code を再起動すると /mcp コマンドで接続状態を確認できる。"
+    },
+    {
+      "title": "Filesystem MCP でプロジェクト外のファイルを参照する",
+      "description": "別リポジトリの仕様書・設計書を Claude に読ませたいときは Filesystem MCP が使える。許可するディレクトリだけ引数に渡すことでアクセス範囲を限定できる。",
+      "code": {
+        "lang": "json",
+        "code": "{\n  \"mcpServers\": {\n    \"filesystem\": {\n      \"command\": \"npx\",\n      \"args\": [\n        \"-y\", \"@modelcontextprotocol/server-filesystem\",\n        \"/Users/yourname/Documents/specs\",\n        \"/Users/yourname/projects/shared-libs\"\n      ]\n    }\n  }\n}"
+      }
+    },
+    {
+      "title": "カスタム MCP サーバーで社内 API を接続する",
+      "description": "社内ツールや独自 API を Claude に接続したい場合は @modelcontextprotocol/sdk を使って MCP サーバーを自作する。Server クラスをインスタンス化して ListToolsRequestSchema と CallToolRequestSchema のハンドラーを設定する。",
+      "code": {
+        "lang": "typescript",
+        "code": "import { Server } from \"@modelcontextprotocol/sdk/server/index.js\";\nimport { StdioServerTransport } from \"@modelcontextprotocol/sdk/server/stdio.js\";\n\nconst server = new Server(\n  { name: \"internal-tickets\", version: \"1.0.0\" },\n  { capabilities: { tools: {} } }\n);\n\nserver.setRequestHandler(ListToolsRequestSchema, async () => ({\n  tools: [\n    {\n      name: \"get_ticket\",\n      description: \"社内チケット管理からチケット情報を取得する\",\n      inputSchema: {\n        type: \"object\",\n        properties: { ticket_id: { type: \"string\" } },\n        required: [\"ticket_id\"],\n      },\n    },\n  ],\n}));\n\nawait server.connect(new StdioServerTransport());"
+      }
+    },
+    {
+      "title": "MCP サーバーの接続エラーをデバッグする",
+      "description": "/mcp コマンドで接続状態を確認できる。サーバーが起動しない場合はコマンドを手動で実行してエラーを確認する。\"Listening on stdio...\" のようなメッセージが表示されれば起動成功。",
+      "code": {
+        "lang": "bash",
+        "code": "# GitHub MCP を手動起動してエラーを見る\nGITHUB_PERSONAL_ACCESS_TOKEN=ghp_xxx npx -y @modelcontextprotocol/server-github"
+      }
+    }
+  ],
+  "workflow": {
+    "title": "GitHub MCP を使った Issue ドリブン開発（15分）",
+    "steps": [
+      {
+        "label": "GitHub Personal Access Token を発行する",
+        "code": "GitHub Settings → Developer settings → Personal access tokens で `repo` スコープのトークンを作成"
+      },
+      {
+        "label": ".claude/settings.json に GitHub MCP を追加する",
+        "code": "{\n  \"mcpServers\": {\n    \"github\": {\n      \"command\": \"npx\",\n      \"args\": [\"-y\", \"@modelcontextprotocol/server-github\"],\n      \"env\": { \"GITHUB_PERSONAL_ACCESS_TOKEN\": \"ghp_your_token_here\" }\n    }\n  }\n}"
+      },
+      {
+        "label": "Claude Code を再起動して /mcp で確認する",
+        "code": "/mcp\n# github: connected と表示されれば準備完了"
+      },
+      {
+        "label": "Issue から実装を流す",
+        "code": "「open な Issue を全部一覧表示して、難易度が低くて重要なものを\n1件選んで実装してください。実装後に PR を作成してください。」"
+      },
+      {
+        "label": "PR レビューを自動対応する",
+        "code": "「PR #XX の未解決レビューコメントをすべて読んで対応してください。」"
+      }
+    ]
+  },
+  "modelGuide": [
+    {
+      "model": "Claude Opus 4.7",
+      "useCase": "MCP サーバー自作・複雑なエージェント設計・セキュリティ設計",
+      "cost": "high",
+      "when": "SDK の型整合と設計に推論が必要なとき"
+    },
+    {
+      "model": "Claude Sonnet 4.6",
+      "useCase": "GitHub MCP 連携・日常コーディング・PR 作成",
+      "cost": "medium",
+      "when": "Issue からの実装+PR作成などコード実装と文書作成の複合タスク"
+    },
+    {
+      "model": "Claude Haiku 4.5",
+      "useCase": "Issue の大量分類・ラベル付け・単純な変換",
+      "cost": "low",
+      "when": "テキスト分類は定型処理。Issue の分類・タグ付けに最適"
+    }
+  ]
+}

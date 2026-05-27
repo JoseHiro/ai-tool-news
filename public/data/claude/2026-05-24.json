@@ -1,0 +1,99 @@
+{
+  "date": "2026-05-24",
+  "updates": [
+    {
+      "title": "Claude Code の Desktop アプリが Mac / Windows で正式提供",
+      "body": "CLI に加えてデスクトップアプリ版の Claude Code が Mac と Windows 向けに正式提供された。ターミナルを別途開かなくてもアプリから直接プロジェクトを開いてセッションを開始できる。IDE 拡張と異なり、プロジェクト全体を横断した操作が得意。",
+      "importance": "medium"
+    },
+    {
+      "title": "Agent SDK でカスタムエージェントを構築できるようになった",
+      "body": "Claude Agent SDK を使うと、自分のアプリに Claude Code と同等の機能を持つエージェントを組み込める。ファイル操作・bash 実行・MCP ツール呼び出しを組み合わせた自律型のエージェントを TypeScript / Python から構築できる。",
+      "importance": "medium",
+      "code": {
+        "lang": "typescript",
+        "code": "import { ClaudeAgent } from '@anthropic-ai/claude-code'\n\nconst agent = new ClaudeAgent({\n  model: 'claude-sonnet-4-6',\n  tools: ['file', 'bash', 'mcp'],\n  maxTurns: 20,\n})\n\nconst result = await agent.run(\n  'package.json の依存パッケージを最新バージョンに更新して'\n)"
+      }
+    },
+    {
+      "title": "プロジェクトレベルの権限設定が細かくなった",
+      "body": "settings.json でファイルの読み書き・bash 実行・ネットワークアクセスをディレクトリ単位で許可・拒否できるようになった。機密ファイルへの不意のアクセスを防げる。",
+      "importance": "low",
+      "code": {
+        "lang": "json",
+        "code": "{\n  \"permissions\": {\n    \"allow\": [\n      \"Read\",\n      \"Edit:src/**\",\n      \"Bash(npm run *)\"\n    ],\n    \"deny\": [\n      \"Read:.env*\",\n      \"Edit:prisma/migrations/**\"\n    ]\n  }\n}"
+      }
+    }
+  ],
+  "tips": [
+    {
+      "title": "セキュリティレビューは専用プロンプトで依頼する",
+      "description": "「このコードをレビューして」より「セキュリティの観点でのみ」と絞った方が指摘の密度が高い。SQL インジェクション・認証バイパス・機密情報の漏洩の3点に絞るのが実用的。",
+      "code": {
+        "lang": "bash",
+        "code": "api/users/route.ts を以下の観点だけでレビューして:\n1. SQL インジェクション\n2. 認証・認可のバイパス\n3. レスポンスへの機密情報の混入\n\n他の改善点は今回は不要。"
+      }
+    },
+    {
+      "title": "長いタスクは「チェックポイント」を作る",
+      "description": "30分以上かかるタスクは途中でコミットを挟んでもらう。「ここまでできたら一度コミットして、続きは次のメッセージで」と伝えると、失敗した場合のロールバックが楽になる。"
+    },
+    {
+      "title": "テスト生成は実装ファイルと一緒に依頼する",
+      "description": "「実装してテストも書いて」と1つの指示にまとめる方が、後でテストを追加依頼するより一貫性が高い。特に境界値・エラーケースの網羅性が上がる。",
+      "code": {
+        "lang": "bash",
+        "code": "lib/users.ts の getUserById 関数を実装して。\nvitest のユニットテストも一緒に書いて。\n\nテストで確認する項目:\n- 正常系（存在するユーザー ID）\n- 存在しない ID の場合\n- DB エラーが発生した場合\n- 不正な型の引数を渡した場合"
+      }
+    },
+    {
+      "title": "出力が止まったら /continue を使う",
+      "description": "応答が途中で切れた場合は /continue で続きを生成してもらえる。長いコードを生成中に切れた場合にも有効。ただしコンテキストを維持したまま続きを書くため、内容の整合性は保たれる。"
+    }
+  ],
+  "workflow": {
+    "title": "Claude Code で CI/CD パイプラインを構築する",
+    "steps": [
+      {
+        "label": "現在のデプロイ手順を整理させる",
+        "code": "現在のデプロイ手順を教えて。\n手動で行っている作業を箇条書きにまとめて。\nそれを GitHub Actions で自動化したい。"
+      },
+      {
+        "label": "GitHub Actions の雛形を生成する",
+        "code": "以下の手順を GitHub Actions の workflow ファイルに変換して:\n[整理した手順を貼り付ける]\n\n環境変数は secrets から取得する形にして。"
+      },
+      {
+        "label": "シークレットの設定方法を確認する",
+        "code": "このワークフローで必要な GitHub Secrets を一覧で教えて。\n設定方法（gh コマンド）も合わせて教えて。"
+      },
+      {
+        "label": "テスト実行ステップを追加する",
+        "code": "デプロイ前にテストが全部通ることを確認するステップを追加して。\n失敗したらデプロイをキャンセルする。"
+      },
+      {
+        "label": "Slack 通知を追加する",
+        "code": "デプロイ成功・失敗それぞれで Slack に通知するステップを追加して。\nWebhook URL は secrets.SLACK_WEBHOOK から取得する形で。"
+      }
+    ]
+  },
+  "modelGuide": [
+    {
+      "model": "Claude Opus 4.7",
+      "useCase": "複雑な設計・リファクタリング・アーキテクチャ判断・セキュリティレビュー",
+      "cost": "high",
+      "when": "1回あたり時間をかける大きなタスク。「このシステム全体のアーキテクチャを見直して」など"
+    },
+    {
+      "model": "Claude Sonnet 4.6",
+      "useCase": "日常的なコーディング・バグ修正・説明・PR作成",
+      "cost": "medium",
+      "when": "コーディングセッションのメイン。ほとんどのタスクはこれで十分"
+    },
+    {
+      "model": "Claude Haiku 4.5",
+      "useCase": "単純な変換・フォーマット・短い質問・大量の軽作業",
+      "cost": "low",
+      "when": "「この関数名をスネークケースに変えて」など定型処理。自動化パイプラインに最適"
+    }
+  ]
+}

@@ -1,0 +1,230 @@
+{
+  "date": "2026-05-17",
+  "theme": "廃サービス難民・機能不足の高額アプリ",
+  "perspective": "サービス終了・値上げ・機能不足で離脱ユーザーが生まれた市場は参入コストが低く初期ユーザー獲得がしやすい。海外→日本・日本→海外・高すぎる→安価の3パターンでそれぞれ具体例を出す。",
+  "ideas": [
+    {
+      "name": "DayBlocks",
+      "emoji": "🗓",
+      "score": 85,
+      "overview": "タイムライン形式で1日の予定をブロック表示する日本語タイムブロッキングアプリ。Structured（$39.99/year・80,000件以上レビュー）の日本語特化版として六曜・旧暦・日本の祝日対応を追加。",
+      "platform": "mobile",
+      "direction": "overseas-to-japan",
+      "market": {
+        "target": "タスク管理に悩む社会人・フリーランス（25〜45歳）",
+        "size": "Structured がApp Store 4.8⭐で80,000件以上レビュー。日本語UI未対応が需要の証拠",
+        "gap": "Structuredは日本語なし・$39.99/yearと高め。Google カレンダーはタスクのタイムブロッキングに弱い。Todoistはリスト形式でタイムライン UIなし"
+      },
+      "revenue": {
+        "free": "1日5タスクまで",
+        "model": "SaaS",
+        "price": "¥1,200/年（Structuredの約1/4）"
+      },
+      "features": [
+        "タイムラインUI（各タスクが時間帯に視覚的に並ぶ）",
+        "Google カレンダー同期（予定をタイムブロックに変換）",
+        "日本の祝日・六曜・学校行事カレンダー対応",
+        "繰り返しタスクの自動配置",
+        "ウィジェット（今日の残りタスクをホーム画面表示）"
+      ],
+      "aiUsage": "「今日のタスクを時間割に組んで」でClaudeが優先度を考慮して自動配置。過去の完了パターンから「このタスクは午前中に入れた方が終わりやすい」を提案",
+      "competitors": [
+        {
+          "name": "Structured",
+          "threat": "low",
+          "weakness": "日本語なし・$39.99/yearと高め・六曜・旧暦未対応"
+        },
+        {
+          "name": "Fantastical",
+          "threat": "medium",
+          "weakness": "カレンダー特化でタスク管理が弱い"
+        },
+        {
+          "name": "Google カレンダー",
+          "threat": "medium",
+          "weakness": "無料だがタイムブロッキング概念なし"
+        }
+      ],
+      "conclusion": "✅ スコア最高位。日本語化+価格設定だけで差別化できる。React Native+Google カレンダーAPIで3ヶ月でMVP可能",
+      "tags": ["タイムブロッキング", "タスク管理", "Structured", "日本語", "カレンダー"]
+    },
+    {
+      "name": "MintJP",
+      "emoji": "💰",
+      "score": 82,
+      "overview": "米国最大の家計簿アプリMintが2023年12月にサービス終了。1,700万ユーザーが代替を探している市場に日本の家計簿アプリのノウハウを持ち込む。",
+      "platform": "web",
+      "direction": "japan-to-overseas",
+      "market": {
+        "target": "元Mintユーザー（25〜40代・米国・英語圏）",
+        "size": "Mint難民1,700万人。Zaim（国内1,200万ダウンロード、月額¥480、継続黒字）のノウハウを流用",
+        "gap": "YNAB $109/yearと機能は強いが学習コストが高い。Monarch Money $99.99/yearと高額。Mintの「自動連携+無料または低価格」の組み合わせが完全に空白"
+      },
+      "revenue": {
+        "free": "手動入力・3口座まで連携",
+        "model": "SaaS",
+        "price": "$4.99/月（YNAB・Monarchの半額以下）"
+      },
+      "features": [
+        "Plaid APIで米国銀行口座・クレジットカードの自動取得",
+        "カテゴリ自動分類（AIで精度向上）",
+        "月別支出グラフ・予算設定",
+        "サブスク一覧の自動検出（「知らずに払っているもの」を可視化）"
+      ],
+      "aiUsage": "支出明細の自動カテゴリ分類（Claude HaikuでAI費コスト抑制）。異常支出の検出（先月比200%超の項目を通知）。月次支出サマリーの自然言語生成",
+      "competitors": [
+        {
+          "name": "YNAB",
+          "threat": "medium",
+          "weakness": "$109/yearと高額・学習コストが高くMint難民が使いこなせない"
+        },
+        {
+          "name": "Monarch Money",
+          "threat": "medium",
+          "weakness": "$99.99/yearと高額"
+        },
+        {
+          "name": "NerdWallet",
+          "threat": "low",
+          "weakness": "広告モデルでUXが重い"
+        }
+      ],
+      "conclusion": "✅ Mint難民は実在する大きな市場。Plaid APIの初期コスト（月額$500〜）が参入障壁だが逆にモートにもなる",
+      "tags": ["家計簿", "Mint", "Plaid", "資産管理", "英語圏"]
+    },
+    {
+      "name": "HighlightBox",
+      "emoji": "📖",
+      "score": 76,
+      "overview": "Kindle・Koboのハイライトを一元管理し、スペースドリペティションで復習できるWebアプリ。Readwise（$7.99/月）が高すぎると感じているユーザーの代替として年額$29の低価格で提供。",
+      "platform": "web",
+      "direction": "cheaper-alternative",
+      "market": {
+        "target": "月3冊以上読む読書家（自己啓発・ビジネス書層）",
+        "size": "Readwise $7.99/月（$95.88/年）。RedditやXで「高い」「解約した」の声が多い",
+        "gap": "ReadwiseとReadwise Reader（$8.99/月）合わせると$16.98/月。この価格帯を嫌うユーザーが離脱中。Obsidianは設定が複雑で自動化がなく手動作業が多い"
+      },
+      "revenue": {
+        "free": "100ハイライトまで・復習なし",
+        "model": "SaaS",
+        "price": "$29/年（Readwiseの約3割）"
+      },
+      "features": [
+        "Kindleハイライト自動インポート（Amazon アカウントOAuth）",
+        "Kobo同期（USB接続またはAPI）",
+        "スペースドリペティション（忘却曲線に合わせた復習タイミング通知）",
+        "Obsidian/Notionエクスポート",
+        "物理本: OCR撮影でハイライト登録"
+      ],
+      "aiUsage": "ハイライトから「今週の学びサマリー」を自動生成（Claude Haiku）。関連ハイライトの自動リンク（同じコンセプトが出てくるハイライトを束ねる）",
+      "competitors": [
+        {
+          "name": "Readwise",
+          "threat": "high",
+          "weakness": "価格が高い（$95.88/年）。それが唯一の弱点"
+        },
+        {
+          "name": "Obsidian",
+          "threat": "low",
+          "weakness": "自動化がなく手動作業が多い"
+        },
+        {
+          "name": "Notion",
+          "threat": "low",
+          "weakness": "ハイライト特化機能なし"
+        }
+      ],
+      "conclusion": "✅ 「高すぎる市場」パターンの典型。Kindle APIの制限が最大の技術的課題（非公式APIに依存するため利用規約リスクあり）",
+      "tags": ["ハイライト", "Kindle", "Readwise", "スペースドリペティション", "読書"]
+    },
+    {
+      "name": "FlightJP",
+      "emoji": "🛫",
+      "score": 80,
+      "overview": "ANA・JAL・Peach・Jetstarなど複数便を一画面で管理するフライト追跡アプリ。海外製Flighty（$47.99/year・App Store 4.8⭐・45,000+レビュー）の日本LCC特化版。",
+      "platform": "mobile",
+      "direction": "overseas-to-japan",
+      "market": {
+        "target": "出張族・旅行好き（月2回以上搭乗する層）",
+        "size": "Flightyは海外キャリア中心でANA/JAL/Peach/Jetstarの日本LCCに対応しておらず日本語UIもない",
+        "gap": "Flightyは日本LCC非対応・英語UIのみ。ANAアプリはANA便のみ。JALアプリはJAL便のみ。Flightradar24はリアルタイム追跡は優秀だが旅程管理機能なし"
+      },
+      "revenue": {
+        "free": "1便のみ追跡",
+        "model": "SaaS",
+        "price": "¥980/年（Flightyの約1/5）"
+      },
+      "features": [
+        "ANA・JAL・Peach・Jetstar・Spring Japanを横断追跡",
+        "遅延・ゲート変更をプッシュ通知",
+        "搭乗履歴の記録（旅程ログ）",
+        "マイレージ残高の簡易表示（手動入力）"
+      ],
+      "aiUsage": "FlightAware API または AviationStack APIでフライトデータ取得。遅延パターンの傾向分析（機材繰り・天候）をClaude APIで解析してプッシュ通知文を生成",
+      "competitors": [
+        {
+          "name": "Flighty",
+          "threat": "low",
+          "weakness": "日本LCC（Peach・Jetstar・Spring Japan）非対応・英語UIのみ"
+        },
+        {
+          "name": "ANA/JALアプリ",
+          "threat": "low",
+          "weakness": "各社アプリが分断されており複数キャリアの横断追跡ができない"
+        },
+        {
+          "name": "Flightradar24",
+          "threat": "medium",
+          "weakness": "リアルタイム追跡は優秀だが旅程管理・通知機能が弱い"
+        }
+      ],
+      "conclusion": "✅ 海外→日本の典型例。¥980/年は心理的抵抗が低く継続率が見込める",
+      "tags": ["フライト", "ANA", "JAL", "旅行", "LCC"]
+    },
+    {
+      "name": "PeingGlobal",
+      "emoji": "💬",
+      "score": 73,
+      "overview": "Xプロフィールにリンクを貼って匿名質問を受け付けるサービス。日本のPeing（月間1,500万ユーザー）が持つ仕組みを海外展開。競合が相次いで課金化・廃止したため空白が生まれている。",
+      "platform": "web",
+      "direction": "japan-to-overseas",
+      "market": {
+        "target": "X・Instagram・TikTokのクリエイター（フォロワー1,000〜10万人規模）",
+        "size": "Peing月間1,500万ユーザー（日本）。海外のCuriousCatが2022年に突然有料化→ユーザー大量離脱",
+        "gap": "NGLはスパム・偽通知問題でApp Storeレビュー2.8⭐。CuriousCatは突然の有料化で信頼喪失。Peingは日本語のみで海外展開なし"
+      },
+      "revenue": {
+        "free": "匿名質問受付・返答（広告あり）",
+        "model": "SaaS",
+        "price": "$4.99/月（質問分析・広告非表示・返答補助AI）"
+      },
+      "features": [
+        "X/Instagram/TikTokプロフィールに貼れるリンク1本",
+        "匿名質問の受付・返答",
+        "返答をXにワンクリック投稿",
+        "質問傾向の分析（どの投稿から質問が来たか）",
+        "スパム質問のAIフィルタリング"
+      ],
+      "aiUsage": "スパム・嫌がらせ質問の自動検出（Claude Haikuでコスト抑制）。「この質問に対する回答案を3つ提示」（クリエイターの返答補助）",
+      "competitors": [
+        {
+          "name": "NGL",
+          "threat": "medium",
+          "weakness": "スパム問題・偽通知で信頼低下。App Storeレビュー2.8⭐"
+        },
+        {
+          "name": "CuriousCat",
+          "threat": "low",
+          "weakness": "突然の有料化で信頼喪失。ユーザーが大量離脱"
+        },
+        {
+          "name": "Peing",
+          "threat": "low",
+          "weakness": "日本語のみで海外展開なし"
+        }
+      ],
+      "conclusion": "✅ 海外競合が自滅した珍しい市場。スパム対策の品質が勝敗を分ける",
+      "tags": ["匿名Q&A", "クリエイター", "Peing", "SNS", "スパム対策"]
+    }
+  ]
+}

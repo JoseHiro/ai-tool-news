@@ -1,0 +1,222 @@
+{
+  "date": "2026-05-20",
+  "theme": "時間・会議・モノの管理",
+  "perspective": "リモートワーク時代に必須なのに日本語対応が弱かったり価格が高すぎたりするツールを狙う。会議・スケジュール・認証・不用品管理という日常業務に密着した領域で海外ツールの空白を突く。",
+  "ideas": [
+    {
+      "name": "MemoMinutes",
+      "emoji": "🎙️",
+      "score": 87,
+      "overview": "会議音声をリアルタイムで文字起こし・要約・議事録として自動出力するWebアプリ。Notta（$22.67/月）が高すぎて導入できない中小企業・個人向けに日本語特化・低価格で提供する。",
+      "platform": "web",
+      "direction": "overseas-to-japan",
+      "market": {
+        "target": "リモートワーカー・フリーランス・中小企業のバックオフィス担当",
+        "size": "Nottaは$22.67/月〜。Otter.aiは英語特化。日本語会議録音SaaSの国産代替が事実上ない",
+        "gap": "Notta は日本語対応しているが $22.67/月と高い。tl;dv は英語のみ。Zoom の AI 要約は Zoom 会議のみに限定されており Google Meet・Teams には使えない"
+      },
+      "revenue": {
+        "free": "月3回まで・30分以内・要約のみ",
+        "model": "SaaS",
+        "price": "¥490/月（Notta の約4分の1）"
+      },
+      "features": [
+        "ブラウザから音声をキャプチャして Whisper large-v3 で文字起こし",
+        "Claude Haiku で要約・アクションアイテム・決定事項を自動抽出",
+        "Notion・Slack・Google Docs への議事録エクスポート",
+        "発言者ごとの色分け表示（話者分離）",
+        "Google Meet・Zoom・Teams 対応（ブラウザ拡張で収録）"
+      ],
+      "aiUsage": "Whisper large-v3 で日本語文字起こし（$0.006/分）。Claude Haiku で要約・アクションアイテム抽出（1会議あたり約$0.005）。「この会議で決まったことを教えて」の自然言語 Q&A",
+      "competitors": [
+        {
+          "name": "Notta",
+          "threat": "high",
+          "weakness": "$22.67/月と高額。無料プランは月3時間・1ファイル25MB制限"
+        },
+        {
+          "name": "tl;dv",
+          "threat": "medium",
+          "weakness": "英語のみ。日本語の文字起こし精度が低い"
+        },
+        {
+          "name": "Zoom AI Companion",
+          "threat": "medium",
+          "weakness": "Zoom 会議のみ対応。Google Meet・Teams では使えない"
+        }
+      ],
+      "conclusion": "✅ 海外→日本の典型例。¥490/月×1,000ユーザー=月49万円が見えやすい。Whisper+Claude Haikuのコスト構造で利益率70%以上が狙える",
+      "tags": ["議事録", "文字起こし", "Whisper", "Notta", "会議"]
+    },
+    {
+      "name": "DanshariSnap",
+      "emoji": "📦",
+      "score": 81,
+      "overview": "不用品をカメラで撮影するとAIが商品名・推定売値・出品文を自動生成してメルカリ・ラクマへの出品を支援するモバイルアプリ。日本のメルカリ月間2,200万MAUをバックに「断捨離×フリマ自動化」を実現する。",
+      "platform": "mobile",
+      "direction": "japan-to-overseas",
+      "market": {
+        "target": "メルカリ・ラクマに出品したいが手間で諦めているユーザー（20〜40代・日本）",
+        "size": "メルカリ月間2,200万MAU（2024年公式）。フリマ出品の最大の障壁は「写真撮影＋説明文作成の手間」",
+        "gap": "メルカリ公式 AI は出品補助機能を提供しているが商品カテゴリの精度が低く説明文生成がない。オークファンは価格リサーチ特化で出品フロー自動化なし"
+      },
+      "revenue": {
+        "free": "月5件まで出品補助・売値推定",
+        "model": "SaaS",
+        "price": "¥490/月（無制限出品補助・一括出品）"
+      },
+      "features": [
+        "商品写真を撮ると Claude Vision で商品名・カテゴリを自動判定",
+        "メルカリ・ラクマの過去成約データから推定売値を算出",
+        "Claude Sonnet で商品説明文を自動生成（「○○の状態ですが△△のため出品します」等）",
+        "メルカリ API で下書き一括登録",
+        "断捨離進捗トラッカー（出品数・売上合計の可視化）"
+      ],
+      "aiUsage": "Claude Vision で商品画像から品名・状態・カテゴリを認識。Claude Haiku で出品説明文の自動生成（1件あたり約$0.001）。過去の成約価格データとの照合で適正価格を提案",
+      "competitors": [
+        {
+          "name": "メルカリ公式 AI 出品補助",
+          "threat": "high",
+          "weakness": "カテゴリ精度が低い（ブランド品の判定が甘い）。説明文生成機能なし"
+        },
+        {
+          "name": "オークファン",
+          "threat": "medium",
+          "weakness": "価格リサーチ特化。出品フローの自動化機能がない"
+        }
+      ],
+      "conclusion": "✅ 日本特化の確実なニーズ。メルカリ API は公開されているが利用規約上の制約を事前確認が必須",
+      "tags": ["断捨離", "メルカリ", "フリマ", "Claude Vision", "出品自動化"]
+    },
+    {
+      "name": "YoyakuJP",
+      "emoji": "📅",
+      "score": 77,
+      "overview": "URLを共有するだけで相手が空き時間を選べる日程調整Webアプリ。Calendlyが$16/月〜と高く日本語UIが弱い問題を、TimeRex（¥2,000/月）の4分の1の価格・日本語特化で解決する。",
+      "platform": "web",
+      "direction": "cheaper-alternative",
+      "market": {
+        "target": "フリーランス・コーチ・営業職・採用担当（日程調整が週5件以上ある人）",
+        "size": "Calendly は$16/月〜・600万ユーザー以上（公式2023年）。TimeRex は¥2,000/月",
+        "gap": "Calendly は日本語UIが不完全で「30分」「1時間」の表示が英語のまま残る箇所がある。TimeRex は¥2,000/月と個人には高い。Googleカレンダーの「予約スケジュール」機能はカスタマイズ性が低くリマインダーが送れない"
+      },
+      "revenue": {
+        "free": "1種類の予約ページ・月10件まで",
+        "model": "SaaS",
+        "price": "¥490/月（無制限ページ・自動リマインダー・Zoom URL 自動生成）"
+      },
+      "features": [
+        "Google カレンダー連携で空き時間を自動取得",
+        "予約ページのURL発行（日本語UI完全対応）",
+        "確定後に Zoom/Google Meet URL を自動生成してメール送信",
+        "前日リマインダーを Claude Haiku でパーソナライズして送信",
+        "バッファ時間の設定（会議と会議の間に15分空ける等）"
+      ],
+      "aiUsage": "Claude Haiku でリマインダーメールの文章をパーソナライズ（相手の名前・会議の目的を自動挿入）。「来週の空きを全部埋めたい場合の最適なスロット」を自然言語で提案",
+      "competitors": [
+        {
+          "name": "Calendly",
+          "threat": "medium",
+          "weakness": "日本語UIが不完全。個人プランは$16/月〜と高い"
+        },
+        {
+          "name": "TimeRex",
+          "threat": "high",
+          "weakness": "¥2,000/月と個人・フリーランスには高額。無料プランは月5件まで"
+        },
+        {
+          "name": "Google カレンダー予約スケジュール",
+          "threat": "medium",
+          "weakness": "カスタマイズ性が低い。リマインダーメールを送れない"
+        }
+      ],
+      "conclusion": "✅ 「高すぎる→安価版」の典型。Google Calendar API+Next.js で2週間でMVPが作れる規模",
+      "tags": ["日程調整", "Calendly", "TimeRex", "Google Calendar", "予約"]
+    },
+    {
+      "name": "PassLink",
+      "emoji": "🔐",
+      "score": 73,
+      "overview": "メールOTPやパスキーによるパスワードレス認証をNext.jsアプリに5行で導入できるSaaS。Clerk（$25/月〜）が高く設定が複雑な問題を¥490/月・日本語ドキュメント完備で解決する。",
+      "platform": "web",
+      "direction": "cheaper-alternative",
+      "market": {
+        "target": "個人開発者・スタートアップのエンジニア（Next.js・SvelteKit ユーザー）",
+        "size": "Clerk は$25/月〜（MAU 10,000超で従量課金）。Auth0 は$23/月〜。Supabase Auth は無料だが設定の柔軟性が低い",
+        "gap": "Clerk は日本語ドキュメントがほぼなく設定項目が多すぎて個人開発者には重い。Auth0 は$23/月〜と個人には高い。Supabase Auth はカスタムUI作成が難しくパスキー対応が限定的"
+      },
+      "revenue": {
+        "free": "MAU 500まで・1プロジェクト",
+        "model": "SaaS",
+        "price": "¥490/月（MAU 10,000まで・無制限プロジェクト）"
+      },
+      "features": [
+        "メールOTP・マジックリンク・パスキー認証に対応",
+        "Next.js/SvelteKit 向け SDK（npm install 1つで導入）",
+        "管理ダッシュボード（ユーザー一覧・ログイン履歴）",
+        "WebAuthn/FIDO2 準拠のパスキー",
+        "不審ログイン検出（Claude Haiku で IPアドレス・デバイス異常を分類）"
+      ],
+      "aiUsage": "Claude Haiku でログインパターンの異常検知（通常と異なる国・デバイスからのアクセスをリスクスコアリング）。「先月の認証エラーの傾向を教えて」の自然言語レポート生成",
+      "competitors": [
+        {
+          "name": "Auth0",
+          "threat": "medium",
+          "weakness": "$23/月〜と個人には高い。設定が複雑でドキュメントが英語のみ"
+        },
+        {
+          "name": "Clerk",
+          "threat": "high",
+          "weakness": "MAU 10,000超で従量課金が高くなる。日本語ドキュメントなし"
+        },
+        {
+          "name": "Supabase Auth",
+          "threat": "medium",
+          "weakness": "パスキー対応が限定的。カスタムUIの実装が難しい"
+        }
+      ],
+      "conclusion": "✅ 個人開発者の「認証は本質ではないが必須」という痛みを¥490/月で解決。セキュリティ要件への対応が品質の鍵",
+      "tags": ["認証", "パスキー", "Clerk", "Auth0", "Next.js"]
+    },
+    {
+      "name": "TechDigestJP",
+      "emoji": "📰",
+      "score": 68,
+      "overview": "英語技術記事を開くと日本語の3行要約をサイドバーに表示するChrome拡張。DeepL拡張が全文翻訳のみで「要点を素早く掴む」ニーズに応えていない問題を解決する。",
+      "platform": "extension",
+      "direction": "overseas-to-japan",
+      "market": {
+        "target": "英語技術記事を読む日本人エンジニア（Hacker News・dev.to・Medium ユーザー）",
+        "size": "DeepL拡張は1,000万以上インストール（Chrome Web Store）。「英語は読めるが要点を素早く掴みたい」層は要調査",
+        "gap": "DeepL拡張は全文翻訳のみで要約機能がない。ChatGPT拡張は右クリックメニューからの手動操作が必要でページを開くと自動要約されない"
+      },
+      "revenue": {
+        "free": "1日10記事まで・3行要約",
+        "model": "SaaS",
+        "price": "¥490/月（無制限・Slack/Notionへのメモ保存）"
+      },
+      "features": [
+        "英語技術記事を開くと自動でサイドバーに日本語3行要約を表示",
+        "Claude Haiku で本文を抽出・要約（1記事あたり$0.001未満）",
+        "「詳しく教えて」で追加質問できるチャット",
+        "要約をNotionやSlackに1クリック保存",
+        "Hacker News・dev.to・Medium・GitHub READMEに対応"
+      ],
+      "aiUsage": "Claude Haiku で英語本文から技術的なポイントを3行に要約（日本語出力）。コスト：1記事あたり約$0.001。「この記事の実装を試すには何が必要？」の追加 Q&A",
+      "competitors": [
+        {
+          "name": "DeepL拡張",
+          "threat": "medium",
+          "weakness": "全文翻訳のみで要約機能がない。翻訳のために選択操作が必要"
+        },
+        {
+          "name": "ChatGPT拡張（各種）",
+          "threat": "medium",
+          "weakness": "自動要約ではなく手動で右クリック→要約を選ぶ操作が必要"
+        }
+      ],
+      "conclusion": "✅ 個人が1週間でMVPを作れる規模。Chrome拡張のMV3対応とコンテンツスクリプト設計が実装の核心",
+      "tags": ["Chrome拡張", "技術記事", "要約", "Claude Haiku", "英語"]
+    }
+  ]
+}

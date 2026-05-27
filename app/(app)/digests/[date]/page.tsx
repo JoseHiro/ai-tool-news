@@ -3,19 +3,21 @@ import type { Metadata } from 'next'
 import Link from 'next/link'
 import { getIronSession } from 'iron-session'
 import { cookies } from 'next/headers'
-import { getDigest } from '@/lib/storage'
+import { getDigest, getClaudeDigest, getIdeaDigest } from '@/lib/storage'
 import { readDocFile, extractSubHeadings, getAdjacentDates } from '@/lib/docs'
 import { sessionOptions, type SessionData } from '@/lib/session'
 import { getUserById, getSubscribedUntil } from '@/lib/users'
-import { getUserLikedKeys } from '@/lib/likes'
+import { getUserLikedKeys, getWeeklyTopLiked } from '@/lib/likes'
 import { canViewDate, isSubscribed } from '@/lib/access'
 import { DigestContent, parseSectionHeadings } from '@/components/DigestContent'
 import { MarkdownDoc } from '@/components/MarkdownDoc'
 import { DigestToC } from '@/components/DigestToC'
 import { XPostButton } from '@/components/XPostButton'
-import { GenerateButton } from '@/components/GenerateButton'
 import { Paywall } from '@/components/Paywall'
 import { ContentDisclaimer } from '@/components/ContentDisclaimer'
+import { UpdateCard, TipCard, WorkflowCard, ModelGuideTable } from '@/components/NewsCard'
+import { IdeaCard } from '@/components/IdeaCard'
+import { DigestHero } from '@/components/DigestHero'
 
 function formatDate(date: string) {
   const [y, m, d] = date.split('-')
@@ -67,64 +69,159 @@ function formatShort(date: string) {
   return `${parseInt(m)}月${parseInt(d)}日`
 }
 
+
 export default async function DigestPage({
   params,
 }: {
   params: Promise<{ date: string }>
 }) {
   const { date } = await params
-  const [digest, session, claudeDoc, ideasDoc, adjacent] = await Promise.all([
+  const [digest, session, claudeDigest, ideaDigest, claudeDoc, ideasDoc, adjacent, popularTopics, popularIdeas] = await Promise.all([
     getDigest(date),
     getIronSession<SessionData>(await cookies(), sessionOptions),
+    getClaudeDigest(date),
+    getIdeaDigest(date),
     readDocFile('claude', date),
     readDocFile('ideas', date),
     getAdjacentDates(date),
+    getWeeklyTopLiked(5, 'tip').catch(() => []),
+    getWeeklyTopLiked(3, 'idea').catch(() => []),
   ])
 
-  const hasContent = digest || claudeDoc || ideasDoc
+  const hasContent = digest || claudeDigest || ideaDigest || claudeDoc || ideasDoc
   if (!hasContent) notFound()
 
   const todayJST = new Date(Date.now() + 9 * 60 * 60 * 1000).toISOString().slice(0, 10)
-  const isAuthed = !!session.userId
-  const user = session.userId ? await getUserById(session.userId) : null
+  const user = session.userId ? await getUserById(session.userId).catch(() => null) : null
   const subscribedUntil = user ? getSubscribedUntil(user) : null
   const canView = canViewDate(session, subscribedUntil, date, todayJST)
   const canLike = session.isAdmin || isSubscribed(subscribedUntil)
-  const likedKeys = canLike && session.userId ? await getUserLikedKeys(session.userId) : undefined
+  const likedKeysSet = canLike && session.userId ? await getUserLikedKeys(session.userId) : undefined
+  const likedKeys = likedKeysSet ? [...likedKeysSet] : undefined
 
-  const tocSections = [
+  const heroUpdate = claudeDigest?.updates.find(u => u.importance === 'high')
+
+  const tocSections = claudeDigest ? [
+    {
+      heading: '🆕 Claude 最新アップデート',
+      sub: [
+        ...(claudeDigest.tips.length > 0 ? [{ label: '実践Tips', subIndex: 100 }] : []),
+        ...(claudeDigest.workflow ? [{ label: 'ワークフロー', subIndex: 101 }] : []),
+        ...(claudeDigest.modelGuide.length > 0 ? [{ label: 'モデル使い分けガイド', subIndex: 102 }] : []),
+      ],
+    },
+    ...(ideaDigest ? [{ heading: '💰 個人開発アイデア', sub: [] }] : []),
+  ] : [
     ...(claudeDoc ? [{ heading: '🆕 Claude / Claude Code アップデート', sub: extractSubHeadings(claudeDoc, 'claude') }] : []),
     ...(ideasDoc ? [{ heading: '💰 個人開発アイデア', sub: extractSubHeadings(ideasDoc, 'ideas') }] : []),
     ...(digest ? parseSectionHeadings(digest.content).map(h => ({ heading: h, sub: [] })) : []),
   ]
 
   return (
-    <div className="px-8 py-10">
-      <div className="mx-auto flex max-w-4xl gap-10">
+    <div className="min-h-full px-8 py-10">
+      <div className="mx-auto flex min-h-full max-w-4xl gap-10">
         {/* Main */}
         <div className="min-w-0 flex-1">
-          <p style={{ color: 'var(--accent)' }} className="mb-1 text-xs font-semibold uppercase tracking-widest">
-            DevKnow
-          </p>
-          <div className="mb-8 flex items-center gap-3">
-            <h1 style={{ color: 'var(--text)' }} className="text-2xl font-bold">
-              {formatDate(date)}
-            </h1>
-            <GenerateButton regenerate isAuthed={isAuthed} />
-          </div>
+          {heroUpdate && <DigestHero update={heroUpdate} date={date} />}
 
           {canView ? (
             <>
-              <ContentDisclaimer />
-              <div className="mt-6 space-y-4">
-                {claudeDoc && <MarkdownDoc content={claudeDoc} type="claude" id="section-0" date={date} likedKeys={likedKeys} />}
-                {ideasDoc && <MarkdownDoc content={ideasDoc} type="ideas" id={`section-${claudeDoc ? 1 : 0}`} date={date} likedKeys={likedKeys} />}
+              <div className="mt-6 space-y-8">
+                {/* Claude / AI ニュース — JSON優先、なければMD */}
+                {claudeDigest ? (
+                  <section>
+                    <div className="mb-5 flex items-center justify-between" id="section-0">
+                      <h2 style={{ color: 'var(--text)' }} className="text-xl font-bold">
+                        Claude 最新アップデート
+                      </h2>
+                      <Link href="/tips" style={{ color: 'var(--text-muted)' }} className="text-sm transition-colors hover:text-[var(--text)]">
+                        すべて見る →
+                      </Link>
+                    </div>
+                    <div className="space-y-2">
+                      {claudeDigest.updates.map((u, i) => (
+                        <UpdateCard
+                          key={i}
+                          update={u}
+                          contentDate={date}
+                          contentKey={`update-${i}`}
+                          initialLiked={likedKeys?.includes(`tip:${date}:update-${i}`) ?? false}
+                        />
+                      ))}
+                    </div>
+                    {claudeDigest.tips.length > 0 && (
+                      <>
+                        <h3 id="section-0-sub-100" style={{ color: 'var(--text)' }} className="mb-3 mt-6 text-sm font-semibold">⚡ 実践Tips</h3>
+                        <div className="space-y-2">
+                          {claudeDigest.tips.map((t, i) => (
+                            <TipCard
+                              key={i}
+                              tip={t}
+                              contentDate={date}
+                              contentKey={`tip-${i}`}
+                              initialLiked={likedKeys?.includes(`tip:${date}:tip-${i}`) ?? false}
+                            />
+                          ))}
+                        </div>
+                      </>
+                    )}
+                    {claudeDigest.workflow && (
+                      <>
+                        <h3 id="section-0-sub-101" style={{ color: 'var(--text)' }} className="mb-3 mt-6 text-sm font-semibold">🛠 ワークフロー</h3>
+                        <WorkflowCard workflow={claudeDigest.workflow} />
+                      </>
+                    )}
+                    {claudeDigest.modelGuide.length > 0 && (
+                      <>
+                        <h3 id="section-0-sub-102" style={{ color: 'var(--text)' }} className="mb-3 mt-6 text-sm font-semibold">💡 モデル使い分けガイド</h3>
+                        <ModelGuideTable guide={claudeDigest.modelGuide} />
+                      </>
+                    )}
+                  </section>
+                ) : claudeDoc ? (
+                  <MarkdownDoc content={claudeDoc} type="claude" id="section-0" date={date} likedKeys={likedKeys} />
+                ) : null}
+
+                {/* アイデア — JSON優先、なければMD */}
+                {ideaDigest ? (
+                  <section>
+                    <div className="mb-4 flex items-center justify-between" id={`section-${claudeDigest || claudeDoc ? 1 : 0}`}>
+                      <h2 style={{ color: 'var(--text)' }} className="text-xl font-bold">
+                        個人開発アイデア
+                      </h2>
+                      <Link href="/ideas" style={{ color: 'var(--text-muted)' }} className="text-sm transition-colors hover:text-[var(--text)]">
+                        すべて見る →
+                      </Link>
+                    </div>
+                    <p style={{ color: 'var(--text-muted)' }} className="mb-4 text-sm">{ideaDigest.perspective}</p>
+                    <div className="space-y-2">
+                      {ideaDigest.ideas.map((idea, i) => {
+                        const contentKey = idea.name.toLowerCase().replace(/\s+/g, '-')
+                        return (
+                          <IdeaCard
+                            key={i}
+                            idea={idea}
+                            contentDate={date}
+                            initialLiked={likedKeys?.includes(`idea:${date}:${contentKey}`) ?? false}
+                          />
+                        )
+                      })}
+                    </div>
+                  </section>
+                ) : ideasDoc ? (
+                  <MarkdownDoc content={ideasDoc} type="ideas" id={`section-${claudeDoc ? 1 : 0}`} date={date} likedKeys={likedKeys} />
+                ) : null}
+
+                {/* レガシーMDダイジェスト */}
                 {digest && (
                   <DigestContent
                     content={digest.content}
-                    indexOffset={(claudeDoc ? 1 : 0) + (ideasDoc ? 1 : 0)}
+                    indexOffset={(claudeDigest || claudeDoc ? 1 : 0) + (ideaDigest || ideasDoc ? 1 : 0)}
                   />
                 )}
+              </div>
+              <div className="mt-8">
+                <ContentDisclaimer />
               </div>
             </>
           ) : (
@@ -171,8 +268,15 @@ export default async function DigestPage({
         </div>
 
         {canView && (
-          <div className="hidden w-40 shrink-0 xl:block">
-            <DigestToC sections={tocSections} />
+          <div
+            className="hidden w-60 shrink-0 xl:block"
+            style={{
+              background: 'var(--bg)',
+              margin: '-40px -32px -40px 0',
+              padding: '40px 20px 40px 16px',
+            }}
+          >
+            <DigestToC sections={tocSections} popularTopics={popularTopics} popularIdeas={popularIdeas} />
           </div>
         )}
       </div>

@@ -1,0 +1,167 @@
+{
+  "date": "2026-05-24",
+  "theme": "クリエイター・コンテンツ制作の「手間のかかる繰り返し作業」をAIで自動化",
+  "perspective": "YouTube・ポッドキャスト・技術ブログなど個人クリエイターが急増する一方、コンテンツ制作の周辺作業（字幕・サムネ・SEO・配信）はまだ手動が多い。AI で自動化できる余地が大きい。",
+  "ideas": [
+    {
+      "name": "ThumbnailGen",
+      "emoji": "🎨",
+      "score": 86,
+      "overview": "YouTube のサムネイル画像を AI が自動生成・A/Bテストするツール。Canva でデザインする手間を省き、クリック率の高いサムネイルを提案する。",
+      "platform": "web",
+      "direction": "overseas-to-japan",
+      "market": {
+        "target": "登録者数1,000〜10万人の中規模 YouTuber（国内推定約12万チャンネル）",
+        "size": "国内 YouTube 広告市場は約5,000億円（2024年）。クリエイターツール市場は要調査",
+        "gap": "Canva（¥1,500/月〜）はデザインの知識が必要で時間がかかる。Thumbnail.ai（$19/月〜）は日本語タイトル入力への最適化がない"
+      },
+      "revenue": {
+        "free": "月5枚まで・ウォーターマークあり",
+        "model": "SaaS",
+        "price": "¥980/月（月50枚・A/Bテスト機能）"
+      },
+      "features": [
+        "動画タイトル・概要を入力するだけで3パターン自動生成",
+        "YouTube Analytics と連携してクリック率を自動計測",
+        "高 CTR パターンの学習（文字配置・色・顔の有無）",
+        "過去動画のサムネイルを分析して改善提案",
+        "Figma エクスポート対応"
+      ],
+      "aiUsage": "Claude でタイトルからビジュアルコンセプトを生成→画像生成 API（Stable Diffusion / Flux）でレンダリング",
+      "competitors": [
+        {
+          "name": "Canva",
+          "threat": "high",
+          "weakness": "デザインスキルが必要。A/Bテスト機能なし。自動生成は限定的"
+        },
+        {
+          "name": "Thumbnail.ai",
+          "threat": "medium",
+          "weakness": "日本語タイトルへの最適化が弱い。YouTube Analytics 連携なし"
+        }
+      ],
+      "conclusion": "✅ CTR 向上という明確なROIがある。YouTuber への訴求がしやすい",
+      "tags": ["YouTube", "サムネイル", "クリエイター", "A/Bテスト", "画像生成"]
+    },
+    {
+      "name": "PodScribe JP",
+      "emoji": "🎙",
+      "score": 83,
+      "overview": "ポッドキャストの音声を文字起こし→ブログ記事・ニュースレター・SNS投稿を自動生成する。Castmagic（$23/月〜）の日本語対応版。",
+      "platform": "web",
+      "direction": "overseas-to-japan",
+      "market": {
+        "target": "Spotify / Voicy などで配信する国内ポッドキャスト配信者（推定約3万番組）",
+        "size": "国内ポッドキャスト市場は約100億円（2024年）。配信者向けツール市場は要調査",
+        "gap": "Castmagic は日本語の文字起こし精度が低く（認識率 約75%）、日本語 UI なし。月$23〜は個人配信者に高い"
+      },
+      "revenue": {
+        "free": "月2エピソードまで・60分以内",
+        "model": "SaaS",
+        "price": "¥1,280/月（月20エピソード・無制限長さ）"
+      },
+      "features": [
+        "Whisper Large v3 による日本語文字起こし（誤認識率 <8% 目標）",
+        "Claude によるブログ記事・ニュースレター・X投稿の自動生成",
+        "Spotify / Voicy / stand.fm からの音声を直接インポート",
+        "ハイライト抽出（名言・重要発言の自動クリップ）",
+        "章立て・タイムスタンプの自動生成"
+      ],
+      "aiUsage": "Whisper で音声→テキスト、Claude Sonnet で記事・SNS投稿生成。1エピソード60分あたりコスト約¥50〜150",
+      "competitors": [
+        {
+          "name": "Castmagic",
+          "threat": "medium",
+          "weakness": "日本語文字起こし精度が低い。UI が英語のみ。$23/月と個人配信者には高い"
+        },
+        {
+          "name": "Notta",
+          "threat": "medium",
+          "weakness": "文字起こしのみでコンテンツ生成機能なし。配信プラットフォームとの直接連携なし"
+        }
+      ],
+      "conclusion": "✅ 「配信は好きだけど記事を書く時間がない」という配信者の典型的な痛みを解決",
+      "tags": ["ポッドキャスト", "文字起こし", "Whisper", "コンテンツ生成", "Voicy"]
+    },
+    {
+      "name": "TechBlogSEO",
+      "emoji": "📈",
+      "score": 78,
+      "overview": "Zenn / Qiita の記事に対してSEO改善提案を行うChrome拡張。タイトル・見出し・内部リンクを自動最適化してビュー数を増やす。",
+      "platform": "extension",
+      "direction": "japan-to-overseas",
+      "market": {
+        "target": "Zenn / Qiita でアクセスを増やしたいエンジニア・テックブロガー",
+        "size": "Zenn 月間 PV 約2,000万・登録ユーザー約30万人。Qiita 月間 PV 約1,500万",
+        "gap": "Surfer SEO（$79/月〜）はエンジニア向け技術記事の文脈を理解していない。Zenn / Qiita 専用の SEO ツールが存在しない"
+      },
+      "revenue": {
+        "free": "月5記事まで分析・基本提案のみ",
+        "model": "SaaS",
+        "price": "¥580/月（無制限・詳細提案・競合記事分析）"
+      },
+      "features": [
+        "Zenn / Qiita の記事ページでワンクリック SEO スコア表示",
+        "タイトル・見出し（h2/h3）の改善案を3パターン提案",
+        "同トピックの上位記事との差分分析",
+        "内部リンク候補の自動提案",
+        "公開後のビュー数追跡ダッシュボード"
+      ],
+      "aiUsage": "Claude Haiku でタイトル候補生成・見出し改善案の作成。競合記事の内容比較は Claude Sonnet",
+      "competitors": [
+        {
+          "name": "Surfer SEO",
+          "threat": "low",
+          "weakness": "月$79〜と高額。Zenn / Qiita のコンテキストを理解していない。英語コンテンツ前提"
+        },
+        {
+          "name": "手動 SEO 対策",
+          "threat": "low",
+          "weakness": "キーワード調査に数時間かかる。改善効果の測定が難しい"
+        }
+      ],
+      "conclusion": "✅ Zenn / Qiita 専用というニッチが明確。エンジニアの「書いたけど読まれない」問題を解決",
+      "tags": ["SEO", "Zenn", "Qiita", "Chrome拡張", "テックブログ"]
+    },
+    {
+      "name": "StreamBundle",
+      "emoji": "📡",
+      "score": 75,
+      "overview": "YouTube / Twitch / TikTok Live へのマルチ配信を管理するツール。Restream（$16/月〜）の安価版で、配信前のチェックリスト・コメント集約も一元管理する。",
+      "platform": "web",
+      "direction": "cheaper-alternative",
+      "market": {
+        "target": "複数プラットフォームで同時配信する個人ゲーム・技術系配信者",
+        "size": "国内ライブ配信市場は約1,000億円（2024年）。Restream は約200万ユーザー",
+        "gap": "Restream の月$16プランはマルチ配信できるが、コメント集約は別料金（$29/月〜）。YouTube + Twitch 同時配信の日本語サポートが弱い"
+      },
+      "revenue": {
+        "free": "2プラットフォームまで・720p まで",
+        "model": "SaaS",
+        "price": "¥780/月（5プラットフォーム・1080p・コメント集約）"
+      },
+      "features": [
+        "OBS の RTMP URL を1つ設定するだけでマルチ配信",
+        "YouTube / Twitch / TikTok のコメントを1画面に集約",
+        "Claude による荒らしコメントの自動フィルタリング",
+        "配信前チェックリスト（音声・映像・タイトル確認）",
+        "配信終了後に自動でアーカイブ URL を Discord に通知"
+      ],
+      "aiUsage": "Claude Haiku でコメントの感情分析・荒らし検出。配信タイトル・ハッシュタグの提案も",
+      "competitors": [
+        {
+          "name": "Restream",
+          "threat": "high",
+          "weakness": "コメント集約は$29/月〜の上位プランのみ。日本語 UI なし"
+        },
+        {
+          "name": "StreamYard",
+          "threat": "medium",
+          "weakness": "ブラウザベースで遅延が大きい。OBS との統合なし。$25/月〜"
+        }
+      ],
+      "conclusion": "✅ 配信者の「複数プラットフォームのコメントが分散する」という日常的な痛みを解決",
+      "tags": ["配信", "YouTube", "Twitch", "マルチ配信", "OBS"]
+    }
+  ]
+}

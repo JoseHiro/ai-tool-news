@@ -1,0 +1,90 @@
+{
+  "date": "2026-05-20",
+  "updates": [
+    {
+      "title": "CLAUDE.md はプロジェクトの憲法 — Claude Code が最初に読む設定ファイル",
+      "body": "CLAUDE.md はリポジトリのルートに置くと Claude Code がセッション開始時に自動で読み込む。「このプロジェクトで何をすべきか・すべきでないか」を書いておくことで、毎回プロンプトで説明する手間がなくなる。コーディング規約・禁止事項・よく使うコマンドを記載するのが基本。プロジェクトに CLAUDE.md がない場合、Claude はデフォルト動作で応答するため、チームのルールが伝わらない。",
+      "importance": "medium"
+    },
+    {
+      "title": "CLAUDE.md を @import で分割管理する",
+      "body": "CLAUDE.md が長くなったら `@path/to/other.md` 構文でサブファイルに分割できる。例えば `@docs/api-rules.md` と書くと、そのファイルの内容が CLAUDE.md に展開される。ディレクトリごとに `components/CLAUDE.md` を置くとそのディレクトリ内での作業時のみ追加ルールを適用できる。",
+      "importance": "low",
+      "code": {
+        "lang": "markdown",
+        "code": "# CLAUDE.md\n\n@docs/coding-rules.md\n@docs/api-conventions.md\n\n## プロジェクト固有のルール\n..."
+      }
+    }
+  ],
+  "tips": [
+    {
+      "title": "CLAUDE.md に書くべき7つの項目",
+      "description": "① よく使うコマンド（dev/build/test） ② コーディング規約（命名・フォーマット） ③ アーキテクチャの決定事項 ④ やってはいけないこと（「直接DBに書き込まない」等） ⑤ 外部APIの使用ルール ⑥ テスト方針 ⑦ デプロイ手順の概要。この7項目があると Claude が迷わず実装を進められる。"
+    },
+    {
+      "title": "「何をするか」ではなく「なぜそうするか」を書く",
+      "description": "「ESLintを使う」ではなく「ESLintを使う（PRレビューの前にCIで自動チェックするため。--no-verify禁止）」のように理由を添える。理由があると Claude がエッジケースで正しい判断をしやすくなる。"
+    },
+    {
+      "title": "サブエージェントで並列タスクを処理する",
+      "description": "CLAUDE.md に「独立したタスクはサブエージェントで並列実行してよい」と明示しておくと、Claude が並列処理を積極的に使うようになる。例：「テストとlintは並列で走らせてよい」。"
+    },
+    {
+      "title": "/compact のタイミングを意識する",
+      "description": "会話が長くなってきたら /compact で文脈を圧縮する。圧縮のタイミングは「大きなタスクが一段落したとき」が最適。途中で圧縮すると実装中の文脈が失われることがある。CLAUDE.md に現在の状態を書いておくと圧縮後も文脈が保たれる。"
+    },
+    {
+      "title": "TodoWrite で複数ステップのタスクを管理する",
+      "description": "5ステップ以上の実装は TodoWrite でタスクリストを作ってから始める。Claude が途中でコンテキストを失っても、タスクリストを見れば何が終わって何が残っているかがわかる。",
+      "code": {
+        "lang": "bash",
+        "code": "# Claude に渡すプロンプト例\n「以下のタスクを TodoWrite で管理しながら順番に実装して:\n1. APIエンドポイントの作成\n2. バリデーションの追加\n3. テストの作成\n4. CLAUDE.mdの更新」"
+      }
+    },
+    {
+      "title": "components/CLAUDE.md でディレクトリ別ルールを管理する",
+      "description": "ルートの CLAUDE.md はプロジェクト全体のルール、`components/CLAUDE.md` は UI コンポーネント固有のルール（「Tailwindのみ使う・styled-components禁止」等）と分けると管理しやすい。Claude はそのディレクトリ内のファイルを編集するとき自動でディレクトリの CLAUDE.md を読む。"
+    }
+  ],
+  "workflow": {
+    "title": "現在のプロジェクトの CLAUDE.md を整備する（20分）",
+    "steps": [
+      {
+        "label": "現在のコードベースと比較してギャップを洗い出す",
+        "code": "「このプロジェクトのコードを読んで、CLAUDE.md に書くべきルールのドラフトを作って。\n特に: コーディング規約・よく使うコマンド・アーキテクチャの判断事項を重点的に」"
+      },
+      {
+        "label": "暗黙のルールを明示的に書き出す",
+        "code": "「git log の最近20件のコミットと package.json を読んで、\n暗黙のルール（どのライブラリを使っているか・テスト方針等）を CLAUDE.md に追記して」"
+      },
+      {
+        "label": "禁止事項を追加する",
+        "code": "# CLAUDE.md に追加する禁止事項の例\n## やってはいけないこと\n- git push --force は使わない\n- any 型を使わない（型エラーは必ず修正する）\n- console.log をコミットに含めない\n- 環境変数を .env 以外に書かない"
+      },
+      {
+        "label": "APIルート専用の CLAUDE.md を作成する",
+        "code": "# app/api/CLAUDE.md の例\n## API ルートのルール\n- 全エンドポイントで認証チェックを行う\n- レスポンスは必ず { data, error } 形式\n- DB アクセスは lib/db.ts 経由のみ（直接クエリ禁止）\n- レート制限: 認証済み 100req/min・未認証 10req/min"
+      }
+    ]
+  },
+  "modelGuide": [
+    {
+      "model": "Claude Opus 4.7",
+      "useCase": "CLAUDE.md 設計・アーキテクチャ判断・セキュリティルール策定",
+      "cost": "high",
+      "when": "プロジェクトの方針決定や複雑なルールの体系化など、深い推論が必要なとき"
+    },
+    {
+      "model": "Claude Sonnet 4.6",
+      "useCase": "日常実装・CLAUDE.md に従ったコーディング・PR 作成",
+      "cost": "medium",
+      "when": "CLAUDE.md のルールに従って実装を進める日常的なコーディングタスク"
+    },
+    {
+      "model": "Claude Haiku 4.5",
+      "useCase": "ドキュメント生成・単純テンプレート・コメント追加",
+      "cost": "low",
+      "when": "決まった形式のドキュメントや定型コードの生成など、推論負荷が低いタスク"
+    }
+  ]
+}

@@ -1,0 +1,102 @@
+{
+  "date": "2026-05-18",
+  "updates": [
+    {
+      "title": "Claude Code Hooks 完全ガイド — PostToolUse・PreToolUse・Stop・Notification",
+      "body": "Hooks は Claude Code がツールを使う「前後」にシェルコマンドを自動実行できる仕組み。PreToolUse（ツール実行の直前）・PostToolUse（ツール実行の直後）・Stop（Claude の応答が終了したとき）・Notification の 4 種類がある。設定は ~/.claude/settings.json（グローバル）または .claude/settings.json（プロジェクト）に書く。",
+      "importance": "medium",
+      "code": {
+        "lang": "json",
+        "code": "{\n  \"hooks\": {\n    \"PostToolUse\": [\n      {\n        \"matcher\": \"Edit\",\n        \"hooks\": [{ \"type\": \"command\", \"command\": \"pnpm lint --fix\" }]\n      }\n    ]\n  }\n}"
+      }
+    },
+    {
+      "title": "PreToolUse Hook で危険なコマンドをブロックする",
+      "body": "PreToolUse で Bash コマンドの内容を検査し、rm -rf や force-push など危険な操作を防げる。Hook の終了コードが 0 以外のとき、ツール実行がキャンセルされる（PreToolUse のみ）。",
+      "importance": "medium",
+      "code": {
+        "lang": "bash",
+        "code": "#!/bin/bash\n# stdin から Bash ツールの入力 JSON を受け取る\nINPUT=$(cat)\nCOMMAND=$(echo \"$INPUT\" | jq -r '.tool_input.command // \"\"')\n\n# 危険なパターンを検出\nif echo \"$COMMAND\" | grep -qE '(rm -rf|drop table|DELETE FROM.*WHERE 1|force-push)'; then\n  echo \"⛔ ブロック: 危険なコマンドが検出されました: $COMMAND\" >&2\n  exit 1  # 0以外を返すとツール実行がキャンセルされる\nfi\n\nexit 0"
+      }
+    }
+  ],
+  "tips": [
+    {
+      "title": "ファイル編集後に自動で lint を走らせる",
+      "description": "Claude が Edit または Write でファイルを変更するたびに ESLint を自動実行する。matcher は正規表現で複数ツールを指定できる。tail -5 で出力を最後の5行に絞るとノイズが減る。",
+      "code": {
+        "lang": "json",
+        "code": "{\n  \"hooks\": {\n    \"PostToolUse\": [\n      {\n        \"matcher\": \"Edit|Write\",\n        \"hooks\": [{ \"type\": \"command\", \"command\": \"pnpm lint --fix --quiet 2>&1 | tail -5\" }]\n      }\n    ]\n  }\n}"
+      }
+    },
+    {
+      "title": "TypeScript の型エラーをファイル保存のたびに即座に検出する",
+      "description": "grep 'error TS' で型エラーのみに絞ることで、Claude が出力を参照して次の編集で自動修正できる。",
+      "code": {
+        "lang": "json",
+        "code": "{\n  \"hooks\": {\n    \"PostToolUse\": [\n      {\n        \"matcher\": \"Edit|Write\",\n        \"hooks\": [{ \"type\": \"command\", \"command\": \"pnpm tsc --noEmit 2>&1 | grep 'error TS' | head -10\" }]\n      }\n    ]\n  }\n}"
+      }
+    },
+    {
+      "title": "作業完了時に macOS 通知を送る",
+      "description": "長い処理が終わったときに Stop Hook でデスクトップ通知を出す。別の作業をしながら待てる。Linux の場合は notify-send、Windows は powershell のトースト通知が使える。",
+      "code": {
+        "lang": "json",
+        "code": "{\n  \"hooks\": {\n    \"Stop\": [\n      {\n        \"hooks\": [{ \"type\": \"command\", \"command\": \"osascript -e 'display notification \\\"Claude Code の処理が完了しました\\\" with title \\\"DevKnow\\\"'\" }]\n      }\n    ]\n  }\n}"
+      }
+    },
+    {
+      "title": "テスト対象ファイルが変更されたら自動でテストを実行する",
+      "description": "__tests__/ 配下のファイルが変更されたときだけ Vitest を走らせる。stdin から変更ファイルパスを取得してフィルタリングする。",
+      "code": {
+        "lang": "bash",
+        "code": "#!/bin/bash\nINPUT=$(cat)\nFILEPATH=$(echo \"$INPUT\" | jq -r '.tool_input.file_path // \"\"')\n\nif echo \"$FILEPATH\" | grep -qE '(__tests__|\\.test\\.|\\.spec\\.)'; then\n  echo \"🧪 テスト実行: $FILEPATH\"\n  pnpm vitest run \"$FILEPATH\" 2>&1 | tail -20\nfi"
+      }
+    },
+    {
+      "title": "作業ログを自動で記録する",
+      "description": "Claude が何をしたか .claude-log.md に自動記録する。「あの変更いつやったっけ？」が解決する。",
+      "code": {
+        "lang": "bash",
+        "code": "#!/bin/bash\nTOOL=$1\nTIMESTAMP=$(date '+%Y-%m-%d %H:%M:%S')\nINPUT=$(cat)\nFILEPATH=$(echo \"$INPUT\" | jq -r '.tool_input.file_path // .tool_input.command // \"\"' 2>/dev/null)\n\necho \"- [$TIMESTAMP] $TOOL: $FILEPATH\" >> .claude-log.md"
+      }
+    }
+  ],
+  "workflow": {
+    "title": "プロジェクトに Hook を設定する（10分）",
+    "steps": [
+      {
+        "label": ".claude/settings.json を作成する",
+        "code": "{\n  \"hooks\": {\n    \"PostToolUse\": [\n      {\n        \"matcher\": \"Edit|Write\",\n        \"hooks\": [{ \"type\": \"command\", \"command\": \"pnpm tsc --noEmit 2>&1 | grep 'error TS' | head -5\" }]\n      }\n    ],\n    \"Stop\": [\n      {\n        \"hooks\": [{ \"type\": \"command\", \"command\": \"osascript -e 'display notification \\\"完了\\\" with title \\\"Claude Code\\\"' 2>/dev/null || true\" }]\n      }\n    ]\n  }\n}"
+      },
+      {
+        "label": "Claude Code を再起動して Hook を有効化する",
+        "code": "/hooks コマンドで現在の Hook 設定を確認できる"
+      },
+      {
+        "label": "動作確認する",
+        "code": "「tsconfig.json を読んで、問題があれば指摘して」\n# Edit ツールが走るたびに型チェックが自動実行される"
+      }
+    ]
+  },
+  "modelGuide": [
+    {
+      "model": "Claude Opus 4.7",
+      "useCase": "エージェント設計・複雑な推論・セキュリティ監査",
+      "cost": "high",
+      "when": "セキュリティガードの Hook 設計など抜け漏れを防ぐ丁寧な推論が必要なとき"
+    },
+    {
+      "model": "Claude Sonnet 4.6",
+      "useCase": "API組み込み・日常コーディング・Hook スクリプト開発",
+      "cost": "medium",
+      "when": "jq/bash での JSON 処理など、ツール入力の解析に推論が必要なとき"
+    },
+    {
+      "model": "Claude Haiku 4.5",
+      "useCase": "バッチ処理・大量ドキュメント変換・分類タスク",
+      "cost": "low",
+      "when": "osascript/notify-send のような単純な通知コマンド生成"
+    }
+  ]
+}

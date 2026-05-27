@@ -1,0 +1,222 @@
+{
+  "date": "2026-05-15",
+  "theme": "海外→日本リバースインポート",
+  "perspective": "海外で既に需要が実証されているSaaSを日本市場の慣習・法令・言語に合わせて再設計する戦略。ゼロから市場を開拓するより需要実証済みのモデルを持ち込む方がリスクが低く、日本語対応だけで差別化になるケースが多い。",
+  "ideas": [
+    {
+      "name": "MeetSnap",
+      "emoji": "📝",
+      "score": 88,
+      "overview": "Zoom/Google Meet/Teamsの音声を録音して議事録を自動生成し、アクションアイテムをNotion/Backlog/Asanaに自動連携するWebアプリ。日本語の敬語・業界用語・会議特有の言い回しに特化した品質が武器。",
+      "platform": "web",
+      "direction": "overseas-to-japan",
+      "market": {
+        "target": "会議が多い日本のビジネスパーソン（IT・コンサル・不動産・金融）",
+        "size": "要調査（国内の議事録作成ツール市場は急成長中）",
+        "gap": "Otter.aiは英語特化で日本語精度が低い。Nottaは日本語対応ありだがタスク連携が弱い。Google Meetの字幕はリアルタイムのみで議事録化なし"
+      },
+      "revenue": {
+        "free": "月5回まで・録音30分以内",
+        "model": "SaaS",
+        "price": "¥1,980/人/月。無制限+Notion・Slack連携"
+      },
+      "features": [
+        "ブラウザ拡張でZoom/Meetを自動録音",
+        "Whisperで書き起こし→Claudeで議事録（決定事項・アクション・懸念点）に構造化",
+        "アクションアイテムを担当者・期日付きでNotion/Backlog/Asanaに自動登録",
+        "「この会議の決定事項だけ教えて」と自然言語で後から検索"
+      ],
+      "aiUsage": "Claudeに「会議の書き起こし」を渡し「決定事項・アクションアイテム・懸念事項・次回アジェンダ」に分類。「〜という方向で」「〜を検討しましょう」のような曖昧な言い回しの解釈精度が差別化ポイント",
+      "competitors": [
+        {
+          "name": "Otter.ai",
+          "threat": "low",
+          "weakness": "英語特化で日本語精度が低く敬語・業界用語に対応できない"
+        },
+        {
+          "name": "Notta",
+          "threat": "medium",
+          "weakness": "日本語対応ありだがタスク連携が弱い"
+        },
+        {
+          "name": "Google Meetの字幕",
+          "threat": "low",
+          "weakness": "リアルタイム字幕のみで議事録化・タスク抽出がない"
+        }
+      ],
+      "conclusion": "✅ 「議事録を手作業で書く」という明確な痛みがある。¥1,980/月は会議1回分の時間節約で回収できる",
+      "tags": ["議事録", "会議", "Whisper", "Notion連携", "日本語特化"]
+    },
+    {
+      "name": "ReceiptAI",
+      "emoji": "🧾",
+      "score": 85,
+      "overview": "スマホでレシートを撮影すると、AIが勘定科目・税区分・プロジェクトコードを自動入力し、freee/マネーフォワードに直接連携するWeb+モバイルアプリ。日本の消費税区分（軽減税率・不課税・非課税）と領収書文化に特化。",
+      "platform": "mobile",
+      "direction": "overseas-to-japan",
+      "market": {
+        "target": "フリーランス・中小企業の経営者・経理担当",
+        "size": "要調査（国内の会計SaaS市場は大きい。freee・マネーフォワードが席巻）",
+        "gap": "freee・マネーフォワードの既存ツールは「入力補助」どまり。「撮影→仕訳→連携が全自動」はない。Expensifyは日本の税制未対応"
+      },
+      "revenue": {
+        "free": "月10枚まで",
+        "model": "SaaS",
+        "price": "¥980/月。無制限+freee/MF連携"
+      },
+      "features": [
+        "スマホカメラでレシートを撮影→OCR+Claudeで金額・店名・日付・品目を自動抽出",
+        "日本の消費税区分（10%・8%・不課税・非課税）を自動判定",
+        "勘定科目を過去の仕訳パターンから学習して自動提案",
+        "freee/マネーフォワードクラウド会計にAPI連携"
+      ],
+      "aiUsage": "Claude Visionでレシート画像から情報を抽出し「このレシートはコンビニの食品購入なので軽減税率8%・勘定科目は会議費または消耗品費」と判定。ユーザーが修正するたびに学習",
+      "competitors": [
+        {
+          "name": "freee経費精算",
+          "threat": "medium",
+          "weakness": "入力補助ありだが全自動ではない。撮影→仕訳→連携が手動"
+        },
+        {
+          "name": "マネーフォワード",
+          "threat": "medium",
+          "weakness": "同上"
+        },
+        {
+          "name": "Expensify",
+          "threat": "low",
+          "weakness": "日本の消費税区分（軽減税率制度）に未対応"
+        }
+      ],
+      "conclusion": "✅ freeeユーザー向けのアドオンとして展開すれば既存ユーザーへのリーチが容易。インボイス制度対応も追い風",
+      "tags": ["経費精算", "レシートOCR", "消費税", "freee連携", "自動仕訳"]
+    },
+    {
+      "name": "NaikaiNote",
+      "emoji": "🏠",
+      "score": 79,
+      "overview": "物件内見中にスマホで音声メモ・写真を撮ると、AIが物件ごとの特徴・懸念点をまとめ複数物件の比較レポートを自動生成するモバイルアプリ。日本の賃貸・購入フロー（仲介手数料・礼金・管理費・修繕積立金）に特化。",
+      "platform": "mobile",
+      "direction": "overseas-to-japan",
+      "market": {
+        "target": "引越し・購入を検討中で複数物件を内見している個人",
+        "size": "要調査（年間の引越し件数は数百万件規模と推定）",
+        "gap": "SUUMO・HOME'Sは物件検索で内見メモ機能なし。Evernote/Notionは汎用メモで比較レポート生成なし。不動産仲介アプリはAI分析なし"
+      },
+      "revenue": {
+        "free": "物件3件まで",
+        "model": "買い切り",
+        "price": "¥480（または買い切り¥1,480）。無制限+PDF出力"
+      },
+      "features": [
+        "内見中に音声で「日当たりが良い」「収納が狭い」とメモを録音",
+        "撮影した写真を自動分類（LDK・水回り・収納・外観など）",
+        "複数物件を「家賃・広さ・最寄り駅・特徴・懸念点」で比較するA4レポートを生成",
+        "「この物件で気になった点は？」と後からチャットで確認"
+      ],
+      "aiUsage": "Claudeに「内見メモ」「写真の説明」を渡し物件ごとのサマリーと比較表を生成。「この物件の最大のリスクは何か」を要約する機能が差別化",
+      "competitors": [
+        {
+          "name": "SUUMO・HOME'S",
+          "threat": "low",
+          "weakness": "物件検索サービスで内見メモ・AI分析機能がない"
+        },
+        {
+          "name": "Evernote / Notion",
+          "threat": "low",
+          "weakness": "汎用メモで比較レポート生成・不動産特化UIがない"
+        },
+        {
+          "name": "不動産仲介アプリ各社",
+          "threat": "low",
+          "weakness": "物件管理のみでAI分析なし"
+        }
+      ],
+      "conclusion": "✅ 内見は「あの物件どうだったっけ」になりやすい。¥480/月の低価格でダウンロード数を稼ぎ、不動産業者向け法人プランで収益化する二段構えが有効",
+      "tags": ["不動産", "内見", "物件比較", "音声メモ", "引越し"]
+    },
+    {
+      "name": "HelpLocalizer",
+      "emoji": "📊",
+      "score": 75,
+      "overview": "英語のSaaSヘルプページURLを入力すると、Claudeが日本語ドキュメントに翻訳・再構成し、Intercom/Zendesk/NotionにインポートできるB2Bツール。日本市場に進出しようとしている海外SaaS企業がターゲット。",
+      "platform": "web",
+      "direction": "overseas-to-japan",
+      "market": {
+        "target": "日本市場に進出中の海外SaaS企業のマーケティング・CS担当",
+        "size": "要調査（日本に進出する海外SaaSは増加傾向）",
+        "gap": "DeepLは翻訳APIのみでフォーマット変換なし。Crowdinはローカリゼーション管理でAI最適化が弱い。「ヘルプドキュメント特化×SaaS向けフォーマット変換」の専門ツールはない"
+      },
+      "revenue": {
+        "free": "ページ5件まで",
+        "model": "SaaS",
+        "price": "Starter $49/月。ページ50件/月・Notion出力"
+      },
+      "features": [
+        "英語ヘルプページのURLを一括入力→サイトクロール→全ページを日本語化",
+        "「〜してください」「〜できます」などCS向けの自然な日本語表現に変換",
+        "Intercom Articles/Zendesk Guide/NotionにインポートできるJSONで出力",
+        "原文との差分管理（英語ドキュメントが更新されたら通知）"
+      ],
+      "aiUsage": "Claudeに英語ヘルプドキュメントを渡し「日本のSaaSユーザー向けに自然な日本語でリライト」させる。マーケティング的な誇張表現をCS向けの中立な表現に変換する指示も有効",
+      "competitors": [
+        {
+          "name": "DeepL",
+          "threat": "low",
+          "weakness": "翻訳APIのみでフォーマット変換・SaaS向けインポート機能がない"
+        },
+        {
+          "name": "Crowdin",
+          "threat": "medium",
+          "weakness": "ローカリゼーション管理でAI最適化が弱い"
+        },
+        {
+          "name": "Phrase",
+          "threat": "medium",
+          "weakness": "同上"
+        }
+      ],
+      "conclusion": "✅ 海外SaaSの日本語対応は常に後回しにされる。$49/月×50社=月収$2,450が現実的な目標",
+      "tags": ["ローカライズ", "ヘルプドキュメント", "SaaS", "翻訳", "B2B"]
+    },
+    {
+      "name": "ConfTech",
+      "emoji": "🎓",
+      "score": 68,
+      "overview": "Google I/O・AWS re:Invent・WWDCなどの技術カンファレンス動画URLを入力すると、Whisperで書き起こし→Claudeが日本語解説記事（Zenn/Qiita向けフォーマット）を自動生成するWebツール。",
+      "platform": "web",
+      "direction": "overseas-to-japan",
+      "market": {
+        "target": "Zenn/Qiitaで技術記事を書くエンジニア（情報発信に時間をかけられない層）",
+        "size": "要調査",
+        "gap": "ChatGPTは汎用的で動画URLからの直接処理は手間がかかる。「カンファレンス動画→日本語記事」の自動化ツールはない"
+      },
+      "revenue": {
+        "free": "月3本・動画30分以内",
+        "model": "SaaS",
+        "price": "¥1,480/月。無制限+Zenn向けマークダウン出力"
+      },
+      "features": [
+        "YouTube/カンファレンスサイトのURLを入力→自動書き起こし",
+        "Claudeが「概要・主な発表・コード変更点・日本語エンジニアへの影響」で記事を構成",
+        "Zenn/Qiita向けのマークダウン形式で出力",
+        "関連する公式ドキュメントリンクを自動付与"
+      ],
+      "aiUsage": "Whisper（書き起こし）→Claude（構造化・日本語記事化）のパイプライン。「この発表が日本の開発現場に与える影響」のような考察パートもClaudeが生成",
+      "competitors": [
+        {
+          "name": "ChatGPT",
+          "threat": "medium",
+          "weakness": "汎用的で動画URLからの一気通貫処理は手間がかかる"
+        },
+        {
+          "name": "Zenn/Qiitaの執筆者",
+          "threat": "low",
+          "weakness": "競合ではなくユーザー候補"
+        }
+      ],
+      "conclusion": "✅ 「カンファレンス翌日に日本語記事を出す」需要は確実にある。著作権リスクの整理が必要",
+      "tags": ["技術記事", "カンファレンス", "Whisper", "Zenn", "自動生成"]
+    }
+  ]
+}

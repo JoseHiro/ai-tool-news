@@ -15,11 +15,19 @@ export async function readDocFile(type: DocType, date: string): Promise<string |
 export async function getDocDates(): Promise<string[]> {
   const dateSet = new Set<string>()
   for (const type of ['claude', 'ideas'] as DocType[]) {
-    const dir = join(process.cwd(), 'public', 'docs', type)
+    const mdDir = join(process.cwd(), 'public', 'docs', type)
     try {
-      const files = await readdir(dir)
+      const files = await readdir(mdDir)
       files
         .filter(f => /^\d{4}-\d{2}-\d{2}\.md$/.test(f))
+        .forEach(f => dateSet.add(f.slice(0, 10)))
+    } catch { /* dir doesn't exist */ }
+
+    const jsonDir = join(process.cwd(), 'public', 'data', type)
+    try {
+      const files = await readdir(jsonDir)
+      files
+        .filter(f => /^\d{4}-\d{2}-\d{2}\.json$/.test(f))
         .forEach(f => dateSet.add(f.slice(0, 10)))
     } catch { /* dir doesn't exist */ }
   }

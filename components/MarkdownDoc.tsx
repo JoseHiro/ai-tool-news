@@ -23,9 +23,9 @@ function detectTag(heading: string): string {
   return 'UPDATE'
 }
 
-// ── Claude section card ───────────────────────────────────────────────────────
+// ── Claude section (document-style, no card box) ──────────────────────────────
 
-function ClaudeCard({ section, components, date, likedKeys }: {
+function ClaudeSection({ section, components, date, likedKeys }: {
   section: ClaudeSection
   components: Components
   date?: string
@@ -33,7 +33,7 @@ function ClaudeCard({ section, components, date, likedKeys }: {
 }) {
   if (!section.heading) {
     return (
-      <div className="pb-2">
+      <div className="mb-6">
         <ReactMarkdown remarkPlugins={[remarkGfm]} components={components}>
           {section.body}
         </ReactMarkdown>
@@ -46,26 +46,22 @@ function ClaudeCard({ section, components, date, likedKeys }: {
   const liked = likedKeys?.has(`tip:${date}:${contentKey}`) ?? false
 
   return (
-    <div
-      id={section.id}
-      style={{ border: '1px solid var(--border)' }}
-      className="mb-3 overflow-hidden rounded-xl"
-    >
-      {/* Header */}
+    <div id={section.id} className="mb-10">
+      {/* Heading row */}
       <div
-        style={{ background: 'var(--sidebar-bg)', borderBottom: '1px solid var(--border)' }}
-        className="flex items-center justify-between px-5 py-3"
+        style={{ borderBottom: '1px solid var(--border)' }}
+        className="mb-5 flex items-center justify-between pb-3"
       >
-        <div className="flex items-center gap-2">
+        <div className="flex items-center gap-2.5">
           <span
             style={{ color: 'var(--text-muted)', border: '1px solid var(--border)' }}
-            className="rounded px-1.5 py-0.5 text-[9px] font-bold uppercase tracking-widest"
+            className="rounded px-1.5 py-0.5 text-[9px] font-bold uppercase tracking-widest shrink-0"
           >
             {tag}
           </span>
-          <span style={{ color: 'var(--text)' }} className="text-sm font-semibold leading-snug">
+          <h2 style={{ color: 'var(--text)' }} className="text-[15px] font-semibold leading-snug">
             {section.heading}
-          </span>
+          </h2>
         </div>
         {date && likedKeys !== undefined && (
           <LikeButton
@@ -79,11 +75,9 @@ function ClaudeCard({ section, components, date, likedKeys }: {
       </div>
 
       {/* Body */}
-      <div style={{ background: 'var(--bg)' }} className="px-5 py-4">
-        <ReactMarkdown remarkPlugins={[remarkGfm]} components={components}>
-          {section.body}
-        </ReactMarkdown>
-      </div>
+      <ReactMarkdown remarkPlugins={[remarkGfm]} components={components}>
+        {section.body}
+      </ReactMarkdown>
     </div>
   )
 }
@@ -105,7 +99,7 @@ function IdeaCard({ block, components, date, likedKeys }: {
     <div
       id={block.id}
       style={{ border: '1px solid var(--border)' }}
-      className="mb-3 overflow-hidden rounded-xl"
+      className="mb-4 overflow-hidden rounded-xl"
     >
       {/* Header */}
       <div
@@ -143,7 +137,7 @@ function IdeaCard({ block, components, date, likedKeys }: {
       </div>
 
       {/* Body */}
-      <div style={{ background: 'var(--bg)' }} className="px-5 py-4">
+      <div style={{ background: 'var(--bg)' }} className="px-5 py-5">
         <ReactMarkdown remarkPlugins={[remarkGfm]} components={components}>
           {block.body}
         </ReactMarkdown>
@@ -196,26 +190,26 @@ function makeComponents(): Components {
     h1: () => null,
     h2: ({ children }) => (
       <h2 style={{ color: 'var(--text)', borderBottom: '1px solid var(--border)' }}
-        className="mb-3 mt-4 pb-2 text-sm font-semibold first:mt-0">
+        className="mb-3 mt-6 pb-2 text-sm font-semibold first:mt-0">
         {children}
       </h2>
     ),
     h3: ({ children }) => (
-      <h3 style={{ color: 'var(--text)' }} className="mb-2 mt-4 text-sm font-medium">
+      <h3 style={{ color: 'var(--text)' }} className="mb-2 mt-5 text-[13px] font-semibold uppercase tracking-wide">
         {children}
       </h3>
     ),
     p: ({ children }) => (
-      <p style={{ color: 'var(--text-muted)' }} className="mb-3 text-sm leading-relaxed last:mb-0">
+      <p style={{ color: 'var(--text-muted)' }} className="mb-3.5 text-[15px] leading-[1.7] last:mb-0">
         {children}
       </p>
     ),
-    ul: ({ children }) => <ul className="mb-4 space-y-1.5">{children}</ul>,
-    ol: ({ children }) => <ol className="mb-4 space-y-1.5 list-none">{children}</ol>,
+    ul: ({ children }) => <ul className="mb-4 space-y-2">{children}</ul>,
+    ol: ({ children }) => <ol className="mb-4 space-y-2 list-none">{children}</ol>,
     li: ({ children, ...props }) => {
       const isOrdered = (props as { ordered?: boolean }).ordered
       return (
-        <li style={{ color: 'var(--text)' }} className="flex gap-2 text-sm leading-relaxed">
+        <li style={{ color: 'var(--text)' }} className="flex gap-2.5 text-[15px] leading-[1.7]">
           <span style={{ color: 'var(--text-muted)' }} className="mt-0.5 shrink-0 select-none">
             {isOrdered ? '›' : '–'}
           </span>
@@ -240,7 +234,7 @@ function makeComponents(): Components {
       const isBlock = !!className
       if (isBlock) {
         return (
-          <div className="mb-4 overflow-hidden rounded-lg" style={{ border: '1px solid var(--border)' }}>
+          <div className="mb-5 overflow-hidden rounded-lg" style={{ border: '1px solid var(--border)' }}>
             {lang && (
               <div style={{ background: 'var(--hover)', borderBottom: '1px solid var(--border)', color: 'var(--text-muted)' }}
                 className="px-4 py-1.5 text-[10px] font-mono font-semibold uppercase tracking-wider">
@@ -248,7 +242,7 @@ function makeComponents(): Components {
               </div>
             )}
             <code style={{ background: 'var(--sidebar-bg)', color: 'var(--text)' }}
-              className="block px-4 py-3 text-xs leading-relaxed font-mono whitespace-pre-wrap">
+              className="block px-4 py-4 text-[13px] leading-relaxed font-mono whitespace-pre-wrap">
               {children}
             </code>
           </div>
@@ -256,7 +250,7 @@ function makeComponents(): Components {
       }
       return (
         <code style={{ background: 'var(--hover)', color: 'var(--text)' }}
-          className="rounded px-1.5 py-0.5 text-xs font-mono">
+          className="rounded px-1.5 py-0.5 text-[13px] font-mono">
           {children}
         </code>
       )
@@ -264,14 +258,14 @@ function makeComponents(): Components {
     pre: ({ children }) => <>{children}</>,
     blockquote: ({ children }) => (
       <blockquote style={{ borderColor: 'var(--accent)', background: 'var(--hover)' }}
-        className="mb-4 rounded-r-lg border-l-2 px-4 py-3 text-sm">
+        className="mb-4 rounded-r-lg border-l-2 px-4 py-3 text-[15px]">
         {children}
       </blockquote>
     ),
-    hr: () => <hr style={{ borderColor: 'var(--border)' }} className="my-4" />,
+    hr: () => <hr style={{ borderColor: 'var(--border)' }} className="my-6" />,
     table: ({ children }) => (
-      <div className="mb-4 overflow-x-auto rounded-lg" style={{ border: '1px solid var(--border)' }}>
-        <table className="w-full text-sm border-collapse">{children}</table>
+      <div className="mb-5 overflow-x-auto rounded-lg" style={{ border: '1px solid var(--border)' }}>
+        <table className="w-full border-collapse">{children}</table>
       </div>
     ),
     thead: ({ children }) => <thead style={{ background: 'var(--sidebar-bg)' }}>{children}</thead>,
@@ -288,7 +282,7 @@ function makeComponents(): Components {
       </th>
     ),
     td: ({ children }) => (
-      <td style={{ color: 'var(--text-muted)' }} className="px-4 py-2.5 text-xs">
+      <td style={{ color: 'var(--text-muted)' }} className="px-4 py-3 text-sm">
         {children}
       </td>
     ),
@@ -302,12 +296,12 @@ const DOC_META = {
   ideas:  { tag: 'IDEAS',  label: '個人開発アイデア' },
 }
 
-export function MarkdownDoc({ content, type, id, date, likedKeys }: {
+export function MarkdownDoc({ content, type, id, date, likedKeys: likedKeysArr }: {
   content: string
   type: 'claude' | 'ideas'
   id?: string
   date?: string
-  likedKeys?: Set<string>
+  likedKeys?: string[]
 }) {
   const meta = DOC_META[type]
   const body = content
@@ -316,11 +310,12 @@ export function MarkdownDoc({ content, type, id, date, likedKeys }: {
     .trim()
 
   const components = makeComponents()
+  const likedKeys = likedKeysArr ? new Set(likedKeysArr) : undefined
 
   return (
     <div id={id}>
       {/* Section label */}
-      <div style={{ borderBottom: '1px solid var(--border)' }} className="mb-4 flex items-center gap-2.5 pb-2.5">
+      <div style={{ borderBottom: '1px solid var(--border)' }} className="mb-6 flex items-center gap-2.5 pb-3">
         <span
           style={{ color: 'var(--text-muted)', border: '1px solid var(--border)' }}
           className="rounded px-1.5 py-0.5 text-[9px] font-bold uppercase tracking-widest"
@@ -333,7 +328,7 @@ export function MarkdownDoc({ content, type, id, date, likedKeys }: {
       </div>
 
       {type === 'claude' && splitByH2(body, id).map((s, i) => (
-        <ClaudeCard key={i} section={s} components={components} date={date} likedKeys={likedKeys} />
+        <ClaudeSection key={i} section={s} components={components} date={date} likedKeys={likedKeys} />
       ))}
       {type === 'ideas' && (
         <IdeasRenderer blocks={splitIdeas(body, id)} components={components} date={date} likedKeys={likedKeys} />

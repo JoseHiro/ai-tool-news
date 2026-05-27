@@ -8,12 +8,14 @@ export interface UserRow {
   created_at: string
 }
 
+import postgres from 'postgres'
+
+let _sql: ReturnType<typeof postgres> | null = null
 function getSql() {
-  // eslint-disable-next-line @typescript-eslint/no-require-imports
-  const { neon } = require('@neondatabase/serverless')
   const url = process.env.DATABASE_URL ?? process.env.POSTGRES_URL ?? process.env.POSTGRES_URL_NON_POOLING
   if (!url) throw new Error('DATABASE_URL not set')
-  return neon(url)
+  if (!_sql) _sql = postgres(url, { ssl: 'require', max: 5 })
+  return _sql
 }
 
 async function ensureUsersTable() {

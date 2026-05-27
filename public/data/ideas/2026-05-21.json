@@ -1,0 +1,209 @@
+{
+  "date": "2026-05-21",
+  "theme": "毎日使うのに不満が残るツールの日本語最適化・個人開発スケール版",
+  "perspective": "海外SaaSが席巻しているカテゴリの中で「日本語対応が甘い」「個人・小チームには高すぎる」という隙間を狙う。生産性・コミュニケーション・コンテンツ作業の3領域に絞った。",
+  "ideas": [
+    {
+      "name": "MeetSnap",
+      "emoji": "🎙️",
+      "score": 84,
+      "overview": "Zoom・Google Meet・Teams の録音を日本語で文字起こしし、アクションアイテムを自動抽出。会議後5分以内にSlackへ要約を送る。",
+      "platform": "web",
+      "direction": "overseas-to-japan",
+      "market": {
+        "target": "週3回以上オンライン会議がある国内ビジネスパーソン",
+        "size": "国内Web会議ツール市場は約1,200億円（2024年）。文字起こしSaaS単体は約80億円規模",
+        "gap": "Notta（月¥1,980〜）は日本語精度が英語比で約15%低く、アクションアイテム抽出が手動。Otter.aiは日本語非対応"
+      },
+      "revenue": {
+        "free": "月5回まで・1会議30分まで",
+        "model": "SaaS",
+        "price": "¥980/月（無制限）"
+      },
+      "features": [
+        "Whisper Large v3 による日本語文字起こし（誤り率 <5% 目標）",
+        "Claude による要約・アクションアイテム・決定事項の自動抽出",
+        "Slack / Notion / Google Docs への自動エクスポート",
+        "話者分離（最大8人）",
+        "過去録音の全文検索"
+      ],
+      "aiUsage": "Whisper で音声→テキスト変換、Claude Haiku でアクションアイテム抽出と要約生成。コストは1会議あたり約¥3〜5",
+      "competitors": [
+        {
+          "name": "Notta",
+          "threat": "high",
+          "weakness": "日本語の固有名詞・専門用語の誤認識が多い。Slack連携はエンタープライズプランのみ（¥3,800/月〜）"
+        },
+        {
+          "name": "Fireflies.ai",
+          "threat": "medium",
+          "weakness": "日本語UIなし。無料プランは800分/月の上限あり、要約品質が低い"
+        }
+      ],
+      "conclusion": "✅ 競合の日本語精度の弱点を突ける。Whisper+Claudeで技術的差別化が可能",
+      "tags": ["会議", "文字起こし", "Whisper", "Slack連携", "生産性"]
+    },
+    {
+      "name": "FocusBlock",
+      "emoji": "⏱️",
+      "score": 81,
+      "overview": "TaskChuteの「タイムブロッキング」手法をベースに、日本発の時間管理メソッドを英語圏向けにWebアプリ化。Sunsamaより安く、Motionより単純。",
+      "platform": "web",
+      "direction": "japan-to-overseas",
+      "market": {
+        "target": "フリーランス・リモートワーカー（米・欧・豪）",
+        "size": "タスク管理SaaS市場は約$5.6B（2024年）。Sunsamaは約20万ユーザー",
+        "gap": "Sunsama（$20/月）はカレンダー連携が複雑でオンボーディング離脱率が高い。Motion（$34/月）はAIスケジュールが過度に自動化されコントロール感がない"
+      },
+      "revenue": {
+        "free": "タスク10件まで・1週間分の履歴のみ",
+        "model": "SaaS",
+        "price": "$4.99/月（個人）/ $8.99/月（チーム2名まで）"
+      },
+      "features": [
+        "日次タイムブロックのドラッグ&ドロップ編集",
+        "実績時間 vs 見積もり時間の自動比較",
+        "週次レポート（完了率・集中時間グラフ）",
+        "Google Calendar 双方向同期",
+        "ポモドーロタイマー内蔵"
+      ],
+      "aiUsage": "Claude Haiku で「この週のタスクパターンから来週のブロック配置を提案」。月次コスト試算: MAU 1,000人で約$15",
+      "competitors": [
+        {
+          "name": "Sunsama",
+          "threat": "high",
+          "weakness": "月$20と高価。Slack・Asanaなど5サービス連携が必須でシンプルユーザーが脱落しやすい"
+        },
+        {
+          "name": "Todoist",
+          "threat": "medium",
+          "weakness": "タイムブロッキング機能なし。カレンダービューが別アプリ（Twist）依存"
+        }
+      ],
+      "conclusion": "✅ TaskChuteの海外版という明確なポジション。$5以下の価格帯に競合が少ない",
+      "tags": ["タイムブロッキング", "生産性", "TaskChute", "海外展開", "フリーランス"]
+    },
+    {
+      "name": "Shipfast JP",
+      "emoji": "🚀",
+      "score": 79,
+      "overview": "Shipfast（$299）の日本版。Next.js + Supabase + Stripe の日本語スターターキットで、日本の税務・決済（PAY.JP/Stripe）に対応したボイラープレートを提供。",
+      "platform": "web",
+      "direction": "cheaper-alternative",
+      "market": {
+        "target": "Next.jsで個人SaaSを作りたい国内エンジニア",
+        "size": "要調査。Shipfastは約15,000本販売（$299×15,000 = $4.5M相当）",
+        "gap": "Shipfastは英語UIのみ・消費税/インボイス対応なし・PAY.JP非対応。日本語版が存在しない"
+      },
+      "revenue": {
+        "free": "なし（買い切り）",
+        "model": "買い切り",
+        "price": "¥14,800（基本）/ ¥24,800（チーム利用ライセンス）"
+      },
+      "features": [
+        "Next.js 15 App Router + TypeScript",
+        "Supabase Auth（メール・Google・GitHub）",
+        "Stripe + PAY.JP 決済テンプレート",
+        "消費税・インボイス対応の請求書生成",
+        "日本語 LP テンプレート5種",
+        "定期アップデート（6ヶ月）"
+      ],
+      "aiUsage": "Claude Code でコード生成・カスタマイズ支援のドキュメント整備。製品自体にAI機能は不要",
+      "competitors": [
+        {
+          "name": "Shipfast",
+          "threat": "medium",
+          "weakness": "日本語対応ゼロ。消費税計算・インボイス番号フィールドなし。PAY.JP統合なし"
+        },
+        {
+          "name": "create-t3-app",
+          "threat": "low",
+          "weakness": "無料だが決済・認証の実装は自前。スターターとしてゼロから組む工数がかかる"
+        }
+      ],
+      "conclusion": "✅ 日本固有の税務・決済対応が明確な差別化ポイント。一度作れば継続収益",
+      "tags": ["Next.js", "ボイラープレート", "Stripe", "PAY.JP", "インボイス"]
+    },
+    {
+      "name": "PasteLocal",
+      "emoji": "📋",
+      "score": 76,
+      "overview": "Carbonの日本語対応・高機能版。コードスニペットを美しい画像として保存・共有できるWebツール。Zenn/Qiita投稿用の日本語フォント対応が強み。",
+      "platform": "web",
+      "direction": "cheaper-alternative",
+      "market": {
+        "target": "技術ブログ・Zenn/Qiita投稿者、SNSでコードを共有するエンジニア",
+        "size": "Carbonは月間約200万PV（SimilarWeb推定）。日本のZennは月間約1,500万PV",
+        "gap": "Carbon はNoto Sans JP非対応で日本語コメントが文字化けすることがある。有料プランなくカスタムテーマの保存不可"
+      },
+      "revenue": {
+        "free": "基本機能・5テーマ・画像保存",
+        "model": "SaaS",
+        "price": "¥490/月（カスタムテーマ無制限・SVGエクスポート・チーム共有）"
+      },
+      "features": [
+        "Noto Sans JP / Noto Sans Mono 完全対応",
+        "50+言語シンタックスハイライト",
+        "Figmaライクなカスタムテーマエディタ",
+        "SVG・PNG・WebPエクスポート",
+        "Zenn/Qiita 記事用のMarkdown埋め込みコード生成",
+        "チームテーマ共有"
+      ],
+      "aiUsage": "Claude Haiku でコードの説明コメントを自動生成（オプション機能）",
+      "competitors": [
+        {
+          "name": "Carbon",
+          "threat": "medium",
+          "weakness": "日本語フォントが不安定。保存機能なし（ログイン不要だがステートレス）。モバイル非対応"
+        },
+        {
+          "name": "Ray.so",
+          "threat": "low",
+          "weakness": "テーマが5種のみ。日本語フォント選択不可。Figmaプラグインのみで単体利用が不便"
+        }
+      ],
+      "conclusion": "✅ 日本語エンジニアの痒い所に届く。LPは英語でも出せるのでグローバル展開もできる",
+      "tags": ["コードシェア", "Carbon", "Zenn", "Qiita", "画像生成"]
+    },
+    {
+      "name": "ReviewPilot",
+      "emoji": "🔍",
+      "score": 72,
+      "overview": "CodeRabbit（$12/月〜）の個人開発者向け安価版。GitHub PRに自動でコードレビューコメントを付ける。1リポジトリ限定の個人プランを¥490で提供。",
+      "platform": "web",
+      "direction": "cheaper-alternative",
+      "market": {
+        "target": "個人・副業でGitHub使っているエンジニア",
+        "size": "GitHub個人ユーザーは約1億人。CodeRabbitは約15万リポジトリで利用（公式ブログより）",
+        "gap": "CodeRabbitの無料プランはOSSのみ。個人プライベートリポジトリは$12/月〜。個人開発者には高い"
+      },
+      "revenue": {
+        "free": "パブリックリポジトリ無制限",
+        "model": "SaaS",
+        "price": "¥490/月（プライベートリポジトリ3つまで）/ ¥1,480/月（無制限）"
+      },
+      "features": [
+        "PR差分に対するインラインコメント（バグ・型エラー・セキュリティ指摘）",
+        "日本語でのレビューコメント生成",
+        "TypeScript / Python / Go / Ruby 対応",
+        "CLAUDE.md / .reviewpilot.yml によるルールカスタマイズ",
+        "週次サマリーレポート"
+      ],
+      "aiUsage": "Claude Sonnet 4.6 でPR差分を解析しコードレビューコメントを生成。1PR あたり約¥8〜15のコスト",
+      "competitors": [
+        {
+          "name": "CodeRabbit",
+          "threat": "high",
+          "weakness": "個人プランが$12/月と高い。日本語UIなし。設定がYAMLのみで初心者に難しい"
+        },
+        {
+          "name": "GitHub Copilot Code Review",
+          "threat": "medium",
+          "weakness": "Copilotサブスク（$10/月）が必要。レビューの粒度が粗くインライン指摘が少ない"
+        }
+      ],
+      "conclusion": "✅ 価格差別化が明確。ただしLLMコスト管理が重要で、1ユーザーあたりの利益率を事前試算すること",
+      "tags": ["コードレビュー", "GitHub", "Claude", "CodeRabbit", "自動化"]
+    }
+  ]
+}

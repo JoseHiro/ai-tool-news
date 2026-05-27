@@ -13,6 +13,7 @@ const PUBLIC_PATHS = [
   '/api/auth/reset-password',
   '/api/stripe/webhook',  // Stripe からのリクエストはセッションなし
   '/stripe/success',
+  '/api/og',
 ]
 
 export function proxy(req: NextRequest) {

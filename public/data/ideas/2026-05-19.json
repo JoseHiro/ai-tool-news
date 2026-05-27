@@ -1,0 +1,232 @@
+{
+  "date": "2026-05-19",
+  "theme": "情報整理・記録・共有ツールのローカライズとコスト削減",
+  "perspective": "読書ログ・動画共有・タスク管理という日常的に使う分野で、海外ツールが高価だったり日本語対応が不十分だったりする領域を狙う。",
+  "ideas": [
+    {
+      "name": "KindleLog",
+      "emoji": "📖",
+      "score": 85,
+      "overview": "Kindle・Koboなどの電子書籍のハイライトを自動収集し、忘却曲線に基づいた復習通知を送るアプリ。ReadwiseがAmazon JPの仕様差により対応できていない日本語書籍市場に参入する。",
+      "platform": "web",
+      "direction": "overseas-to-japan",
+      "market": {
+        "target": "電子書籍ユーザー（日本の電子書籍市場2024年：約6,900億円、前年比8%増）",
+        "size": "Readwiseは$7.99/月・2022年時点でMRR $500k超（IndieHackers掲載）",
+        "gap": "ReadwiseはAmazon JPのKindleハイライトを取得できない（Amazon JPのAPI仕様の違いによる）。日本語書籍に特化した代替アプリが存在しない"
+      },
+      "revenue": {
+        "free": "直近3冊のハイライト管理・1日1件の復習通知",
+        "model": "SaaS",
+        "price": "¥490/月（Readwiseより約$1安く設定）"
+      },
+      "features": [
+        "Amazon JPのKindleハイライトページを自動同期（スクレイピング）",
+        "忘却曲線（SuperMemo SM-2アルゴリズム）に基づく毎日の復習通知",
+        "ハイライトへのメモ・タグ追加",
+        "Obsidian/Notionへのエクスポート",
+        "読書ログ（読んだ冊数・ジャンル分布）"
+      ],
+      "aiUsage": "Claude Haikuでハイライトの要約を自動生成（「この本のポイント3行で」）。関連するハイライト同士をベクトル検索でクラスタリング。「このハイライトを今の仕事にどう活かせるか？」をClaude Sonnetで提案",
+      "competitors": [
+        {
+          "name": "Readwise",
+          "threat": "low",
+          "weakness": "Amazon JP KindleのハイライトをAPIで取得できない。日本語書籍市場に対応していない"
+        },
+        {
+          "name": "ブクログ",
+          "threat": "medium",
+          "weakness": "読書記録特化でハイライト復習機能なし"
+        },
+        {
+          "name": "Obsidian",
+          "threat": "low",
+          "weakness": "設定が複雑で一般ユーザー向けではない"
+        }
+      ],
+      "conclusion": "✅ 海外→日本の明確な穴。¥490/月×1,000ユーザー=月49万円の収益が見えやすい。先行者がいない今が参入タイミング",
+      "tags": ["Kindle", "ハイライト", "Readwise", "読書", "スペースドリペティション"]
+    },
+    {
+      "name": "SnapRecap",
+      "emoji": "🎬",
+      "score": 82,
+      "overview": "画面録画動画をAIが自動で文字起こし・要約・チャプター分割するWebアプリ。Loomが$8/月〜と高く日本語文字起こし精度が低い問題を日本語特化・低価格で解決する。",
+      "platform": "web",
+      "direction": "cheaper-alternative",
+      "market": {
+        "target": "リモートワーカー・フリーランス・SaaSのカスタマーサクセス担当",
+        "size": "Loomは2023年AtlassianがU$975Mで買収。ユーザー数2,500万人以上（公式）",
+        "gap": "Loomの日本語文字起こし精度は低い（Whisper未使用）。日本語特化の画面録画+AI要約ツールが存在しない"
+      },
+      "revenue": {
+        "free": "月5件まで・5分以内・要約3件",
+        "model": "SaaS",
+        "price": "¥490/月（Loom Starterの約5分の1）"
+      },
+      "features": [
+        "ブラウザ拡張またはElectronデスクトップアプリで画面録画",
+        "Whisper large-v3で日本語文字起こし（精度95%+）",
+        "Claude Haikuで要約・チャプタータイトルの自動生成",
+        "動画URL共有・コメント機能",
+        "Slack/Notionへの埋め込みリンク生成"
+      ],
+      "aiUsage": "Whisper large-v3で文字起こし（$0.006/分）。Claude Haikuで要約・チャプタータイトル生成（1動画あたり約$0.003）。「この動画について質問する」チャット機能",
+      "competitors": [
+        {
+          "name": "Loom",
+          "threat": "medium",
+          "weakness": "日本語文字起こし精度が低い・$8/月〜と高い"
+        },
+        {
+          "name": "Claap",
+          "threat": "medium",
+          "weakness": "英語のみ"
+        },
+        {
+          "name": "tl;dv",
+          "threat": "medium",
+          "weakness": "会議録画特化で画面録画なし"
+        }
+      ],
+      "conclusion": "✅ Whisper+Claude Haikuのコスト構造で1動画あたり$0.01未満で処理できる。Next.js+FFmpeg+Vercelでフルスタック実装可能",
+      "tags": ["画面録画", "Whisper", "Loom", "日本語要約", "チャプター"]
+    },
+    {
+      "name": "KajiShare",
+      "emoji": "🏠",
+      "score": 78,
+      "overview": "家の掃除・洗濯・料理などの家事を頻度と担当者を設定して管理するアプリ。海外のTodyを参考に日本の家事分担（ゴミ出し・浴室掃除・粗大ゴミ申請）に特化した機能を追加する。",
+      "platform": "mobile",
+      "direction": "overseas-to-japan",
+      "market": {
+        "target": "共働きカップル・夫婦（日本の共働き世帯2024年：約1,278万世帯）",
+        "size": "Todyはpp Store 4.7⭐・$1.99/月 Pro。英語圏で人気",
+        "gap": "Todyは日本語未対応。日本製の「OurHome」が有名だが通知機能が弱くカスタムタスク（粗大ゴミ申請日・地域固有の家事）に対応していない"
+      },
+      "revenue": {
+        "free": "1世帯・タスク10件まで",
+        "model": "買い切り",
+        "price": "¥370買い切り or ¥490/年（写真記録・リマインダー強化）"
+      },
+      "features": [
+        "家事タスク登録（名前・頻度・担当者・最終実施日）",
+        "「今週やること」ダッシュボード",
+        "パートナーとリアルタイム共有",
+        "ゴミ出し日カレンダー連携（市区町村データを手動登録）",
+        "家事完了の写真記録（「ちゃんとやった証拠」機能）"
+      ],
+      "aiUsage": "Claude Haikuで「今週やるべき家事の優先順位」を自動提案。「最近どっちが多く家事してる？」の自然言語レポート生成",
+      "competitors": [
+        {
+          "name": "OurHome",
+          "threat": "high",
+          "weakness": "日本製で強い。通知機能・カスタムタスクが弱い"
+        },
+        {
+          "name": "Tody",
+          "threat": "low",
+          "weakness": "日本語なし・日本固有タスク（粗大ゴミ申請等）なし"
+        },
+        {
+          "name": "Google Tasks",
+          "threat": "low",
+          "weakness": "共有・頻度設定・写真記録なし"
+        }
+      ],
+      "conclusion": "✅ OurHomeとの差別化は「完了写真記録」と「AI優先順位提案」。React Nativeで iOS/Android同時リリース必須",
+      "tags": ["家事", "共働き", "OurHome", "家事分担", "カップル"]
+    },
+    {
+      "name": "SheetToNotion",
+      "emoji": "📊",
+      "score": 74,
+      "overview": "Excel/Google SheetsのデータをNotionデータベースにAIが構造を解析しながら移行するWebアプリ。手動でのコピーペーストと型設定の手間を自動化する。",
+      "platform": "web",
+      "direction": "cheaper-alternative",
+      "market": {
+        "target": "Notionに移行しようとしているスタートアップ・個人事業主",
+        "size": "Notionは4,000万ユーザー以上（2022年公式）。日本のNotionユーザー数は要調査",
+        "gap": "Notion公式インポートはあるが列の型（日付・セレクト・チェックボックス）を自動判定しない。Coupler.ioは$49/月と高く設定が複雑"
+      },
+      "revenue": {
+        "free": "100行まで・1回/日",
+        "model": "SaaS",
+        "price": "¥490/月（無制限）or ¥10/変換（従量）"
+      },
+      "features": [
+        "CSV/Excelファイルアップロード または Google Sheets URL入力",
+        "Claude Haikuによる列の型自動判定（日付・URL・数値・セレクト・チェックボックス）",
+        "Notion APIで自動インポート（OAuth認証）",
+        "インポート前のプレビュー確認",
+        "繰り返しインポートのスケジュール設定"
+      ],
+      "aiUsage": "Claude Haikuで列ヘッダーと値から型を推定（「2026/01/15」→Date、「○/✓」→Checkbox）。スキーマの命名規則を統一（日本語カラム名→スネークケース英語など）",
+      "competitors": [
+        {
+          "name": "Notion公式インポート",
+          "threat": "medium",
+          "weakness": "型の自動判定なし。インポート後に手動で型を設定し直す手間がかかる"
+        },
+        {
+          "name": "Coupler.io",
+          "threat": "medium",
+          "weakness": "$49/月と高い・設定が複雑"
+        },
+        {
+          "name": "Zapier",
+          "threat": "medium",
+          "weakness": "設定が複雑・高価"
+        }
+      ],
+      "conclusion": "✅ Notion API+Claude Haikuのシンプルな組み合わせでMVPが作れる。Next.jsのAPI Routeだけで完結",
+      "tags": ["Notion", "スプレッドシート", "データ移行", "自動化", "Google Sheets"]
+    },
+    {
+      "name": "SubtitleJP",
+      "emoji": "🌏",
+      "score": 70,
+      "overview": "日本語ポッドキャストや動画に英語字幕を自動生成して海外発信を支援するWebサービス。日本語コンテンツの「ガラパゴス化」を低コストで解決する。",
+      "platform": "web",
+      "direction": "japan-to-overseas",
+      "market": {
+        "target": "海外発信を考えている日本の個人ポッドキャスター・YouTuber",
+        "size": "Rev.comは$1.5/分（人力英語字幕）。Descriptは$24/月（英語のみ対応）",
+        "gap": "日本語→英語の字幕自動生成はWhisper+DeepLの組み合わせで実現できるが、まとめて提供するSaaSがない"
+      },
+      "revenue": {
+        "free": "月10分まで",
+        "model": "従量課金",
+        "price": "¥10/分（Rev.comの人力字幕の約7分の1）"
+      },
+      "features": [
+        "MP3/MP4アップロードで日本語音声を文字起こし（Whisper）",
+        "DeepL APIで英語翻訳",
+        "SRT/VTT字幕ファイルのエクスポート",
+        "YouTube向けキャプションファイルの直接出力",
+        "ポッドキャストプレーヤーへの埋め込みスクリプト"
+      ],
+      "aiUsage": "OpenAI WhisperでWhisperで日本語文字起こし。DeepL+Claude Sonnetでポッドキャスト特有の話し言葉・専門用語を自然な英語に補正",
+      "competitors": [
+        {
+          "name": "Rev.com",
+          "threat": "low",
+          "weakness": "人力・高額（$1.5/分）・納期1日〜"
+        },
+        {
+          "name": "Descript",
+          "threat": "low",
+          "weakness": "英語のみ"
+        },
+        {
+          "name": "VEED.io",
+          "threat": "medium",
+          "weakness": "日本語→英語の精度が低い"
+        }
+      ],
+      "conclusion": "✅ 日本→海外パターンのニッチ版。Whisper+DeepL APIの組み合わせで個人が1週間でMVPを作れる規模",
+      "tags": ["字幕", "ポッドキャスト", "Whisper", "DeepL", "海外発信"]
+    }
+  ]
+}

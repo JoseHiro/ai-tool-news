@@ -1,0 +1,228 @@
+{
+  "date": "2026-05-14",
+  "theme": "B2B × 高単価 × AI自動化",
+  "perspective": "個人開発は BtoC に向きがちだが、法人向けの業務効率化ツールは単価が桁違い。月額 $50〜$200 の法人顧客が10社いれば月収 $500〜$2,000。Claude API の「文書処理×日本語品質」を活かせる領域に絞る。",
+  "ideas": [
+    {
+      "name": "KisokuAI",
+      "emoji": "🏢",
+      "score": 86,
+      "overview": "既存の就業規則・社内規程PDFをアップロードすると、法改正・省令変更に合わせた改定箇所をAIが提案し更新済みドラフトを出力するWebアプリ。中小企業の総務担当がターゲット。",
+      "platform": "web",
+      "direction": "cheaper-alternative",
+      "market": {
+        "target": "中小企業の総務・人事担当（従業員10〜300名規模）",
+        "size": "要調査（国内中小企業は約330万社。大半が社労士に外注中）",
+        "gap": "SmartHRはHR全般で就業規則特化ではない。弁護士ドットコムは相談サービスでドキュメント生成はない。「就業規則に特化したAIアシスタント」はほぼ存在しない"
+      },
+      "revenue": {
+        "free": "規程のAI診断のみ（改定提案なし）",
+        "model": "SaaS",
+        "price": "$49/社/月。改定ドラフト生成・PDF出力"
+      },
+      "features": [
+        "就業規則PDFをアップロード→AIが現行法令との差分を検出",
+        "改定が必要な箇所を一覧表示（改定理由・根拠条文付き）",
+        "改定後のドラフトをWord/PDFで出力",
+        "法改正・省令変更のメールアラート（月1回）"
+      ],
+      "aiUsage": "Claudeに既存規程と最新法令を渡し「この条項は〇〇法△条と矛盾しています」という差分分析を生成。更新ドラフトもClaudeが起草し担当者がレビューする形",
+      "competitors": [
+        {
+          "name": "社労士事務所",
+          "threat": "medium",
+          "weakness": "高単価・時間がかかる。年間数十万円の外注費"
+        },
+        {
+          "name": "SmartHR",
+          "threat": "low",
+          "weakness": "HR全般のプラットフォーム。就業規則特化ではない"
+        },
+        {
+          "name": "弁護士ドットコム",
+          "threat": "low",
+          "weakness": "相談サービスでドキュメント生成機能がない"
+        }
+      ],
+      "conclusion": "✅ 社労士費用を大幅削減できるなら$49/月は安い。法改正のたびに自然に使ってもらえるリテンション設計が◎",
+      "tags": ["就業規則", "法改正", "中小企業", "総務", "ドキュメント生成"]
+    },
+    {
+      "name": "TechSubtitle",
+      "emoji": "🎙",
+      "score": 83,
+      "overview": "技術系YouTuber・Podcast配信者が動画/音声をアップロードすると、Whisperで書き起こし→Claudeで日英字幕生成+SEOタイトル・説明文・ハッシュタグを自動生成するWebツール。",
+      "platform": "web",
+      "direction": "japan-to-overseas",
+      "market": {
+        "target": "技術系コンテンツクリエイター（日本語↔英語の双方向）",
+        "size": "要調査（技術系YouTubeチャンネル数は急増中）",
+        "gap": "Otter.aiは英語特化で字幕のみ。Descriptは動画編集中心でSEO機能なし。Kapwingは一般向けで技術コンテンツ特化ではない"
+      },
+      "revenue": {
+        "free": "月3本まで・字幕生成のみ",
+        "model": "SaaS",
+        "price": "Pro $19/月。無制限+SEO最適化+SRT/VTT出力"
+      },
+      "features": [
+        "音声/動画ファイルまたはYouTube URLを入力",
+        "Whisperで書き起こし→Claudeで日英両字幕を生成",
+        "YouTubeUEO向けタイトル（3案）・説明文・タグを自動生成",
+        "SRT・VTT・TXT形式で字幕ファイルをダウンロード",
+        "チャプターマーカーを自動検出してタイムスタンプ付き説明文を生成"
+      ],
+      "aiUsage": "Whisper（書き起こし）→Claude（翻訳・自然な字幕割り）→Claude（SEO最適化）のパイプライン。「技術用語は専門用語のまま訳す」システムプロンプトで品質担保",
+      "competitors": [
+        {
+          "name": "Otter.ai",
+          "threat": "low",
+          "weakness": "英語特化で日本語字幕生成・SEO機能がない"
+        },
+        {
+          "name": "Descript",
+          "threat": "medium",
+          "weakness": "動画編集中心でSEO最適化・日英翻訳機能がない"
+        },
+        {
+          "name": "Kapwing",
+          "threat": "medium",
+          "weakness": "一般向けで技術コンテンツ特化ではない"
+        }
+      ],
+      "conclusion": "✅ 技術系クリエイターは「英語で発信したいが字幕に時間がかかる」という明確な痛みがある",
+      "tags": ["字幕生成", "YouTube", "Whisper", "SEO", "日英翻訳"]
+    },
+    {
+      "name": "FreelanceDoc",
+      "emoji": "📋",
+      "score": 81,
+      "overview": "フリーランスエンジニアが「案件の概要を自然言語で入力」すると、Claudeが見積書・業務委託契約書の下書きを生成するWebアプリ。契約書の法的ポイントも解説してくれる。",
+      "platform": "web",
+      "direction": "cheaper-alternative",
+      "market": {
+        "target": "フリーランスエンジニア・デザイナー（日本に約70万人）",
+        "size": "要調査（フリーランス人口は増加傾向）",
+        "gap": "Misocaは請求書特化で契約書機能なし。freeeは会計メインで契約書生成なし。弁護士ドットコムは契約書レビューサービスで価格が高い"
+      },
+      "revenue": {
+        "free": "月3件まで・見積書のみ",
+        "model": "SaaS",
+        "price": "$9.99/月。無制限+契約書+PDF出力"
+      },
+      "features": [
+        "案件の概要（作業内容・期間・単価・支払条件）を入力→見積書PDFを生成",
+        "業務委託契約書（著作権譲渡条項・秘密保持条項付き）のドラフトを出力",
+        "「この契約書のリスクポイントはどこ？」をAIに質問できる解説モード",
+        "テンプレートのカスタマイズ・保存機能"
+      ],
+      "aiUsage": "Claudeに案件情報を渡し「発注者に失礼のない見積書」「フリーランサーを守る契約条項」を生成。「この条項は発注者有利すぎますか？」に対する解説も",
+      "competitors": [
+        {
+          "name": "Misoca",
+          "threat": "medium",
+          "weakness": "請求書特化で契約書生成機能がない"
+        },
+        {
+          "name": "freee",
+          "threat": "medium",
+          "weakness": "会計メインで契約書生成機能がない"
+        },
+        {
+          "name": "弁護士ドットコム",
+          "threat": "low",
+          "weakness": "契約書レビューサービスで価格が高く個人フリーランスには過剰"
+        }
+      ],
+      "conclusion": "✅ 「契約書を自分で作れない」層は確実にいる。$9.99/月×1,000人=月収$10,000が現実的な目標",
+      "tags": ["フリーランス", "契約書", "見積書", "法務", "自動生成"]
+    },
+    {
+      "name": "ShopifyGlobal",
+      "emoji": "🛒",
+      "score": 76,
+      "overview": "既存のShopify日本語ストアの商品説明・メタ情報をAIが英語・中国語・韓国語に翻訳・最適化し、海外向けSEOと広告文も生成するShopifyアプリ。",
+      "platform": "web",
+      "direction": "japan-to-overseas",
+      "market": {
+        "target": "海外展開を検討中のShopify日本語ストア運営者",
+        "size": "要調査（Shopifyの日本市場は急成長中）",
+        "gap": "Shopify公式翻訳アプリはあるがAI最適化まで踏み込まない。Weglotは多言語対応だがAI最適化が弱い"
+      },
+      "revenue": {
+        "free": "商品10件まで翻訳",
+        "model": "SaaS",
+        "price": "Basic $29/月。商品500件・3言語"
+      },
+      "features": [
+        "商品説明・タイトル・メタディスクリプションを英語・中国語・韓国語に翻訳",
+        "各言語市場向けのSEOキーワードを自動挿入",
+        "Google Ads/Meta広告の広告文を各言語で生成",
+        "翻訳品質スコア+改善提案のダッシュボード"
+      ],
+      "aiUsage": "Claudeに「日本語の商品説明」「ターゲット国」を渡し現地の購買心理に合った表現に意訳。直訳ではなく「海外の顧客に刺さる言い回し」に変換",
+      "competitors": [
+        {
+          "name": "Shopify Translate & Adapt",
+          "threat": "high",
+          "weakness": "公式アプリだが翻訳のみでAI最適化・広告文生成がない"
+        },
+        {
+          "name": "Weglot",
+          "threat": "medium",
+          "weakness": "多言語対応だがAI最適化が弱く購買心理に合った意訳がない"
+        },
+        {
+          "name": "DeepL API",
+          "threat": "low",
+          "weakness": "翻訳APIのみでShopifyアプリではない"
+        }
+      ],
+      "conclusion": "✅ Shopifyアプリは発見されやすく集客コストが低い。翻訳品質と広告文生成の組み合わせが差別化になる",
+      "tags": ["Shopify", "越境EC", "多言語", "SEO", "広告文"]
+    },
+    {
+      "name": "AnkiTech",
+      "emoji": "📚",
+      "score": 70,
+      "overview": "技術書・PDFをアップロードするとClaudeが章ごとに要約を生成し、Anki用フラッシュカードデッキ（.apkg）を自動出力するWebツール。エンジニアの「積読解消×効率的な知識定着」がコンセプト。",
+      "platform": "web",
+      "direction": "cheaper-alternative",
+      "market": {
+        "target": "技術書を多く買うが読み切れないエンジニア（グローバル）",
+        "size": "要調査",
+        "gap": "ChatGPT+プラグインは汎用的でAnki出力は手作業。Readwise Readerはハイライト→Anki連携があるが要約生成はない。Notion AIはAnki連携なし"
+      },
+      "revenue": {
+        "free": "PDF 50ページまで・要約のみ",
+        "model": "SaaS",
+        "price": "$6.99/月。無制限+Ankiデッキ生成"
+      },
+      "features": [
+        "PDF/EPUBをアップロード→章ごとの要約を生成",
+        "重要概念・用語定義・コード例からAnkiカードを自動生成",
+        "「この章で覚えるべき3点」をカード化するオプション",
+        ".apkg形式でダウンロード→Ankiに直接インポート"
+      ],
+      "aiUsage": "Claudeが技術文書を読み「定義・概念・手順・コード」を分類し、表（問い）と裏（答え）を構造化。学習に最適なカード形式に変換",
+      "competitors": [
+        {
+          "name": "ChatGPT + プラグイン",
+          "threat": "medium",
+          "weakness": "汎用的でAnki出力まで自動化されていない。手作業が残る"
+        },
+        {
+          "name": "Readwise Reader",
+          "threat": "medium",
+          "weakness": "ハイライト→Anki連携はあるが要約生成機能がない"
+        },
+        {
+          "name": "Notion AI",
+          "threat": "low",
+          "weakness": "メモ統合でAnki連携なし"
+        }
+      ],
+      "conclusion": "✅ 市場規模は読みにくいが「Ankiユーザー×エンジニア」の交差点は熱量が高い。グローバル展開できる",
+      "tags": ["Anki", "技術書", "学習", "フラッシュカード", "PDF"]
+    }
+  ]
+}

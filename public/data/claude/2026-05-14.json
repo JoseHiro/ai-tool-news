@@ -1,0 +1,110 @@
+{
+  "date": "2026-05-14",
+  "updates": [
+    {
+      "title": "MCP（Model Context Protocol）— 外部ツールとの標準接続プロトコル",
+      "body": "MCP は Claude Code が外部ツール・API・DB と通信するための標準プロトコル。公式・コミュニティ製の MCP サーバーが多数公開されており、`.claude/settings.json` に追記するだけで即使える。GitHub MCP を入れると「Issue #42 を読んで修正して PR を作って」が一発で動くようになる。",
+      "importance": "high",
+      "code": {
+        "lang": "json",
+        "code": "{\n  \"mcpServers\": {\n    \"github\": {\n      \"command\": \"npx\",\n      \"args\": [\"-y\", \"@modelcontextprotocol/server-github\"],\n      \"env\": { \"GITHUB_PERSONAL_ACCESS_TOKEN\": \"ghp_xxx\" }\n    },\n    \"postgres\": {\n      \"command\": \"npx\",\n      \"args\": [\"-y\", \"@modelcontextprotocol/server-postgres\", \"postgresql://localhost/mydb\"]\n    }\n  }\n}"
+      }
+    },
+    {
+      "title": "Hooks システム — ツール実行の前後にカスタムスクリプトを挟む",
+      "body": "Hooks は「ツール実行の前後にシェルスクリプトを差し込む」機能。ファイルを書き込むたびに自動で lint --fix が走る設定が書ける。PostToolUse で Edit/Write のたびに lint を実行し、「書いたらすぐ壊れる」を防げる。",
+      "importance": "medium",
+      "code": {
+        "lang": "json",
+        "code": "{\n  \"hooks\": {\n    \"PostToolUse\": [\n      {\n        \"matcher\": \"Write|Edit\",\n        \"hooks\": [\n          { \"type\": \"command\", \"command\": \"pnpm lint --fix\" }\n        ]\n      }\n    ]\n  }\n}"
+      }
+    }
+  ],
+  "tips": [
+    {
+      "title": "拡張思考（Extended Thinking）を使う場面を絞る",
+      "description": "「じっくり考えてから答えて」と伝えると精度が上がるが、トークンを多く使うため使い所を絞る。複数ファイルをまたぐアーキテクチャ変更・バグの根本原因調査・セキュリティ判断に有効。型定義の追加・ファイル名変更などには不要。",
+      "code": {
+        "lang": "text",
+        "code": "「このバグを修正する前に、関連するすべてのファイルを読み込んで\n原因の仮説を3つ立て、それぞれの検証方法を説明してください。\nその後で最も確度の高い修正を実装してください」"
+      }
+    },
+    {
+      "title": "CLAUDE.md に「してはいけないこと」を書く",
+      "description": "「やること」より「やってはいけないこと」を書く方が効果的。Claude はデフォルトで親切にいろいろやろうとするため、制約で絞り込む。",
+      "code": {
+        "lang": "markdown",
+        "code": "## 禁止事項\n- テストを書かずに実装を完了と報告しない\n- `any` 型を使わない\n- `TODO:` コメントを残したまま PR を作らない\n- 既存のコンポーネントを削除する前に確認を取る\n- npm/yarn ではなく pnpm を使う"
+      }
+    },
+    {
+      "title": "サブエージェントに「役割」を与える",
+      "description": "並列タスクを割り振るとき、役割を明示すると出力の質が上がる。セキュリティレビュアー・パフォーマンスエンジニア・テストエンジニアなど職種を明示する。",
+      "code": {
+        "lang": "text",
+        "code": "「以下を並列で実行してください:\n1. セキュリティレビュアーとして: 認証周りのコードを調べ、脆弱性を報告\n2. パフォーマンスエンジニアとして: DB クエリの N+1 問題を探す\n3. テストエンジニアとして: カバレッジが低いファイルをリストアップ」"
+      }
+    },
+    {
+      "title": "エラーは「状況ごと」貼る",
+      "description": "エラーだけ貼るより「どの操作をしたときに出たか」を添えると診断が速い。ゲストユーザーは正常・ログイン済みユーザーは異常などの情報が根本原因特定を助ける。",
+      "code": {
+        "lang": "text",
+        "code": "// ❌ エラーだけ\n「TypeError: Cannot read properties of null (reading 'id')」\n\n// ✅ 状況付き\n「ログイン済みユーザーがダッシュボードにアクセスすると\n以下のエラーが出ます。ゲストユーザーは正常。\n\nTypeError: Cannot read properties of null (reading 'id')\n  at Dashboard (app/dashboard/page.tsx:23:18)」"
+      }
+    },
+    {
+      "title": "git stash を Claude に任せない",
+      "description": "Claude は積極的に git stash を使うことがある。スタッシュされた変更は見落としやすいため CLAUDE.md に制約を書いておく。",
+      "code": {
+        "lang": "markdown",
+        "code": "## Git ルール\n- `git stash` は使わない。作業途中のファイルはそのまま残す\n- コミット前に必ず `git diff` を表示して確認を取る\n- force push は絶対に行わない"
+      }
+    }
+  ],
+  "workflow": {
+    "title": "MCP を使ったフルスタック開発フロー",
+    "steps": [
+      {
+        "label": "GitHub MCP でタスクを取得する",
+        "code": "「Issue #12 の内容を読んで、実装に必要なファイルをリストアップして」"
+      },
+      {
+        "label": "Postgres MCP でスキーマを確認する",
+        "code": "「現在の users テーブルの定義を確認して、必要なマイグレーションを提案して」"
+      },
+      {
+        "label": "Issue の要件に従って実装する",
+        "code": "「Issue の要件に従って実装してください。型は既存のパターンに合わせて」"
+      },
+      {
+        "label": "Filesystem MCP でテストパターンを確認して追加する",
+        "code": "「テストファイルのパターンを確認して、同じスタイルでテストを追加して」"
+      },
+      {
+        "label": "GitHub MCP で PR を作成する",
+        "code": "「実装が完了したので PR を作成してください。Issue #12 と紐づけて」"
+      }
+    ]
+  },
+  "modelGuide": [
+    {
+      "model": "Claude Opus 4.7",
+      "useCase": "複雑な設計・セキュリティ監査・難解なバグ調査",
+      "cost": "high",
+      "when": "週1〜2回の設計判断のみ。日常実装には使わない"
+    },
+    {
+      "model": "Claude Sonnet 4.6",
+      "useCase": "日常コーディング・PRレビュー・ドキュメント",
+      "cost": "medium",
+      "when": "日常の実装のメインモデル。MCP 活用時はトークン消費が増えるため /compact を早めに使う"
+    },
+    {
+      "model": "Claude Haiku 4.5",
+      "useCase": "データ変換・定型処理・大量バッチ",
+      "cost": "low",
+      "when": "分類・抽出など単純タスク。Sonnet 比で約 75% コスト削減"
+    }
+  ]
+}

@@ -1,0 +1,231 @@
+{
+  "date": "2026-05-18",
+  "theme": "日常ツールのローカライズ空白",
+  "perspective": "海外では大ヒットしているのに日本語対応が貧弱または存在しない市場。日本のユーザーが困っているのに代替がないジャンルと、日本発の習慣・サービスを海外に持ち込むパターンを狙う。",
+  "ideas": [
+    {
+      "name": "WideWidget JP",
+      "emoji": "🧩",
+      "score": 83,
+      "overview": "iOSホーム画面のウィジェットをカスタマイズするアプリ。Widgetsmith（3,000万ダウンロード以上・$1.99/月）を参考に、日本独自の情報（六曜・ゴミ収集日・電車遅延）を表示できる日本語版を作る。",
+      "platform": "mobile",
+      "direction": "overseas-to-japan",
+      "market": {
+        "target": "iPhone ユーザー（日本国内6,300万台以上）、特に20〜40代",
+        "size": "Widgetsmithは3,000万ダウンロード以上。日本の iPhone シェアは高く需要は確実",
+        "gap": "Widgetsmithは日本語未対応。六曜・ゴミ収集日・市区町村別カレンダー連携が一切ない。日本製の代替アプリはデザイン品質が低い"
+      },
+      "revenue": {
+        "free": "基本ウィジェット3種・広告あり",
+        "model": "SaaS",
+        "price": "¥480/年（Widgetsmithの約4分の1）"
+      },
+      "features": [
+        "六曜・旧暦・祝日を表示するカレンダーウィジェット",
+        "ゴミ収集日ウィジェット（市区町村データを手動登録）",
+        "天気+花粉+紫外線を1つのウィジェットで表示",
+        "電車遅延情報（Yahoo!路線API）",
+        "フォント・背景カラーのカスタマイズ"
+      ],
+      "aiUsage": "「今日の六曜と天気から一言アドバイス」をClaude Haikuで生成してウィジェットに表示。ゴミ収集日の自治体データをスクレイピング→自動登録フロー",
+      "competitors": [
+        {
+          "name": "Widgetsmith",
+          "threat": "low",
+          "weakness": "日本語未対応・六曜・旧暦・ゴミ収集日・電車遅延表示がない"
+        },
+        {
+          "name": "WidgetKit自作",
+          "threat": "low",
+          "weakness": "個人が作れるが配布できない"
+        },
+        {
+          "name": "めくり（日本製）",
+          "threat": "medium",
+          "weakness": "カレンダーに特化。天気・電車情報がない"
+        }
+      ],
+      "conclusion": "✅ 海外→日本の教科書例。React Native+WidgetKitでウィジェット実装が必要。難易度は中〜高だが需要は明確",
+      "tags": ["ウィジェット", "iOS", "六曜", "ゴミ収集", "Widgetsmith"]
+    },
+    {
+      "name": "BunshoClaude",
+      "emoji": "✍️",
+      "score": 81,
+      "overview": "日本語のビジネス文書・メール・ブログ文章をAIがリアルタイムで校正するWebアプリ+Chrome拡張機能。Grammarly（3,000万DAU・$12/月）の日本語版として文賢の4分の1の価格で提供。",
+      "platform": "extension",
+      "direction": "cheaper-alternative",
+      "market": {
+        "target": "ビジネスメール・提案書を書く会社員・ブロガー・フリーライター",
+        "size": "Grammarlyは3,000万DAU。日本語の文章校正SaaSは「文賢」（¥2,178/月）しかなく高い",
+        "gap": "文賢は¥2,178/月と高い。ブラウザ拡張型がない。Grammarlyは日本語未対応。Google ドキュメント校正は基本的な誤字のみで敬語チェックなし"
+      },
+      "revenue": {
+        "free": "基本的な誤字・読点の指摘のみ",
+        "model": "SaaS",
+        "price": "¥490/月（文賢の約4分の1）"
+      },
+      "features": [
+        "Chrome拡張でどのサイトでも日本語校正",
+        "誤字・脱字・二重表現・冗長表現の指摘",
+        "ビジネス文書向けトーン調整（「〜です」「〜ます」の統一）",
+        "敬語チェック（尊敬語・謙譲語の混同を検出）",
+        "文章の読みやすさスコア（文長・漢字密度）"
+      ],
+      "aiUsage": "Claude APIで文章全体の文脈を理解した校正（単純な辞書マッチではなく意味を理解）。ストリーミングでリアルタイム提案表示",
+      "competitors": [
+        {
+          "name": "文賢",
+          "threat": "medium",
+          "weakness": "¥2,178/月と高い。Chrome拡張がないためWebブラウザ上で使えない"
+        },
+        {
+          "name": "Grammarly",
+          "threat": "low",
+          "weakness": "日本語未対応"
+        },
+        {
+          "name": "Google ドキュメント校正",
+          "threat": "medium",
+          "weakness": "基本的な誤字のみ。敬語チェック・敬語統一機能がない"
+        }
+      ],
+      "conclusion": "✅ Claude APIとの相性が最も良いアイデアの一つ。Chrome拡張+Web の2本立てで開発",
+      "tags": ["文章校正", "Chrome拡張", "敬語", "Grammarly", "日本語"]
+    },
+    {
+      "name": "SleepJP",
+      "emoji": "😴",
+      "score": 79,
+      "overview": "睡眠サイクルを分析してベストな起床タイミングで目覚ましを鳴らすアプリ。Sleep Cycle（$29.99/year・1,000,000件以上レビュー・日本語未対応）の日本版として残業・ストレス・睡眠負債の管理機能を追加。",
+      "platform": "mobile",
+      "direction": "overseas-to-japan",
+      "market": {
+        "target": "睡眠に悩む会社員・30〜50代（日本の睡眠不足率は先進国ワースト1位）",
+        "size": "Sleep Cycleは$29.99/yearでApp Store 4.6⭐・1,000,000件以上レビュー。日本語未対応",
+        "gap": "Sleep Cycleは日本語UIなし。日本製の睡眠アプリは単機能で分析が弱い。Apple ヘルスケアは記録できるがスマートアラームなし"
+      },
+      "revenue": {
+        "free": "睡眠時間の記録・基本グラフ",
+        "model": "SaaS",
+        "price": "¥980/年（Sleep Cycleの約半額）"
+      },
+      "features": [
+        "マイク/加速度センサーで睡眠サイクル検出",
+        "浅い眠りのタイミングで起こすスマートアラーム",
+        "残業時間・睡眠時間の相関グラフ（手動入力）",
+        "睡眠負債の可視化（今週の不足時間を蓄積表示）",
+        "昼寝記録モード（15分・20分・90分の推奨昼寝タイマー）"
+      ],
+      "aiUsage": "睡眠パターンから「今日の疲労度」を推定してClaude APIで一言アドバイス生成。週次レポートの自動生成",
+      "competitors": [
+        {
+          "name": "Sleep Cycle",
+          "threat": "low",
+          "weakness": "日本語なし・$29.99/yearと高い"
+        },
+        {
+          "name": "Sleepwatch",
+          "threat": "low",
+          "weakness": "Apple Watch専用"
+        },
+        {
+          "name": "Apple ヘルスケア",
+          "threat": "medium",
+          "weakness": "記録できるがスマートアラームなし・残業との相関分析なし"
+        }
+      ],
+      "conclusion": "✅ 海外→日本の鉄板パターン。React Nativeの加速度センサーAPIで実装可能。iOSバックグラウンド制約に注意",
+      "tags": ["睡眠", "Sleep Cycle", "スマートアラーム", "残業", "健康"]
+    },
+    {
+      "name": "HomeFood",
+      "emoji": "🍳",
+      "score": 75,
+      "overview": "プロ・企業レシピではなく「家庭の人が作ったリアルなレシピ」に特化した英語圏向けレシピ投稿SNS。Cookpad（9,000万レシピ・日本語）のコンセプトを海外展開する。",
+      "platform": "web",
+      "direction": "japan-to-overseas",
+      "market": {
+        "target": "英語圏の家庭料理好き（米国・英国・オーストラリア）",
+        "size": "Cookpadは月間9,000万ユーザー（グローバル版あるが普及していない）",
+        "gap": "Allrecipes・Food Networkはプロレシピが多い。「普通の家庭の人が今夜作ったもの」を投稿・検索するプラットフォームが英語圏にない。TikTokは動画形式で強力だがレシピ保存が弱い"
+      },
+      "revenue": {
+        "free": "レシピ投稿・閲覧・保存",
+        "model": "SaaS",
+        "price": "$2.99/月（広告非表示・材料費計算・買い物リスト連携）"
+      },
+      "features": [
+        "レシピ投稿（写真・手順・材料）",
+        "「今日の晩ご飯」タイムライン",
+        "材料からレシピ逆引き検索",
+        "「○○を使い切りたい」検索",
+        "ユーザーフォロー・お気に入り"
+      ],
+      "aiUsage": "材料写真を撮ると候補レシピを提案（Claude Vision）。「今ある材料でできるレシピ」を自然言語で検索",
+      "competitors": [
+        {
+          "name": "Allrecipes",
+          "threat": "medium",
+          "weakness": "プロ・企業レシピ中心で家庭感がない"
+        },
+        {
+          "name": "TikTok料理動画",
+          "threat": "high",
+          "weakness": "動画形式で強力だがレシピ保存・検索が弱い"
+        },
+        {
+          "name": "Cookpad Global",
+          "threat": "medium",
+          "weakness": "日本発だが英語圏でのマーケティングが弱い"
+        }
+      ],
+      "conclusion": "✅ 日本→海外パターン。「テキスト+写真でレシピを保存・検索したい」層を狙う",
+      "tags": ["レシピ", "SNS", "Cookpad", "家庭料理", "英語圏"]
+    },
+    {
+      "name": "PointTrack",
+      "emoji": "🎁",
+      "score": 71,
+      "overview": "クレジットカードのキャッシュバック・航空マイル・小売ポイントを一元管理するアプリ。日本の「ポイ活」文化を海外版に翻訳する。Mint廃止後のポイント管理空白を埋める。",
+      "platform": "mobile",
+      "direction": "japan-to-overseas",
+      "market": {
+        "target": "クレジットカードを複数枚持つ米国・英国ユーザー",
+        "size": "日本の楽天ポイント経済圏（年間発行7,000億ポイント以上）。Chase・Amex・Capital Oneは各社アプリが分断",
+        "gap": "Mint廃止後カード別キャッシュバックを一覧できるアプリがない。AwardWalletはマイル特化でクレカキャッシュバックが弱い"
+      },
+      "revenue": {
+        "free": "手動登録・3カード",
+        "model": "SaaS",
+        "price": "$2.99/月（自動同期・無制限カード）"
+      },
+      "features": [
+        "クレジットカードのキャッシュバック率を手動登録・比較",
+        "カテゴリ別最適カード提案（「スーパーで一番還元率が高いカードは？」）",
+        "航空マイル残高の手動入力・有効期限アラート",
+        "月次ポイント獲得サマリー"
+      ],
+      "aiUsage": "購入カテゴリに応じた最適カード推薦（Claude Haiku）。「今月ポイントをいくら獲得できた？」の自然言語レポート生成",
+      "competitors": [
+        {
+          "name": "AwardWallet",
+          "threat": "medium",
+          "weakness": "マイル特化でクレカキャッシュバック管理が弱い"
+        },
+        {
+          "name": "NerdWallet",
+          "threat": "medium",
+          "weakness": "カード比較サイトでポイント管理機能がない"
+        },
+        {
+          "name": "MaxRewards",
+          "threat": "medium",
+          "weakness": "Amex特化で汎用性が低い"
+        }
+      ],
+      "conclusion": "✅ 日本→海外のノウハウ転用。Plaid API（月額$500〜）なしでも手動入力でMVPを作れる",
+      "tags": ["ポイ活", "マイル", "キャッシュバック", "クレカ", "資産管理"]
+    }
+  ]
+}

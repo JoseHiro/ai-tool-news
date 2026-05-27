@@ -1,0 +1,102 @@
+{
+  "date": "2026-05-17",
+  "updates": [
+    {
+      "title": "MCP サーバー自作入門 — @modelcontextprotocol/sdk で 50 行以下の最小構成",
+      "body": "@modelcontextprotocol/sdk を使うと 50 行以下で動く MCP サーバーを作れる。Server クラスをインスタンス化し、ListToolsRequestSchema と CallToolRequestSchema のハンドラーを設定するだけ。サーバーはプロジェクトの .claude/settings.json に登録することでプロジェクト専用ツールとして管理できる。",
+      "importance": "medium",
+      "code": {
+        "lang": "typescript",
+        "code": "import { Server } from '@modelcontextprotocol/sdk/server/index.js'\nimport { StdioServerTransport } from '@modelcontextprotocol/sdk/server/stdio.js'\nimport { CallToolRequestSchema, ListToolsRequestSchema } from '@modelcontextprotocol/sdk/types.js'\n\nconst server = new Server(\n  { name: 'my-tools', version: '1.0.0' },\n  { capabilities: { tools: {} } }\n)\n\nserver.setRequestHandler(ListToolsRequestSchema, async () => ({\n  tools: [{ name: 'get_user_count', description: 'ユーザー数を取得', inputSchema: { type: 'object', properties: {}, required: [] } }],\n}))\n\nserver.setRequestHandler(CallToolRequestSchema, async (request) => {\n  if (request.params.name === 'get_user_count') {\n    return { content: [{ type: 'text', text: `ユーザー数: ${await getUserCount()}` }] }\n  }\n  throw new Error('Unknown tool')\n})\n\nawait server.connect(new StdioServerTransport())"
+      }
+    },
+    {
+      "title": "MCP サーバーのデバッグ方法 — stdout ではなく stderr に出力する",
+      "body": "MCP サーバーは stdio（標準入出力）で Claude Code と通信するため、console.log など stdout への出力は通信を破壊する。デバッグには必ず console.error または process.stderr.write を使う。ログをファイルに書き出す方法も有効。",
+      "importance": "low",
+      "code": {
+        "lang": "typescript",
+        "code": "// ❌ stdout に出力すると MCP 通信が破壊される\nconsole.log('デバッグ:', data)\n\n// ✅ stderr に出力する\nconsole.error('デバッグ:', data)\n\n// ✅ ファイルに書き出す\nimport { appendFileSync } from 'fs'\nfunction debug(msg: string) {\n  appendFileSync('/tmp/mcp-debug.log', `${new Date().toISOString()} ${msg}\\n`)\n}"
+      }
+    }
+  ],
+  "tips": [
+    {
+      "title": "データベース接続 MCP サーバーを作る",
+      "description": "Neon や PostgreSQL に直接問い合わせられるサーバー。開発中に「今のユーザー数は？」「直近のエラーログは？」を自然言語で聞けるようになる。読み取り専用クエリのみ許可する安全設計が重要。",
+      "code": {
+        "lang": "typescript",
+        "code": "import { neon } from '@neondatabase/serverless'\nconst sql = neon(process.env.DATABASE_URL!)\n\n// handler 内\ncase 'run_query': {\n  const { query } = args as { query: string }\n  if (!query.trim().toUpperCase().startsWith('SELECT')) {\n    return { content: [{ type: 'text', text: 'エラー: SELECT クエリのみ実行できます' }] }\n  }\n  const rows = await sql(query)\n  return { content: [{ type: 'text', text: JSON.stringify(rows, null, 2) }] }\n}"
+      }
+    },
+    {
+      "title": "Stripe MCP サーバーでサブスク状況を即確認する",
+      "description": "開発中に「このユーザーのサブスクは有効か？」を Claude Code から直接確認できる。メールアドレスでユーザーを検索し、アクティブなサブスクの状況を返す。",
+      "code": {
+        "lang": "typescript",
+        "code": "case 'get_subscription': {\n  const { email } = args as { email: string }\n  const customers = await stripe.customers.list({ email, limit: 1 })\n  if (!customers.data.length) {\n    return { content: [{ type: 'text', text: '顧客が見つかりません' }] }\n  }\n  const subscriptions = await stripe.subscriptions.list({ customer: customers.data[0].id, status: 'active', limit: 1 })\n  const sub = subscriptions.data[0]\n  if (!sub) return { content: [{ type: 'text', text: 'アクティブなサブスクなし' }] }\n  const periodEnd = sub.items.data[0]?.current_period_end\n  return { content: [{ type: 'text', text: `ステータス: ${sub.status}\\n期限: ${new Date(periodEnd * 1000).toLocaleDateString('ja-JP')}` }] }\n}"
+      }
+    },
+    {
+      "title": ".claude/settings.json でプロジェクト専用 MCP を管理する",
+      "description": "グローバル設定より、プロジェクトごとの設定（.claude/settings.json）を使うと管理しやすい。${DATABASE_URL} のように書くとシェルの環境変数を参照できる。",
+      "code": {
+        "lang": "json",
+        "code": "{\n  \"mcpServers\": {\n    \"db\": {\n      \"command\": \"npx\",\n      \"args\": [\"tsx\", \"scripts/mcp-db.ts\"],\n      \"env\": { \"DATABASE_URL\": \"${DATABASE_URL}\" }\n    },\n    \"stripe\": {\n      \"command\": \"npx\",\n      \"args\": [\"tsx\", \"scripts/mcp-stripe.ts\"],\n      \"env\": { \"STRIPE_SECRET_KEY\": \"${STRIPE_SECRET_KEY}\" }\n    }\n  }\n}"
+      }
+    },
+    {
+      "title": "既製の MCP サーバーを活用する",
+      "description": "自作しなくても公式・コミュニティ製のサーバーが揃っている。GitHub・Filesystem・PostgreSQL・Brave Search などがすぐ使える。",
+      "code": {
+        "lang": "bash",
+        "code": "# GitHub 操作\nnpx @modelcontextprotocol/server-github\n\n# PostgreSQL 直接接続\nnpx @modelcontextprotocol/server-postgres\n\n# Brave Search API\nnpx @modelcontextprotocol/server-brave-search"
+      }
+    }
+  ],
+  "workflow": {
+    "title": "プロジェクト専用 MCP サーバーを 30 分で作る",
+    "steps": [
+      {
+        "label": "SDK をインストールする",
+        "code": "npm install @modelcontextprotocol/sdk tsx"
+      },
+      {
+        "label": "user_stats ツールを持つサーバーファイルを作成する",
+        "code": "// scripts/mcp-local.ts\n// ListToolsRequestSchema で user_stats ツールを定義\n// CallToolRequestSchema で DB クエリを実行して総ユーザー・有料・本日新規を返す"
+      },
+      {
+        "label": ".claude/settings.json に登録する",
+        "code": "{\n  \"mcpServers\": {\n    \"local\": {\n      \"command\": \"npx\",\n      \"args\": [\"tsx\", \"scripts/mcp-local.ts\"],\n      \"env\": { \"DATABASE_URL\": \"${DATABASE_URL}\" }\n    }\n  }\n}"
+      },
+      {
+        "label": "Claude Code を再起動して /mcp で確認する",
+        "code": "/mcp\n# local: connected が表示されれば準備完了"
+      },
+      {
+        "label": "自然言語で使う",
+        "code": "「user_stats を実行して」\n# → 総ユーザー・有料ユーザー・本日新規登録数を返す"
+      }
+    ]
+  },
+  "modelGuide": [
+    {
+      "model": "Claude Opus 4.7",
+      "useCase": "エージェント設計・複雑な推論・セキュリティ監査",
+      "cost": "high",
+      "when": "マルチエージェント MCP 設計などアーキテクチャ全体の整合が必要なとき"
+    },
+    {
+      "model": "Claude Sonnet 4.6",
+      "useCase": "API組み込み・日常コーディング・MCP サーバー開発",
+      "cost": "medium",
+      "when": "MCP サーバーの設計・デバッグ・エラー調査。型定義と実装の整合が必要なとき"
+    },
+    {
+      "model": "Claude Haiku 4.5",
+      "useCase": "バッチ処理・大量ドキュメント変換・分類タスク",
+      "cost": "low",
+      "when": "定型ボイラープレートの生成など。MCP + Haiku で定型データ取得+簡単な集計"
+    }
+  ]
+}

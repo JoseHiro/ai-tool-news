@@ -1,0 +1,227 @@
+{
+  "date": "2026-05-13",
+  "theme": "日本固有の課題 × AI",
+  "perspective": "日本特有の手続きの複雑さ・言語の壁・独特の商習慣は外国製ツールが入りにくいブルーオーシャン。Claude Codeで爆速開発できれば勝負になる。",
+  "ideas": [
+    {
+      "name": "TaxMate AI",
+      "emoji": "🧾",
+      "score": 87,
+      "overview": "領収書の写真を撮るだけで自動仕訳→確定申告書類の下書きを生成するWebアプリ。税理士費用を払えない個人事業主・フリーランスがターゲット。",
+      "platform": "web",
+      "direction": "cheaper-alternative",
+      "market": {
+        "target": "フリーランス・個人事業主（日本に約300万人）",
+        "size": "要調査（確定申告関連SaaSは国内で急成長中）",
+        "gap": "freee・マネーフォワードは月額2,000〜3,000円。「年1回だけ使いたい」層が未満足。弥生はUIが古くシニア層向け"
+      },
+      "revenue": {
+        "free": "領収書20枚まで・下書き生成のみ",
+        "model": "SaaS",
+        "price": "月額¥980 or 年¥5,980"
+      },
+      "features": [
+        "スマホカメラで領収書をスキャン→OCR+AIで科目を自動判定",
+        "事業・プライベートの按分を対話式で設定",
+        "青色申告・白色申告の切り替え対応",
+        "申告書PDFの下書き出力"
+      ],
+      "aiUsage": "Claudeで領収書の内容を読み取り勘定科目を提案。「これは交通費ですか、それとも会議費ですか？」を自然言語で確認する対話フローを実装",
+      "competitors": [
+        {
+          "name": "freee",
+          "threat": "high",
+          "weakness": "ブランド力大だが月額2,000〜3,000円と高め。年1回しか使わない層には割高"
+        },
+        {
+          "name": "マネーフォワード",
+          "threat": "high",
+          "weakness": "同上"
+        },
+        {
+          "name": "弥生",
+          "threat": "medium",
+          "weakness": "シニア層に強いがUIが古く若いフリーランスが敬遠"
+        }
+      ],
+      "conclusion": "✅ 「年1回だけ安く使いたい」層へのニッチ特化でfreeeと正面衝突を避けられる",
+      "tags": ["確定申告", "フリーランス", "OCR", "節税", "領収書"]
+    },
+    {
+      "name": "VoiceTask",
+      "emoji": "🎙",
+      "score": 84,
+      "overview": "「あ、あれやっておかないと」という思いつきを音声で録音すると、AIがタスク・期限・プロジェクトに自動分類してNotion/Linear/GitHub Issuesに送ってくれるモバイルアプリ。",
+      "platform": "mobile",
+      "direction": "overseas-to-japan",
+      "market": {
+        "target": "タスク管理ツールを使っているが入力が面倒な開発者・PM",
+        "size": "要調査（タスク管理アプリ市場はグローバルで急成長）",
+        "gap": "Siriリマインダーは連携先が少ない。Otter.aiは議事録特化でタスク変換はない。Notion AIはNotion内のみでクロスツールではない"
+      },
+      "revenue": {
+        "free": "月30件まで・Notion連携のみ",
+        "model": "SaaS",
+        "price": "Pro ¥490/月。連携先無制限・無制限録音"
+      },
+      "features": [
+        "ウィジェットからワンタップ録音開始",
+        "Claudeが内容を解析→タスク名・期限・優先度を提案",
+        "Notion/Linear/GitHub Issues/Todoistへ自動送信",
+        "「あとで確認」フォルダで未分類メモを管理"
+      ],
+      "aiUsage": "Whisper（音声認識）→Claudeでタスク構造化。「来週の月曜までに山田さんにデザイン確認メールを送る」を{title, due, assignee}に変換",
+      "competitors": [
+        {
+          "name": "Siriリマインダー",
+          "threat": "medium",
+          "weakness": "連携先が少なくNotion/Linear/GitHubに送れない"
+        },
+        {
+          "name": "Otter.ai",
+          "threat": "low",
+          "weakness": "議事録特化。タスク変換・外部ツール連携がない"
+        },
+        {
+          "name": "Notion AI",
+          "threat": "medium",
+          "weakness": "Notion内のみ。クロスツールではない"
+        }
+      ],
+      "conclusion": "✅ 連携先の豊富さと「ゼロ摩擦の入力」が差別化。グローバル展開できる",
+      "tags": ["音声入力", "タスク管理", "Notion連携", "Whisper", "自動化"]
+    },
+    {
+      "name": "JapanTech Jobs",
+      "emoji": "🇯🇵",
+      "score": 81,
+      "overview": "日本で働きたい海外エンジニアが、ビザ・給与水準・企業文化・面接準備をAIと対話しながら学べる英語のWebアプリ。日本→海外の視点。",
+      "platform": "web",
+      "direction": "japan-to-overseas",
+      "market": {
+        "target": "日本就職を目指す東南アジア・東欧・南米のエンジニア",
+        "size": "要調査（IT人材不足で企業の外国人採用意欲は高まっている）",
+        "gap": "Glassdoorは日本情報が少ない。外務省ガイドは静的コンテンツのみ。TokyoDevはコンテンツ特化でAI機能なし"
+      },
+      "revenue": {
+        "free": "ガイドコンテンツ閲覧のみ",
+        "model": "SaaS",
+        "price": "Pro $9.99/月。AI面接練習・履歴書添削・企業マッチング"
+      },
+      "features": [
+        "ビザ種別（技術・人文知識）の要件をわかりやすく解説",
+        "日本企業の面接文化をロールプレイで練習",
+        "給与交渉のシミュレーション",
+        "「この企業は外国人フレンドリーか」をクチコミで判定"
+      ],
+      "aiUsage": "Claudeと英語で面接練習。「Tell me about yourself」に対して日本企業的な回答の良し悪しをフィードバック",
+      "competitors": [
+        {
+          "name": "Glassdoor",
+          "threat": "low",
+          "weakness": "日本情報は少なく英語での就活ガイダンス機能なし"
+        },
+        {
+          "name": "外務省ガイド",
+          "threat": "low",
+          "weakness": "静的コンテンツのみでAI対話・練習機能なし"
+        },
+        {
+          "name": "TokyoDev",
+          "threat": "medium",
+          "weakness": "コンテンツ特化でAI機能なし・面接練習ができない"
+        }
+      ],
+      "conclusion": "✅ 企業側の採用課題と個人の就職課題を同時に解決できる両面市場",
+      "tags": ["外国人採用", "ビザ", "面接練習", "日本就職", "英語"]
+    },
+    {
+      "name": "RepoScore",
+      "emoji": "📊",
+      "score": 73,
+      "overview": "GitHubリポジトリのURLを入力するだけで技術負債・セキュリティリスク・依存関係の陳腐化を自動スコアリングして可視化するWebツール。",
+      "platform": "web",
+      "direction": "cheaper-alternative",
+      "market": {
+        "target": "OSS貢献者・採用担当者・個人開発者",
+        "size": "要調査",
+        "gap": "Snykはセキュリティ特化で強力。SonarQubeはエンタープライズ向けで個人には重い。「URL貼るだけでサクッと使える無料版」がない"
+      },
+      "revenue": {
+        "free": "publicリポジトリ5件/月まで",
+        "model": "SaaS",
+        "price": "Pro $8/月。無制限・privateリポジトリ対応"
+      },
+      "features": [
+        "依存関係の最終更新日・CVEを自動チェック",
+        "コードの複雑度・テストカバレッジ推定",
+        "「このリポジトリの健全度スコア」を100点満点で表示",
+        "改善提案をランキング形式で提示"
+      ],
+      "aiUsage": "Claudeがコードサンプルを読んで「ここは将来的に問題になりそう」という定性的なフィードバックを生成",
+      "competitors": [
+        {
+          "name": "Snyk",
+          "threat": "high",
+          "weakness": "セキュリティ特化で強力だが設定が複雑"
+        },
+        {
+          "name": "SonarQube",
+          "threat": "high",
+          "weakness": "エンタープライズ向けで個人が使うには重すぎる"
+        },
+        {
+          "name": "CodeClimate",
+          "threat": "medium",
+          "weakness": "CI/CD連携メインで外部からサクッと使えない"
+        }
+      ],
+      "conclusion": "✅ URL貼るだけのUXの差別化余地あり。採用ツールとしての副需要が面白い",
+      "tags": ["技術負債", "セキュリティ", "GitHub", "コードレビュー", "採用"]
+    },
+    {
+      "name": "WashokuNutrition",
+      "emoji": "🍱",
+      "score": 68,
+      "overview": "英語圏で日本食に興味があるユーザー向けに本格的な和食レシピと栄養計算を組み合わせたアプリ。「ラーメンもヘルシーに食べたい」需要に応える。",
+      "platform": "mobile",
+      "direction": "japan-to-overseas",
+      "market": {
+        "target": "日本食ファンの欧米ユーザー（30〜45歳・健康意識高め）",
+        "size": "要調査（海外での日本食人気は継続中）",
+        "gap": "MyFitnessPalは和食データが不正確。Noomは和食特化ではない。Just One Cookbookはレシピブログでアプリ機能なし"
+      },
+      "revenue": {
+        "free": "レシピ閲覧・基本栄養計算",
+        "model": "SaaS",
+        "price": "Pro $4.99/月。カスタム食事プラン・代替食材提案"
+      },
+      "features": [
+        "400種類以上の和食レシピ（海外で入手しやすい食材で代替提案）",
+        "栄養素の自動計算（和食の特徴である出汁・発酵食品の解説付き）",
+        "「今週の和食チャレンジ」ゲーミフィケーション",
+        "食材が手に入らないときの代替提案（みりん→rice wine+sugar）"
+      ],
+      "aiUsage": "冷蔵庫にある食材を入力するとClaudeが和食レシピを提案。「玉ねぎ・卵・だし（代替可）があります」→「親子丼が作れます。だしはchicken stockで代替できます」",
+      "competitors": [
+        {
+          "name": "MyFitnessPal",
+          "threat": "medium",
+          "weakness": "和食データが不正確で和食食材の栄養計算が信頼できない"
+        },
+        {
+          "name": "Noom",
+          "threat": "low",
+          "weakness": "和食特化ではなく一般的なダイエットアプリ"
+        },
+        {
+          "name": "Just One Cookbook",
+          "threat": "medium",
+          "weakness": "レシピブログでアプリの機能がない。栄養計算なし"
+        }
+      ],
+      "conclusion": "✅ 競合が少ないニッチだが市場規模が読みにくい。副業として始めて自然流入を試す価値あり",
+      "tags": ["和食", "栄養管理", "英語圏", "レシピ", "代替食材"]
+    }
+  ]
+}

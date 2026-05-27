@@ -1,0 +1,167 @@
+{
+  "date": "2026-05-22",
+  "theme": "ドキュメント・ナレッジ管理の「書く・探す・共有する」を全部解決する",
+  "perspective": "Notion や Confluence は「何でもできる」がゆえに重くなりすぎている。特定のユースケースに絞った軽量ツールに個人開発の余地が多い。",
+  "ideas": [
+    {
+      "name": "SlackWiki",
+      "emoji": "📚",
+      "score": 83,
+      "overview": "Slack のやり取りから自動的に社内ナレッジを生成・更新する Wiki ツール。「あのスレッドに書いてあった」を検索可能にする。",
+      "platform": "web",
+      "direction": "overseas-to-japan",
+      "market": {
+        "target": "Slack を主要コミュニケーションツールとして使う国内スタートアップ・IT企業",
+        "size": "国内 Slack 有料ユーザーは約80万人（2024年推定）。ナレッジ管理SaaS市場は約300億円",
+        "gap": "Notion AI（$10/月〜）は Slack との双方向同期がなく手動コピーが発生。Guru（$10/月〜）は英語UIのみで日本語形態素解析が弱い"
+      },
+      "revenue": {
+        "free": "Slack ワークスペース1つ・直近30日分のみ",
+        "model": "SaaS",
+        "price": "¥1,980/月（5名まで）/ ¥4,980/月（30名まで）"
+      },
+      "features": [
+        "Slack スレッドを Claude で要約・分類して自動 Wiki 化",
+        "「この質問、以前答えたよ」の自動リマインド",
+        "Slack 上から /wiki コマンドで検索",
+        "重複ナレッジの自動マージ提案",
+        "週次の「未整理スレッドレポート」"
+      ],
+      "aiUsage": "Claude Haiku で Slack メッセージを要約・タグ付け。Claude Sonnet でナレッジ間の重複検出と統合。1ワークスペース月次コスト試算: 約¥500〜2,000",
+      "competitors": [
+        {
+          "name": "Notion AI",
+          "threat": "high",
+          "weakness": "Slack からのインポートは手動。AI 機能は Notion 内文書限定で Slack リアルタイム連携なし"
+        },
+        {
+          "name": "Guru",
+          "threat": "medium",
+          "weakness": "日本語 UI なし。Slack 連携はあるが提案精度が低く誤検知が多い（ユーザーレビューより）"
+        }
+      ],
+      "conclusion": "✅ Slack 依存度が高い日本のスタートアップにはまる。Slack App として配布できるので獲得コストが低い",
+      "tags": ["Slack", "ナレッジ管理", "Wiki", "社内ツール", "生産性"]
+    },
+    {
+      "name": "ReadLater AI",
+      "emoji": "🔖",
+      "score": 80,
+      "overview": "Pocket の代替。保存した記事を Claude が要約し「今の自分に必要な情報か」を判定して優先度付けしてくれる。未読が溜まらない Read Later ツール。",
+      "platform": "extension",
+      "direction": "cheaper-alternative",
+      "market": {
+        "target": "技術記事・ニュースを大量にブックマークするエンジニア・リサーチャー",
+        "size": "Pocket は約1,500万 MAU（2023年）。Readwise Reader は約20万有料ユーザー（$7.99/月）",
+        "gap": "Readwise Reader（$7.99/月）は日本語記事の要約精度が低い。Pocket は AI 機能が弱くタグ付けが手動"
+      },
+      "revenue": {
+        "free": "月50記事まで・要約10回まで",
+        "model": "SaaS",
+        "price": "¥680/月（無制限）"
+      },
+      "features": [
+        "Chrome 拡張で1クリック保存",
+        "Claude による日本語要約（3行）",
+        "「今週読むべき記事トップ5」を毎朝通知",
+        "テーマ別クラスタリング（自動）",
+        "Obsidian / Notion へのエクスポート"
+      ],
+      "aiUsage": "Claude Haiku で記事要約と関連度スコアリング。1記事あたりコスト約¥0.5〜2",
+      "competitors": [
+        {
+          "name": "Pocket",
+          "threat": "medium",
+          "weakness": "AI 要約なし。タグ付けは手動のみ。Mozilla 買収後に開発が停滞気味"
+        },
+        {
+          "name": "Readwise Reader",
+          "threat": "high",
+          "weakness": "日本語記事の要約が英語で出力される場合あり。月$7.99と個人には高め"
+        }
+      ],
+      "conclusion": "✅ 未読消化という明確な痛みを解決。拡張機能での配布でインストール障壁が低い",
+      "tags": ["ブックマーク", "Read Later", "Chrome拡張", "要約", "Obsidian"]
+    },
+    {
+      "name": "APIDoc Live",
+      "emoji": "📡",
+      "score": 77,
+      "overview": "OpenAPI spec を監視して「変更があったらドキュメントを自動更新 + Slack 通知」するツール。Swagger UI の上位互換として使えるホスティングサービス。",
+      "platform": "web",
+      "direction": "cheaper-alternative",
+      "market": {
+        "target": "API を外部公開している SaaS 企業・フリーランスエンジニア",
+        "size": "ReadMe（$99/月〜）は約7,000社が利用。Stoplight（$39/月〜）は約4,000社",
+        "gap": "ReadMe は月$99と個人には高すぎる。Swagger UI はホスティングが自前で CI 連携が手動"
+      },
+      "revenue": {
+        "free": "1プロジェクト・API 50エンドポイントまで",
+        "model": "SaaS",
+        "price": "¥1,480/月（3プロジェクト・無制限エンドポイント）"
+      },
+      "features": [
+        "GitHub / GitLab の spec ファイルを監視して自動デプロイ",
+        "変更差分を Claude が日本語で説明して Slack 通知",
+        "カスタムドメイン対応",
+        "API キー管理・認証ページ生成",
+        "SDK コード例の自動生成（TypeScript / Python / Go）"
+      ],
+      "aiUsage": "Claude Haiku で OpenAPI diff を人間が読める変更説明に変換。SDK サンプルコードは Claude Sonnet で生成",
+      "competitors": [
+        {
+          "name": "ReadMe",
+          "threat": "medium",
+          "weakness": "月$99〜と個人・スタートアップには高い。日本語サポートなし"
+        },
+        {
+          "name": "Swagger UI（セルフホスト）",
+          "threat": "low",
+          "weakness": "無料だが自前ホスティング・CI 連携・通知が全部手動。ホスティングコストが別途発生"
+        }
+      ],
+      "conclusion": "✅ 個人SaaS開発者の「ドキュメントを最新に保つ」という地味な痛みを解決",
+      "tags": ["OpenAPI", "ドキュメント", "API", "Swagger", "GitHub連携"]
+    },
+    {
+      "name": "ChangelogBot",
+      "emoji": "📝",
+      "score": 74,
+      "overview": "GitHub のコミット・PR から変更履歴を自動生成して公開ページに反映する。Beamer（$49/月）の安価な代替。",
+      "platform": "web",
+      "direction": "cheaper-alternative",
+      "market": {
+        "target": "個人・小チームで SaaS を運営しているエンジニア",
+        "size": "製品変更履歴ツール市場は要調査。Beamer は約5,000社以上が利用",
+        "gap": "Beamer は月$49と個人 SaaS には高い。Headway（$29/月）は GitHub 自動連携がなく手動入力必須"
+      },
+      "revenue": {
+        "free": "1プロジェクト・月5件まで",
+        "model": "SaaS",
+        "price": "¥980/月（無制限・カスタムドメイン）"
+      },
+      "features": [
+        "GitHub PR のラベルからカテゴリを自動判定（新機能・修正・改善）",
+        "Claude によるコミットメッセージ→ユーザー向け文章への自動変換",
+        "公開 Changelog ページの自動生成",
+        "自サービスへの埋め込みウィジェット（JavaScript スニペット）",
+        "RSS フィード出力"
+      ],
+      "aiUsage": "Claude Haiku でコミットメッセージ（英語）をユーザー向けの日本語リリースノートに変換",
+      "competitors": [
+        {
+          "name": "Beamer",
+          "threat": "medium",
+          "weakness": "月$49と高い。GitHub 自動連携なし。日本語対応なし"
+        },
+        {
+          "name": "Headway",
+          "threat": "low",
+          "weakness": "GitHub 連携なし。手動入力のみ。AI 機能なし"
+        }
+      ],
+      "conclusion": "✅ 個人 SaaS に多い「Changelog を書く余裕がない」問題を自動化で解決",
+      "tags": ["Changelog", "GitHub", "SaaS", "リリースノート", "自動化"]
+    }
+  ]
+}

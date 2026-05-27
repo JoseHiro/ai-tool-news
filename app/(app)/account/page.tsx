@@ -23,7 +23,7 @@ export default async function AccountPage() {
   if (!session.userId) redirect('/login')
 
   const user = await getUserById(session.userId)
-  if (!user) redirect('/login')
+  if (!user) redirect('/api/auth/clear-session')
 
   const subscribedUntil = getSubscribedUntil(user)
   const active = isSubscribed(subscribedUntil)

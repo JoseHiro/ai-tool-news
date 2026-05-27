@@ -1,9 +1,11 @@
+import postgres from 'postgres'
+
+let _sql: ReturnType<typeof postgres> | null = null
 function getSql() {
-  // eslint-disable-next-line @typescript-eslint/no-require-imports
-  const { neon } = require('@neondatabase/serverless')
-  const url = process.env.DATABASE_URL ?? process.env.POSTGRES_URL
+  const url = process.env.DATABASE_URL ?? process.env.POSTGRES_URL ?? process.env.POSTGRES_URL_NON_POOLING
   if (!url) throw new Error('DATABASE_URL not set')
-  return neon(url)
+  if (!_sql) _sql = postgres(url, { ssl: 'require', max: 5 })
+  return _sql
 }
 
 async function ensureLikesTable() {
@@ -37,7 +39,7 @@ export async function getUserLikedKeys(userId: number): Promise<Set<string>> {
   const rows = await sql`
     SELECT content_type, content_date, content_key FROM likes WHERE user_id = ${userId}
   `
-  return new Set(rows.map((r: { content_type: string; content_date: string; content_key: string }) =>
+  return new Set((rows as unknown as { content_type: string; content_date: string; content_key: string }[]).map(r =>
     `${r.content_type}:${r.content_date}:${r.content_key}`
   ))
 }
@@ -51,7 +53,36 @@ export async function getUserLikes(userId: number): Promise<LikeEntry[]> {
     WHERE user_id = ${userId}
     ORDER BY created_at DESC
   `
-  return rows as LikeEntry[]
+  return rows as unknown as LikeEntry[]
+}
+
+export type PopularTopic = { title: string; likeCount: number }
+
+export async function getWeeklyTopLiked(limit = 5, contentType?: 'tip' | 'idea'): Promise<PopularTopic[]> {
+  await ensureLikesTable()
+  const sql = getSql()
+  const rows = contentType
+    ? await sql`
+        SELECT title, COUNT(*)::int AS like_count
+        FROM likes
+        WHERE created_at >= NOW() - INTERVAL '7 days'
+          AND content_type = ${contentType}
+        GROUP BY title
+        ORDER BY like_count DESC
+        LIMIT ${limit}
+      `
+    : await sql`
+        SELECT title, COUNT(*)::int AS like_count
+        FROM likes
+        WHERE created_at >= NOW() - INTERVAL '7 days'
+        GROUP BY title
+        ORDER BY like_count DESC
+        LIMIT ${limit}
+      `
+  return (rows as unknown as { title: string; like_count: number }[]).map(r => ({
+    title: r.title,
+    likeCount: r.like_count,
+  }))
 }
 
 export async function toggleLike(

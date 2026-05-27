@@ -1,0 +1,77 @@
+{
+  "date": "2026-05-26",
+  "tools": ["Grok Build", "Cursor", "Codex", "Windsurf"],
+  "updates": [
+    {
+      "tool": "Grok Build",
+      "title": "Grok Build Beta — SuperGrok / X Premium+ 向けに AI コーディング環境を正式公開",
+      "body": "xAI が Grok Build Beta を SuperGrok および X Premium+ ユーザー向けに公開。Plan Mode による計画ベースの開発フロー、Imagine による画像・動画生成、CLI を通じた automation / orchestrator 構築が可能。Cursor・Claude Code に対抗する AI コーディングツールとして本格参入した形。",
+      "importance": "high"
+    },
+    {
+      "tool": "Cursor",
+      "title": "Cursor が API 利用規約を更新 — 自作コードの外部ホスティングに制限を明示",
+      "body": "Cursor の API を使って構築したコードを外部向けにホスティング・販売することへの制限が利用規約に明記された。Cursor を使った SaaS や自動化ツールを公開している開発者は規約の確認が必要。",
+      "importance": "medium"
+    }
+  ],
+  "tips": [
+    {
+      "title": "Codex はスクリーンショットを渡すとデバッグが速い",
+      "description": "Codex にエラーメッセージだけ渡すより、アプリの画面キャプチャごと渡すほうが UI バグ・レイアウト崩れの特定が格段に速い。「画面はこうなっているが、こうなってほしい」を画像で伝える使い方が効果的。"
+    },
+    {
+      "title": "Claude Code / Cursor の Tips を発信している X アカウントをフォローする",
+      "description": "@bcherny や @trq212 など、公式ドキュメントに載っていない実践的なワークフローを発信しているアカウントがある。X で「Claude Code tips」を検索してフォローリストを作っておくと日常的にキャッチアップできる。"
+    },
+    {
+      "title": "大きな変更の前に必ず影響範囲を grep させる",
+      "description": "「この関数を変更する前に、どのファイルから呼ばれているか調べて」と先に依頼するだけで見落としが激減する。Grok Build・Cursor・Claude Code いずれでも有効な癖で、変更前の調査フェーズを AI に明示的に担当させる。"
+    },
+    {
+      "title": "Windsurf は設計・探索フェーズに強い",
+      "description": "Windsurf は Cascade エンジンによりコードベース全体を把握した上での提案が得意。新規参入したコードベースの読み解きや、どこを変えるべきかの探索フェーズで Windsurf を使い、実装は Claude Code / Cursor に渡す分業も有効。"
+    }
+  ],
+  "workflow": {
+    "title": "Grok Build・Claude Code・Cursor の使い分けフロー",
+    "steps": [
+      {
+        "label": "設計フェーズ — Grok Build Plan Mode",
+        "code": "「このアプリに〇〇機能を追加したい。実装方針を3パターン提案して」\n→ Plan Mode でアーキテクチャレベルの選択肢を整理"
+      },
+      {
+        "label": "実装フェーズ — Claude Code / Cursor",
+        "code": "CLAUDE.md にプロジェクトルールを定義してから依頼\n→ 「CLAUDE.md の規約に従って実装して」"
+      },
+      {
+        "label": "デバッグフェーズ — Codex + スクリーンショット",
+        "code": "画面キャプチャ + エラーログをそのまま渡す\n→ 「この画面がこうなっているが、こうなってほしい」"
+      },
+      {
+        "label": "リリース前レビュー — Claude Sonnet",
+        "code": "「この PR の変更でセキュリティ上の問題はあるか」\n→ 影響範囲の grep から始めさせる"
+      }
+    ]
+  },
+  "modelGuide": [
+    {
+      "model": "Claude Opus 4.7",
+      "useCase": "複雑な設計・リファクタリング・アーキテクチャ判断・セキュリティレビュー",
+      "cost": "high",
+      "when": "1回あたり時間をかける大きなタスク。「このシステム全体のアーキテクチャを見直して」など"
+    },
+    {
+      "model": "Claude Sonnet 4.6",
+      "useCase": "日常的なコーディング・バグ修正・説明・PR作成",
+      "cost": "medium",
+      "when": "コーディングセッションのメイン。ほとんどのタスクはこれで十分"
+    },
+    {
+      "model": "Claude Haiku 4.5",
+      "useCase": "単純な変換・フォーマット・短い質問・大量の軽作業",
+      "cost": "low",
+      "when": "定型処理・自動化パイプライン。「この関数名をスネークケースに変えて」など"
+    }
+  ]
+}

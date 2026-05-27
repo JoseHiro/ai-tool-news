@@ -1,0 +1,90 @@
+{
+  "date": "2026-05-16",
+  "updates": [
+    {
+      "title": "Claude Agent SDK — カスタムエージェントをプログラムから制御",
+      "body": "Claude Agent SDK は Claude Code のエージェント機能をプログラムから制御するための SDK。コードレビューボット（PRが作られると自動でレビューコメントを投稿）・ドキュメント生成エージェント・データ分析エージェントなど特定タスクを繰り返す専用エージェントを自分で作れる。",
+      "importance": "medium",
+      "code": {
+        "lang": "typescript",
+        "code": "import Anthropic from '@anthropic-ai/sdk'\n\nconst client = new Anthropic()\n\nasync function runCodeReviewAgent(prDiff: string) {\n  const response = await client.messages.create({\n    model: 'claude-sonnet-4-6',\n    max_tokens: 4096,\n    system: `あなたは厳格なコードレビュアーです。\nセキュリティ・パフォーマンス・可読性の3観点でレビューしてください。\n問題点は重要度（高・中・低）をつけて列挙してください。`,\n    messages: [{ role: 'user', content: `以下の差分をレビューしてください:\\n\\n${prDiff}` }],\n  })\n  return response.content[0].type === 'text' ? response.content[0].text : ''\n}"
+      }
+    },
+    {
+      "title": "プロンプトキャッシュでコストを最大 90% 削減",
+      "body": "Claude API のプロンプトキャッシュを使うと、同じシステムプロンプトやコンテキストを繰り返し使う場合に 2 回目以降のリクエストのコストが大幅に下がる。cache_control: { type: 'ephemeral' } をシステムプロンプトに付けるだけ。キャッシュヒット時は入力トークンのコストが約 90% 削減される。",
+      "importance": "high",
+      "code": {
+        "lang": "typescript",
+        "code": "const response = await client.messages.create({\n  model: 'claude-sonnet-4-6',\n  max_tokens: 1024,\n  system: [\n    {\n      type: 'text',\n      text: `あなたはコードレビュアーです。以下のコーディング規約に従って...（長い規約テキスト）`,\n      cache_control: { type: 'ephemeral' },\n    },\n  ],\n  messages: [{ role: 'user', content: prDiff }],\n})"
+      }
+    }
+  ],
+  "tips": [
+    {
+      "title": "ストリーミングで UX を改善する",
+      "description": "Claude の応答が長いとき、ストリーミングを使うと体感速度が大幅に改善する。文字が出てくるたびに React state を更新してリアルタイム表示する。",
+      "code": {
+        "lang": "typescript",
+        "code": "const stream = await client.messages.stream({\n  model: 'claude-sonnet-4-6',\n  max_tokens: 4096,\n  messages: [{ role: 'user', content: prompt }],\n})\n\nfor await (const chunk of stream) {\n  if (chunk.type === 'content_block_delta' && chunk.delta.type === 'text_delta') {\n    process.stdout.write(chunk.delta.text)\n  }\n}"
+      }
+    },
+    {
+      "title": "ツール呼び出し（Function Calling）を組み合わせる",
+      "description": "Claude に「何かを調べてから答えさせる」ときはツール呼び出しを使う。stop_reason が 'tool_use' になったときにツールを実行して結果を返す。",
+      "code": {
+        "lang": "typescript",
+        "code": "const tools = [\n  {\n    name: 'get_file_content',\n    description: '指定したファイルの内容を取得する',\n    input_schema: {\n      type: 'object' as const,\n      properties: { path: { type: 'string', description: 'ファイルパス' } },\n      required: ['path'],\n    },\n  },\n]\n\nconst response = await client.messages.create({\n  model: 'claude-sonnet-4-6',\n  max_tokens: 4096,\n  tools,\n  messages: [{ role: 'user', content: 'lib/users.ts を読んで、改善点を教えてください' }],\n})"
+      }
+    },
+    {
+      "title": "指数バックオフでエラーハンドリングとリトライを実装する",
+      "description": "Claude API はレートリミットや一時的なエラーが発生することがある。RateLimitError は指数バックオフでリトライ、サーバーエラーはリトライ、それ以外はリトライしない。",
+      "code": {
+        "lang": "typescript",
+        "code": "async function callWithRetry(prompt: string, maxRetries = 3): Promise<string> {\n  for (let attempt = 0; attempt < maxRetries; attempt++) {\n    try {\n      const response = await client.messages.create({\n        model: 'claude-sonnet-4-6',\n        max_tokens: 1024,\n        messages: [{ role: 'user', content: prompt }],\n      })\n      return response.content[0].type === 'text' ? response.content[0].text : ''\n    } catch (error) {\n      if (error instanceof Anthropic.RateLimitError) {\n        const wait = Math.pow(2, attempt) * 1000\n        await new Promise(r => setTimeout(r, wait))\n      } else { throw error }\n    }\n  }\n  throw new Error('Max retries exceeded')\n}"
+      }
+    },
+    {
+      "title": "Message Batches API で大量リクエストのコストを下げる",
+      "description": "急がない処理（日次バッチ・データ変換など）は Message Batches API を使うとコストが約 50% 削減される。",
+      "code": {
+        "lang": "typescript",
+        "code": "const batch = await client.messages.batches.create({\n  requests: documents.map((doc, i) => ({\n    custom_id: `doc-${i}`,\n    params: {\n      model: 'claude-haiku-4-5-20251001',\n      max_tokens: 1024,\n      messages: [{ role: 'user', content: `この文書を要約してください:\\n${doc}` }],\n    },\n  })),\n})"
+      }
+    }
+  ],
+  "workflow": {
+    "title": "Next.js アプリに Claude ストリーミングを組み込む最小構成",
+    "steps": [
+      {
+        "label": "API Route でストリーミングを返す",
+        "code": "// app/api/ai/route.ts\nimport Anthropic from '@anthropic-ai/sdk'\nimport { NextRequest } from 'next/server'\n\nconst client = new Anthropic()\n\nexport async function POST(req: NextRequest) {\n  const { prompt } = await req.json()\n  const encoder = new TextEncoder()\n  const stream = new ReadableStream({\n    async start(controller) {\n      const messageStream = client.messages.stream({\n        model: 'claude-sonnet-4-6',\n        max_tokens: 2048,\n        messages: [{ role: 'user', content: prompt }],\n      })\n      for await (const chunk of messageStream) {\n        if (chunk.type === 'content_block_delta' && chunk.delta.type === 'text_delta') {\n          controller.enqueue(encoder.encode(chunk.delta.text))\n        }\n      }\n      controller.close()\n    },\n  })\n  return new Response(stream, { headers: { 'Content-Type': 'text/plain; charset=utf-8' } })\n}"
+      },
+      {
+        "label": "フロントエンド側でストリームを読み取る",
+        "code": "async function askClaude(prompt: string) {\n  const res = await fetch('/api/ai', {\n    method: 'POST',\n    headers: { 'Content-Type': 'application/json' },\n    body: JSON.stringify({ prompt }),\n  })\n  const reader = res.body!.getReader()\n  const decoder = new TextDecoder()\n  let text = ''\n  while (true) {\n    const { done, value } = await reader.read()\n    if (done) break\n    text += decoder.decode(value)\n    setOutput(text)\n  }\n}"
+      }
+    ]
+  },
+  "modelGuide": [
+    {
+      "model": "Claude Opus 4.7",
+      "useCase": "エージェント設計・複雑な推論・セキュリティ監査",
+      "cost": "high",
+      "when": "週次の設計レビューや監査。高頻度バッチには使わない"
+    },
+    {
+      "model": "Claude Sonnet 4.6",
+      "useCase": "API組み込み・日常コーディング・ストリーミング応答",
+      "cost": "medium",
+      "when": "ユーザーが待つインタラクティブな処理のメインモデル"
+    },
+    {
+      "model": "Claude Haiku 4.5",
+      "useCase": "バッチ処理・大量ドキュメント変換・分類タスク",
+      "cost": "low",
+      "when": "夜間バッチや非同期処理でコストを優先するとき"
+    }
+  ]
+}

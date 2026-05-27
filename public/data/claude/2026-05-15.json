@@ -1,0 +1,110 @@
+{
+  "date": "2026-05-15",
+  "updates": [
+    {
+      "title": "/ultrareview — マルチエージェントによるコードレビュー",
+      "body": "/ultrareview は現在のブランチ（またはGitHub PR番号）を複数のエージェントが並列でレビューする機能。セキュリティ（OWASP系の脆弱性・認証ロジックの穴）・パフォーマンス（N+1・不要な再レンダリング）・テストカバレッジの欠落・アーキテクチャの一貫性の4観点から独立して調査される。課金が発生するためユーザーが明示的に起動する必要がある。",
+      "importance": "medium",
+      "code": {
+        "lang": "bash",
+        "code": "# ローカルブランチをレビュー\n/ultrareview\n\n# GitHub PR をレビュー\n/ultrareview 42"
+      }
+    },
+    {
+      "title": "GitHub Actions × Claude Code の自動レビューフロー",
+      "body": "PR が開かれたタイミングで Claude Code がコードレビューコメントを自動投稿するワークフローが組める。ANTHROPIC_API_KEY と GITHUB_TOKEN を Secrets に設定し、claude --print でレビューを実行する。実際のワークフロー構成は公式ドキュメントを参照。",
+      "importance": "low"
+    }
+  ],
+  "tips": [
+    {
+      "title": "TDD: テストを先に書かせて実装の品質を上げる",
+      "description": "Claude にテストを先に書かせると実装の品質が上がる。「テストが通るように実装して」は最も効果的なプロンプトの一つ。エッジケースの考慮が自然に増える。",
+      "code": {
+        "lang": "text",
+        "code": "「ユーザー認証 API のテストを先に書いてください。\n以下のケースをカバーしてください:\n- 正常なログイン\n- 間違ったパスワード（401）\n- 存在しないメール（401）\n- セッション切れ後のリクエスト（401）\nテストが通るように API を実装してください」"
+      }
+    },
+    {
+      "title": "CLAUDE.md にテスト方針を書く",
+      "description": "テストの書き方をプロジェクトごとに統一するには CLAUDE.md に明記するのが最速。テストランナー・モック方針・命名規則・カバレッジ目標を記述する。",
+      "code": {
+        "lang": "markdown",
+        "code": "## テスト方針\n- テストランナー: Vitest\n- テストファイルの場所: `__tests__/` ディレクトリ\n- モック方針: DB は絶対にモックしない。テスト用 DB に接続する\n- 命名: `describe('関数名')` → `it('〜のとき〜を返す')` 形式\n- カバレッジ目標: lib/ 配下は 90% 以上\n\n## 禁止\n- `any` 型でテストを回避しない\n- `@ts-ignore` を使わない"
+      }
+    },
+    {
+      "title": "スナップショットテストより振る舞いテスト",
+      "description": "Claude にスナップショットテストを書かせると変更のたびに大量の更新が発生する。「スナップショットテストは使わない。ユーザーの操作と結果を検証するテストを書いて」と伝えるだけで品質が変わる。",
+      "code": {
+        "lang": "typescript",
+        "code": "// ❌ スナップショット（壊れやすい）\nexpect(component).toMatchSnapshot()\n\n// ✅ 振る舞いを検証\nexpect(screen.getByRole('button', { name: 'ログイン' })).toBeInTheDocument()\nexpect(screen.getByText('メールアドレスを入力してください')).toBeVisible()"
+      }
+    },
+    {
+      "title": "エラーシナリオを先にテストする",
+      "description": "正常系より先にエラー系のテストを書かせると防御的な実装になりやすい。ネットワークタイムアウト・不正なJSON・認証切れ・DB接続失敗などを先に指定する。"
+    },
+    {
+      "title": "テスト名を日本語で書く",
+      "description": "Claude に日本語でテスト名を書かせると後から読んだときに意図が伝わりやすい。英語の命名規則に縛られず要件を自然言語で表現できる。",
+      "code": {
+        "lang": "typescript",
+        "code": "describe('isSubscribed', () => {\n  it('サブスク期限が未来の場合は true を返す', () => {\n    const future = new Date(Date.now() + 1000 * 60 * 60 * 24)\n    expect(isSubscribed(future)).toBe(true)\n  })\n\n  it('null の場合は false を返す（無料ユーザー）', () => {\n    expect(isSubscribed(null)).toBe(false)\n  })\n})"
+      }
+    },
+    {
+      "title": "カバレッジレポートを Claude に読ませる",
+      "description": "vitest --coverage の出力を貼り付けて「カバレッジが低いファイルのテストを追加してください」と頼むと、漏れを素早く補える。",
+      "code": {
+        "lang": "bash",
+        "code": "# カバレッジ付きで実行\npnpm vitest run --coverage\n\n# レポートを Claude に貼る\n# 「カバレッジが 80% を下回っているファイルのテストを追加してください」"
+      }
+    }
+  ],
+  "workflow": {
+    "title": "Claude × Vitest の TDD サイクル",
+    "steps": [
+      {
+        "label": "要件をテストで表現する",
+        "code": "「次の機能のテストを書いてください（実装は後でします）:\n- 関数名: formatSubscribedUntil\n- null の場合: '無料プラン' を返す\n- 未来の日付の場合: '2026年6月14日まで有効' 形式で返す\n- 過去の日付の場合: 'サブスク期限切れ' を返す」"
+      },
+      {
+        "label": "テストが落ちることを確認する",
+        "code": "pnpm vitest run __tests__/lib/format.test.ts\n# → 全テスト FAIL（関数がまだないので当然）"
+      },
+      {
+        "label": "テストを通す実装を書かせる",
+        "code": "「上のテストが全て通るように formatSubscribedUntil を実装してください」"
+      },
+      {
+        "label": "テストを通す",
+        "code": "pnpm vitest run __tests__/lib/format.test.ts\n# → 全テスト PASS"
+      },
+      {
+        "label": "リファクタリングする",
+        "code": "「実装を読みやすくリファクタリングしてください。テストは変更しないでください」"
+      }
+    ]
+  },
+  "modelGuide": [
+    {
+      "model": "Claude Opus 4.7",
+      "useCase": "複雑な設計・セキュリティ監査・大規模リファクタリング計画",
+      "cost": "high",
+      "when": "週1〜2回の判断のみ。E2Eテストのシナリオ設計に有効"
+    },
+    {
+      "model": "Claude Sonnet 4.6",
+      "useCase": "日常コーディング・テスト作成・PRレビュー",
+      "cost": "medium",
+      "when": "新規モジュールのテスト設計や設計判断が必要なテスト作成"
+    },
+    {
+      "model": "Claude Haiku 4.5",
+      "useCase": "定型コード生成・データ変換・大量バッチ処理",
+      "cost": "low",
+      "when": "既存関数の追加テストなどパターンが明確なテスト生成"
+    }
+  ]
+}

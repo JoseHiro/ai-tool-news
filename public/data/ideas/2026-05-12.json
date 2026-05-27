@@ -1,0 +1,237 @@
+{
+  "date": "2026-05-12",
+  "theme": "App Store モバイルマネタイズ戦略",
+  "perspective": "Claude Codeで爆速開発を前提に、App Storeで安定収益を生む個人開発アプリ候補を分析。競合の空白地帯と市場規模の掛け算でスコアリング。",
+  "ideas": [
+    {
+      "name": "SpiceFlow",
+      "emoji": "🌮",
+      "score": 88,
+      "overview": "英語圏の大手レシピアプリ（Allrecipes・Yummly）がほぼ放置しているスペイン語市場に特化した料理アプリ。5億人のスペイン語話者と成長中のラテンアメリカ市場が対象。",
+      "platform": "mobile",
+      "direction": "overseas-to-japan",
+      "market": {
+        "target": "米国ヒスパニック・中南米スマートフォンユーザー（25〜45歳）",
+        "size": "米国内ヒスパニック6,000万人、ラテンアメリカ料理アプリ市場約1.6億ドル（2025年）→2033年4.9億ドル予測",
+        "gap": "Allrecipesはスペイン語UIなし。Yummlyはスペイン語コンテンツが薄い。ローカル競合はデザイン・UXが古い"
+      },
+      "revenue": {
+        "free": "基本レシピ閲覧のみ",
+        "model": "買い切り",
+        "price": "地域別プレミアムパック $1.99〜$2.99"
+      },
+      "features": [
+        "スペイン語UIと音声読み上げ",
+        "地域別料理カテゴリ（メキシコ・ペルー・アルゼンチンなど）",
+        "材料リストからのショッピングリスト自動生成",
+        "オフライン保存機能",
+        "AIによる代替食材提案・栄養計算",
+        "家族人数に応じた分量スケール"
+      ],
+      "aiUsage": "Claude APIでレシピ材料から代替食材を提案、栄養計算、冷蔵庫の余り食材からレシピ生成",
+      "competitors": [
+        {
+          "name": "Allrecipes",
+          "threat": "high",
+          "weakness": "英語UIのみでスペイン語コンテンツ・UIが存在しない"
+        },
+        {
+          "name": "Yummly",
+          "threat": "medium",
+          "weakness": "スペイン語コンテンツが薄く地域特化コンテンツパックがない"
+        },
+        {
+          "name": "ローカル競合",
+          "threat": "low",
+          "weakness": "デザイン・UXが古く機能も少ない"
+        }
+      ],
+      "conclusion": "✅ 最も狙い目。競合空白×市場規模5億人のスペイン語話者",
+      "tags": ["レシピ", "スペイン語", "ラテンアメリカ", "フリーミアム", "食材代替"]
+    },
+    {
+      "name": "HabitGrid",
+      "emoji": "📊",
+      "score": 85,
+      "overview": "月$33K稼ぐHabitKitの弱点（iCloud同期なし・AI機能ゼロ・日本語UI不完全）を全補完した習慣トラッカー。国内外同時展開を狙う。",
+      "platform": "mobile",
+      "direction": "overseas-to-japan",
+      "market": {
+        "target": "習慣管理ツールを使うビジネスパーソン・学生（18〜40歳）",
+        "size": "HabitKitが月$33,000を稼ぐカテゴリ。App Store Productivityランキング常連",
+        "gap": "HabitKitはiCloud同期なし・Mac版が弱い・AI機能ゼロ・日本語UIが中途半端。最も要望が多いiCloud同期が未実装"
+      },
+      "revenue": {
+        "free": "習慣4つまで",
+        "model": "買い切り",
+        "price": "本体 $2.99 + テーマパック $0.99〜"
+      },
+      "features": [
+        "GitHubグリッド風の継続ビジュアライゼーション",
+        "iCloud同期（HabitKitにない強み）",
+        "ホーム画面ウィジェット（複数サイズ）",
+        "習慣の頻度設定（毎日・週N回・月N回）",
+        "AI週間レポート・改善提案",
+        "Year in Review（年間振り返り）"
+      ],
+      "aiUsage": "サボりがちな習慣を自動検出、週間レポート生成、最適なリマインダー時間の提案",
+      "competitors": [
+        {
+          "name": "HabitKit",
+          "threat": "medium",
+          "weakness": "iCloud同期なし・AI機能ゼロ・日本語UI不完全"
+        },
+        {
+          "name": "Streaks",
+          "threat": "medium",
+          "weakness": "iOS専用・高価格"
+        },
+        {
+          "name": "Habitify",
+          "threat": "medium",
+          "weakness": "月額制・日本語UI弱い"
+        }
+      ],
+      "conclusion": "✅ HabitKitの弱点を潰せば勝てる。開発工数も少ない",
+      "tags": ["習慣", "トラッカー", "iCloud同期", "AI分析", "ウィジェット"]
+    },
+    {
+      "name": "WashokuGuide",
+      "emoji": "🍱",
+      "score": 82,
+      "overview": "英語で本格的な和食レシピを提供するiOSアプリ。和食ブームは継続中だが英語圏に専門アプリがほぼない。日本人開発者のコンテンツ面の強みが最大の差別化要因。",
+      "platform": "mobile",
+      "direction": "japan-to-overseas",
+      "market": {
+        "target": "和食に興味のある英語圏ユーザー（25〜45歳・健康意識高め）",
+        "size": "要調査（英語圏での和食人気は継続中。Just One Cookbookは月数百万PV）",
+        "gap": "Just One Cookbookはウェブが強いがアプリが弱い。Japan Centreは食材販売メイン。一般レシピアプリは和食コンテンツが薄い"
+      },
+      "revenue": {
+        "free": "基本レシピ閲覧のみ",
+        "model": "買い切り",
+        "price": "季節・テーマ別コンテンツパック $1.99"
+      },
+      "features": [
+        "英語UIで本格和食レシピ（だし・発酵・麺類など）",
+        "入手困難な食材の代替案をAIが提案",
+        "調理難易度の段階表示",
+        "オフライン保存",
+        "季節・行事別レシピカレンダー",
+        "計量単位の切り替え（グラム↔カップ）"
+      ],
+      "aiUsage": "日本の食材が手に入らない場合の代替食材提案、難しい調理手順の解説",
+      "competitors": [
+        {
+          "name": "Just One Cookbook",
+          "threat": "medium",
+          "weakness": "Webが強いがアプリが弱い。オフライン機能なし"
+        },
+        {
+          "name": "Japan Centre",
+          "threat": "low",
+          "weakness": "食材販売がメインでレシピコンテンツが副次的"
+        },
+        {
+          "name": "一般レシピアプリ",
+          "threat": "low",
+          "weakness": "和食コンテンツが薄く代替食材提案機能がない"
+        }
+      ],
+      "conclusion": "✅ コンテンツが差別化要因。日本人開発者の圧倒的優位",
+      "tags": ["和食", "レシピ", "英語圏", "コンテンツ", "食材代替"]
+    },
+    {
+      "name": "StashScan",
+      "emoji": "🏠",
+      "score": 72,
+      "overview": "写真を撮るだけでAIが商品名・カテゴリを自動入力する家の持ち物管理アプリ。断捨離・引越し需要が高い日本でまず磨き、英語展開する逆輸出モデル。",
+      "platform": "mobile",
+      "direction": "japan-to-overseas",
+      "market": {
+        "target": "断捨離・整理整頓に関心のある25〜40代（日本）",
+        "size": "要調査（Sortlyは月額制で企業向け。個人の断捨離市場は大きい）",
+        "gap": "Sortlyは月額制で企業向け寄り。Encircleは保険向けでUIが古い。国産アプリは機能が少ない"
+      },
+      "revenue": {
+        "free": "アイテム30件まで",
+        "model": "買い切り",
+        "price": "$3.99（日本では¥600前後）"
+      },
+      "features": [
+        "写真撮影でAIが商品名・カテゴリを自動入力",
+        "部屋・カテゴリ別の整理",
+        "断捨離モード（使用頻度でフィルタ）",
+        "引越しチェックリスト連携",
+        "不用品の推定市場価格表示",
+        "iCloud同期・家族共有"
+      ],
+      "aiUsage": "写真から商品名・カテゴリを自動認識、不用品の相場価格を提示",
+      "competitors": [
+        {
+          "name": "Sortly",
+          "threat": "medium",
+          "weakness": "月額制で企業向け寄り。個人の断捨離用途に最適化されていない"
+        },
+        {
+          "name": "Encircle",
+          "threat": "low",
+          "weakness": "保険向けでUIが古く一般消費者向けUXではない"
+        },
+        {
+          "name": "国産アプリ",
+          "threat": "low",
+          "weakness": "機能が少なくAI入力がない"
+        }
+      ],
+      "conclusion": "🟡 AIカメラ入力が差別化の核。地味だが安定して売れる",
+      "tags": ["持ち物管理", "断捨離", "AIカメラ", "引越し", "買い切り"]
+    },
+    {
+      "name": "SubTrack AI",
+      "emoji": "💳",
+      "score": 68,
+      "overview": "スクショからAIが自動検出し解約ガイドも付いたサブスク管理アプリ。平均的な米国人は月$219分のサブスクを契約しているが$86しか払っていないと思っているギャップを市場価値にする。",
+      "platform": "mobile",
+      "direction": "cheaper-alternative",
+      "market": {
+        "target": "複数のサブスクを契約しているスマートフォンユーザー（米国・英語圏）",
+        "size": "要調査（平均的な米国人は月$219のサブスクを契約と推定）",
+        "gap": "BobbyはデザインよいがAI機能なし。ReSubs はUI複雑。Rocket Moneyは銀行連携必須で敬遠される"
+      },
+      "revenue": {
+        "free": "サブスク3件まで",
+        "model": "SaaS",
+        "price": "$2.99/月 or $19.99/年"
+      },
+      "features": [
+        "スクショ・メールからAIがサブスクを自動検出",
+        "更新日前のプッシュ通知",
+        "月額・年額の合計ダッシュボード",
+        "解約手順のステップガイド",
+        "家族プラン最適化提案",
+        "通貨換算（海外サブスク対応）"
+      ],
+      "aiUsage": "スクショ・メールからサブスクを自動検出、解約忘れアラート、最適プランの提案",
+      "competitors": [
+        {
+          "name": "Bobby",
+          "threat": "high",
+          "weakness": "デザインは強いがAI機能なし・スクショ自動検出なし"
+        },
+        {
+          "name": "ReSubs",
+          "threat": "high",
+          "weakness": "機能豊富だがUI複雑で使いにくい"
+        },
+        {
+          "name": "Rocket Money",
+          "threat": "medium",
+          "weakness": "銀行口座連携必須で個人情報提供に抵抗があるユーザーが多い"
+        }
+      ],
+      "conclusion": "🟡 市場はある。ただし競合が強くAI機能が必須条件",
+      "tags": ["サブスク管理", "AI検出", "解約", "家計管理", "自動化"]
+    }
+  ]
+}
