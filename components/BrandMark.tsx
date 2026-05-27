@@ -27,7 +27,7 @@ export function BrandMark({ variant = 'sidebar' }: BrandMarkProps) {
       aria-label={`${SITE_NAME}のトップへ`}
     >
       <Image
-        src="/img/icon.png"
+        src="/img/icon.webp"
         alt=""
         width={iconSize}
         height={iconSize}
