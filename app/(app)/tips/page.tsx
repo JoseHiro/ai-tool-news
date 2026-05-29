@@ -6,7 +6,7 @@ export default async function TipsPage() {
 
   return (
     <div className="px-8 py-10">
-      <div className="mx-auto max-w-3xl">
+      <div className="mx-auto max-w-5xl">
         <p style={{ color: 'var(--accent)' }} className="mb-1 text-xs font-semibold uppercase tracking-widest">
           DevKnow
         </p>

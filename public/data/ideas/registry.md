@@ -9,7 +9,8 @@
 
 | 日付 | テーマ | ドメイン |
 |---|---|---|
-| 2026-05-27 | 登山・アウトドアの「安全・記録・準備」をAIで個人開発 | health / fitness / outdoor |
+| 2026-05-29 | 「Excelや紙で代用されたまま」の非アプリ行動をシンプルに置き換える | gaming / travel / automotive |
+| 2026-05-27 | 「紙・Excelで代用されたまま」の日常ニッチをアプリ化 | outdoor / pet-care / real-estate / music-education |
 | 2026-05-26 | Grok リサーチ発掘の「趣味・学習・日常の小さな不満」に刺さるアプリ | entertainment / education / lifestyle |
 | 2026-05-25 | フリーランス・個人事業主の「見えない事務作業」をAIで自動化 | fintech / legal |
 | 2026-05-24 | クリエイター・コンテンツ制作の「手間のかかる繰り返し作業」をAIで自動化 | content-creation |
@@ -23,6 +24,12 @@
 ## 使用済みターゲット層
 
 - 登山者・アウトドア愛好家（40〜60代、非IT）
+- ボードゲーム愛好家（20〜40代、グループプレイ）
+- 国内旅行好き（30〜50代、温泉・グルメ旅行）
+- 自家用車オーナー（30〜60代、DIYメンテ管理）
+- ペット飼い主・犬猫オーナー（20〜50代）
+- 一人暮らし・引越し検討中の若者（20〜35歳）
+- 楽器を習っている学生・社会人・その保護者
 - アニメファン（10〜30代）
 - アルバイト・パート従業員（飲食・小売）
 - 大学生・資格受験者
@@ -40,7 +47,9 @@
 
 ## 使用済み競合起点（直近30日）
 
-YAMAP / ヤマレコ / Strava / PackPoint / GoodNotes / コンパス /
+YAMAP / ヤマレコ / コンパス / VitusVet / アニコムホームズ / petoco /
+SUUMO / HOME'S / Modacity / Simply Piano /
+BoardGameGeek / じゃらん / NAVITIME / Trip Way / クルマノート / Fuelly / Carista /
 Toggl / Canva / Notta / freee / DocuSign / Restream / Clerk / Auth0 /
 Misoca / Keeper Tax / BetterStack / Doppler / Locize / Mockoon /
 Castmagic / Beamer / ReadMe / Pocket / Readwise / Sunsama / Calendly /
@@ -54,10 +63,10 @@ HotSchedules / 英検公式アプリ / スタディサプリ英語
 
 | platform | 回数 |
 |---|---|
-| web | 19 |
+| web | 20 |
 | cli | 5 |
 | extension | 5 |
-| mobile | 13 |
+| mobile | 16 |
 
 → mobile が増加中。extension も引き続き意識する
 
@@ -67,9 +76,9 @@ HotSchedules / 英検公式アプリ / スタディサプリ英語
 
 | direction | 回数 |
 |---|---|
-| cheaper-alternative | 19 |
-| overseas-to-japan | 12 |
-| japan-to-overseas | 10 |
+| cheaper-alternative | 20 |
+| overseas-to-japan | 16 |
+| japan-to-overseas | 12 |
 
 → cheaper-alternative を引き続き抑える。overseas/japan-to-overseas のバランスを維持
 
@@ -77,7 +86,8 @@ HotSchedules / 英検公式アプリ / スタディサプリ英語
 
 ## 使用済みアイデア名
 
-YamaAlert JP / MapInk / TrailLog JP / PackRight JP /
+ScoreBoard JP / TabiNote JP / CarLog JP / CardRuler JP /
+YamaAlert JP / VaccineBook JP / RoomCheck / PracticeLog JP /
 MemoMinutes / DanshariSnap / YoyakuJP / PassLink / TechDigestJP /
 MeetSnap / FocusBlock / Shipfast JP / PasteLocal / ReviewPilot /
 SlackWiki / ReadLater AI / APIDoc Live / ChangelogBot /

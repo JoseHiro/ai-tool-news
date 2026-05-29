@@ -195,7 +195,7 @@ export function TipCard({
           >
             TIPS
           </span>
-          <p style={{ color: 'var(--text)' }} className="text-sm font-semibold leading-snug line-clamp-1">
+          <p style={{ color: 'var(--text)' }} className="text-sm font-semibold leading-snug line-clamp-2">
             {tip.title}
           </p>
         </div>

@@ -15,7 +15,7 @@ import { DigestToC } from '@/components/DigestToC'
 import { XPostButton } from '@/components/XPostButton'
 import { Paywall } from '@/components/Paywall'
 import { ContentDisclaimer } from '@/components/ContentDisclaimer'
-import { UpdateCard, TipCard, WorkflowCard, ModelGuideTable } from '@/components/NewsCard'
+import { UpdateCard, TipCard, WorkflowCard } from '@/components/NewsCard'
 import { IdeaCard } from '@/components/IdeaCard'
 import { DigestHero } from '@/components/DigestHero'
 
@@ -103,23 +103,22 @@ export default async function DigestPage({
 
   const tocSections = claudeDigest ? [
     {
-      heading: '🆕 Claude 最新アップデート',
+      heading: '🆕 AI ツール最新アップデート',
       sub: [
         ...(claudeDigest.tips.length > 0 ? [{ label: '実践Tips', subIndex: 100 }] : []),
         ...(claudeDigest.workflow ? [{ label: 'ワークフロー', subIndex: 101 }] : []),
-        ...(claudeDigest.modelGuide.length > 0 ? [{ label: 'モデル使い分けガイド', subIndex: 102 }] : []),
       ],
     },
     ...(ideaDigest ? [{ heading: '💰 個人開発アイデア', sub: [] }] : []),
   ] : [
-    ...(claudeDoc ? [{ heading: '🆕 Claude / Claude Code アップデート', sub: extractSubHeadings(claudeDoc, 'claude') }] : []),
+    ...(claudeDoc ? [{ heading: '🆕 AI ツール最新アップデート', sub: extractSubHeadings(claudeDoc, 'claude') }] : []),
     ...(ideasDoc ? [{ heading: '💰 個人開発アイデア', sub: extractSubHeadings(ideasDoc, 'ideas') }] : []),
     ...(digest ? parseSectionHeadings(digest.content).map(h => ({ heading: h, sub: [] })) : []),
   ]
 
   return (
     <div className="min-h-full px-8 py-10">
-      <div className="mx-auto flex min-h-full max-w-4xl gap-10">
+      <div className="mx-auto flex min-h-full max-w-6xl gap-10">
         {/* Main */}
         <div className="min-w-0 flex-1">
           {heroUpdate && <DigestHero update={heroUpdate} date={date} />}
@@ -132,27 +131,29 @@ export default async function DigestPage({
                   <section>
                     <div className="mb-5 flex items-center justify-between" id="section-0">
                       <h2 style={{ color: 'var(--text)' }} className="text-xl font-bold">
-                        Claude 最新アップデート
+                        AI ツール最新アップデート
                       </h2>
                       <Link href="/tips" style={{ color: 'var(--text-muted)' }} className="text-sm transition-colors hover:text-[var(--text)]">
                         すべて見る →
                       </Link>
                     </div>
-                    <div className="space-y-2">
-                      {claudeDigest.updates.map((u, i) => (
-                        <UpdateCard
-                          key={i}
-                          update={u}
-                          contentDate={date}
-                          contentKey={`update-${i}`}
-                          initialLiked={likedKeys?.includes(`tip:${date}:update-${i}`) ?? false}
-                        />
-                      ))}
-                    </div>
+                    {claudeDigest.updates.filter(u => u !== heroUpdate).length > 0 && (
+                      <div className="space-y-2">
+                        {claudeDigest.updates.filter(u => u !== heroUpdate).map((u, i) => (
+                          <UpdateCard
+                            key={i}
+                            update={u}
+                            contentDate={date}
+                            contentKey={`update-${i}`}
+                            initialLiked={likedKeys?.includes(`tip:${date}:update-${i}`) ?? false}
+                          />
+                        ))}
+                      </div>
+                    )}
                     {claudeDigest.tips.length > 0 && (
                       <>
                         <h3 id="section-0-sub-100" style={{ color: 'var(--text)' }} className="mb-3 mt-6 text-sm font-semibold">⚡ 実践Tips</h3>
-                        <div className="space-y-2">
+                        <div className="grid grid-cols-1 gap-2 sm:grid-cols-2">
                           {claudeDigest.tips.map((t, i) => (
                             <TipCard
                               key={i}
@@ -171,12 +172,15 @@ export default async function DigestPage({
                         <WorkflowCard workflow={claudeDigest.workflow} />
                       </>
                     )}
-                    {claudeDigest.modelGuide.length > 0 && (
-                      <>
-                        <h3 id="section-0-sub-102" style={{ color: 'var(--text)' }} className="mb-3 mt-6 text-sm font-semibold">💡 モデル使い分けガイド</h3>
-                        <ModelGuideTable guide={claudeDigest.modelGuide} />
-                      </>
-                    )}
+                    <div style={{ border: '1px solid var(--border)', background: 'var(--hover)' }} className="mt-6 flex items-center justify-between rounded-xl px-4 py-3">
+                      <div className="flex items-center gap-2">
+                        <span className="text-base">💡</span>
+                        <span style={{ color: 'var(--text)' }} className="text-sm font-medium">モデル使い分けガイド — Opus / Sonnet / Haiku をどう選ぶか</span>
+                      </div>
+                      <Link href="/guides/claude-model-guide" style={{ color: 'var(--accent)' }} className="shrink-0 text-xs font-semibold hover:underline">
+                        ガイドを読む →
+                      </Link>
+                    </div>
                   </section>
                 ) : claudeDoc ? (
                   <MarkdownDoc content={claudeDoc} type="claude" id="section-0" date={date} likedKeys={likedKeys} />
@@ -269,7 +273,7 @@ export default async function DigestPage({
 
         {canView && (
           <div
-            className="hidden w-60 shrink-0 xl:block"
+            className="hidden w-72 shrink-0 xl:block"
             style={{
               background: 'var(--bg)',
               margin: '-40px -32px -40px 0',
