@@ -1,0 +1,38 @@
+{
+  "date": "2026-05-29",
+  "cases": [
+    {
+      "name": "Trip Way",
+      "platform": "web",
+      "category": "旅行計画",
+      "metricLabel": "MRR",
+      "metricValue": 405,
+      "metricDisplay": "$405 MRR",
+      "metricCurrency": "USD",
+      "developer": "@farguk",
+      "notes": "旅行計画アプリ。16,000 DL・125 ratings 達成。個人開発で収益化を実証。"
+    },
+    {
+      "name": "勇者60秒RPG",
+      "platform": "mobile",
+      "category": "ゲーム",
+      "metricLabel": "売上",
+      "metricValue": 85000,
+      "metricDisplay": "¥85k/月",
+      "metricCurrency": "JPY",
+      "developer": "@punimaru_dev",
+      "notes": "ゲーム関連アプリで月次売上を公開。ニッチなゲームカテゴリでも個人開発が収益化できることを実証。"
+    },
+    {
+      "name": "クルマノート",
+      "platform": "mobile",
+      "category": "車・整備記録",
+      "metricLabel": "DL",
+      "metricValue": 125,
+      "metricDisplay": "125 DL",
+      "metricCurrency": "count",
+      "developer": "@nekoko_555",
+      "notes": "整備記録アプリ。小ニッチで継続更新中。固定需要があることを実証。"
+    }
+  ]
+}

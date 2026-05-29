@@ -9,6 +9,7 @@
 
 | 日付 | テーマ | ドメイン |
 |---|---|---|
+| 2026-05-30 | 海外成功事例（Grok B）が証明する「習慣・文化体験」の日本語版空白地帯を埋める | spiritual/culture・health・consumer-finance |
 | 2026-05-29 | 「Excelや紙で代用されたまま」の非アプリ行動をシンプルに置き換える | gaming / travel / automotive |
 | 2026-05-27 | 「紙・Excelで代用されたまま」の日常ニッチをアプリ化 | outdoor / pet-care / real-estate / music-education |
 | 2026-05-26 | Grok リサーチ発掘の「趣味・学習・日常の小さな不満」に刺さるアプリ | entertainment / education / lifestyle |
@@ -24,6 +25,9 @@
 ## 使用済みターゲット層
 
 - 登山者・アウトドア愛好家（40〜60代、非IT）
+- 御朱印収集者・寺社巡り好き（20〜50代、特に30〜40代女性）
+- 禁酒・節酒・減酒に取り組む人（30〜60代、飲みすぎを自覚している会社員）
+- 家計管理入門の20〜35歳（一人暮らし・共働き開始世代）
 - ボードゲーム愛好家（20〜40代、グループプレイ）
 - 国内旅行好き（30〜50代、温泉・グルメ旅行）
 - 自家用車オーナー（30〜60代、DIYメンテ管理）
@@ -47,6 +51,8 @@
 
 ## 使用済み競合起点（直近30日）
 
+ホトカミ / 御朱印マップ / 神社がいいね / Camino de Santiago系巡礼アプリ /
+Sober Tracker(海外) / マネーフォワード ME / Zaim / Flowfy /
 YAMAP / ヤマレコ / コンパス / VitusVet / アニコムホームズ / petoco /
 SUUMO / HOME'S / Modacity / Simply Piano /
 BoardGameGeek / じゃらん / NAVITIME / Trip Way / クルマノート / Fuelly / Carista /
@@ -63,10 +69,10 @@ HotSchedules / 英検公式アプリ / スタディサプリ英語
 
 | platform | 回数 |
 |---|---|
-| web | 20 |
+| web | 21 |
 | cli | 5 |
 | extension | 5 |
-| mobile | 16 |
+| mobile | 18 |
 
 → mobile が増加中。extension も引き続き意識する
 
@@ -77,8 +83,8 @@ HotSchedules / 英検公式アプリ / スタディサプリ英語
 | direction | 回数 |
 |---|---|
 | cheaper-alternative | 20 |
-| overseas-to-japan | 16 |
-| japan-to-overseas | 12 |
+| overseas-to-japan | 18 |
+| japan-to-overseas | 13 |
 
 → cheaper-alternative を引き続き抑える。overseas/japan-to-overseas のバランスを維持
 
@@ -86,6 +92,7 @@ HotSchedules / 英検公式アプリ / スタディサプリ英語
 
 ## 使用済みアイデア名
 
+GoShuinBook JP / SoberLog JP / CashFlow JP /
 ScoreBoard JP / TabiNote JP / CarLog JP / CardRuler JP /
 YamaAlert JP / VaccineBook JP / RoomCheck / PracticeLog JP /
 MemoMinutes / DanshariSnap / YoyakuJP / PassLink / TechDigestJP /

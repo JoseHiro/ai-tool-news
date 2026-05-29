@@ -1,8 +1,29 @@
+// ---- Success cases types ---------------------------------------------------
+
+export interface SuccessCase {
+  name: string
+  platform: 'mobile' | 'web' | 'extension' | 'mac' | 'other'
+  category: string
+  metricLabel: 'MRR' | '売上' | 'DL' | 'レビュー数' | 'その他'
+  metricValue: number
+  metricDisplay: string
+  metricCurrency: 'USD' | 'JPY' | 'count'
+  developer: string
+  url?: string
+  notes?: string
+}
+
+export interface SuccessCasesFile {
+  date: string
+  cases: SuccessCase[]
+}
+
 // ---- Structured digest types (JSON-based) ---------------------------------
 
 export interface ClaudeDigest {
   date: string
   updates: {
+    tool: string
     title: string
     body: string
     importance: 'high' | 'medium' | 'low'

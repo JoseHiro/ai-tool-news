@@ -4,7 +4,7 @@
 
 ## Daily Digest 生成仕様
 
-毎日 `public/data/claude/[YYYY-MM-DD].json` と `public/data/ideas/[YYYY-MM-DD].json` の2ファイルを生成する。
+毎日 `public/data/claude/[YYYY-MM-DD].json` と `public/data/ideas/[YYYY-MM-DD].json` と `public/data/cases/[YYYY-MM-DD].json` の3ファイルを生成する。
 日付は JST（UTC+9）の当日。出力は必ず **valid JSON のみ**（コードブロック・説明文は不要）。
 
 ---
@@ -27,6 +27,7 @@
    - [ ] **外部 API 商用利用**: 依存する外部 API が事前申請なしに商用利用可能か確認（LINE Messaging API・公共交通 API・地図 API など）
    - [ ] **個人開発規模**: MVP 完成が 12 週以内（= `mvpWeeks ≤ 12`）に収まるか。超える場合は除外
 5. 生成後に `registry.md` へ今日の内容を追記する
+6. Grok B の成功事例を `public/data/cases/[date].json` に保存する（スキーマは後述）
 
 ---
 
@@ -40,7 +41,11 @@
 （ここに Grok 検索結果を貼り付け）
 ---
 
-今日（JST）の Daily Digest を生成して public/data/claude/[date].json と public/data/ideas/[date].json に保存して。
+今日（JST）の Daily Digest を生成して以下の3ファイルに保存して。
+- public/data/claude/[date].json
+- public/data/ideas/[date].json
+- public/data/cases/[date].json（Grok B の成功事例）
+
 スキーマと品質ルールは CLAUDE.md に記載されている。
 生成前に public/data/ideas/registry.md を読んで被りを確認すること。
 生成後に registry.md を更新すること。
@@ -333,3 +338,33 @@ AI 開発ツール全般（Claude・Codex・Cursor・GitHub Copilot・Gemini Cod
 - ターゲット層: エンジニア以外（クリエイター・一般消費者・非ITフリーランス・学生・特定の趣味コミュニティなど）を週3件以上含める
 - 前日と同じドメインカテゴリ（devtools・fintech・content など）を連続させない
 - **生成前に `registry.md` を確認し、直近14日以内に使ったテーマ・競合起点と被らせない**
+
+---
+
+### 📄 ファイル3: `public/data/cases/[date].json`
+
+Grok B で発掘した個人開発の成功事例。毎日3〜10件を収録する。スキーマ:
+
+```typescript
+{
+  date: string                     // "YYYY-MM-DD"
+  cases: {
+    name: string                   // アプリ名
+    platform: "mobile" | "web" | "extension" | "mac" | "other"
+    category: string               // カテゴリ（自由文: "旅行計画" / "ゲーム" / "生産性" など）
+    metricLabel: "MRR" | "売上" | "DL" | "レビュー数" | "その他"
+    metricValue: number            // ソート用数値（USD は USD 額、JPY は JPY 額、DL/レビューは件数）
+    metricDisplay: string          // 表示用: "$405 MRR" / "¥85k/月" / "16,000 DL"
+    metricCurrency: "USD" | "JPY" | "count"
+    developer: string              // "@username"
+    url?: string                   // App Store / Play Store URL（任意）
+    notes?: string                 // 補足・context
+  }[]
+}
+```
+
+**ルール:**
+- Grok B の信頼性フィルターを通過した事例のみ収録（アプリリンク or スクリーンショット + 具体的数字が必須）
+- 架空の数字・憶測は書かない
+- `metricValue` はソートに使うので正確な数値を入れる（$3k MRR → 3000、¥85k → 85000）
+- Grok B 結果がない日は `"cases": []` で OK
