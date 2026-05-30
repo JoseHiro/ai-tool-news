@@ -80,7 +80,7 @@ async function readAllCasesFiles(): Promise<SuccessCase[]> {
       try {
         const raw = await fs.readFile(join(dir, file), 'utf-8')
         const parsed = JSON.parse(raw) as SuccessCasesFile
-        all.push(...parsed.cases)
+        all.push(...parsed.cases.map(c => ({ ...c, sourceDate: parsed.date })))
       } catch {
         // skip malformed files
       }
@@ -112,7 +112,10 @@ export async function getAllCases(): Promise<SuccessCase[]> {
       await ensureTable()
       const sql = getSql()
       const rows = await sql`SELECT data FROM success_cases ORDER BY date DESC`
-      return rows.flatMap(r => (r.data as SuccessCasesFile).cases)
+      return rows.flatMap(r => {
+        const file = r.data as SuccessCasesFile
+        return file.cases.map(c => ({ ...c, sourceDate: file.date }))
+      })
     } catch (err) {
       markUnavailable()
     }

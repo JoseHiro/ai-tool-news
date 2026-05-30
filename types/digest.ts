@@ -11,6 +11,8 @@ export interface SuccessCase {
   developer: string
   url?: string
   notes?: string
+  /** 読み込み時にファイルの日付から自動付与される */
+  sourceDate?: string
 }
 
 export interface SuccessCasesFile {
@@ -22,6 +24,8 @@ export interface SuccessCasesFile {
 
 export interface ClaudeDigest {
   date: string
+  /** ヘッダー「今日の一手」用。未指定時は workflow / tips から自動生成 */
+  actionPrompt?: string
   updates: {
     tool: string
     title: string
