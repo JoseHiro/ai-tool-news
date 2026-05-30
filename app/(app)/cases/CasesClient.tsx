@@ -136,7 +136,7 @@ function CaseCard({ c, today }: { c: SuccessCase; today: string }) {
         </div>
 
         {c.notes && (
-          <p style={{ color: 'var(--text-muted)' }} className="mb-2 line-clamp-2 text-xs leading-relaxed">
+          <p style={{ color: 'var(--text-muted)' }} className="mb-2 text-xs leading-relaxed">
             {c.notes}
           </p>
         )}

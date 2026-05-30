@@ -262,7 +262,7 @@ export default async function DigestPage({
                                 </span>
                               </div>
                               {c.notes && (
-                                <p style={{ color: 'var(--text-muted)' }} className="line-clamp-1 text-xs leading-relaxed">{c.notes}</p>
+                                <p style={{ color: 'var(--text-muted)' }} className="text-xs leading-relaxed">{c.notes}</p>
                               )}
                               <p style={{ color: 'var(--text-muted)' }} className="mt-1 text-[11px]">{c.developer}</p>
                             </div>
