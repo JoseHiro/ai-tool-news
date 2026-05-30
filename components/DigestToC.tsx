@@ -22,10 +22,12 @@ export function DigestToC({
   sections,
   popularTopics = [],
   popularIdeas = [],
+  showModelGuide = false,
 }: {
   sections: ToCSection[]
   popularTopics?: PopularTopic[]
   popularIdeas?: PopularTopic[]
+  showModelGuide?: boolean
 }) {
   const [activeId, setActiveId] = useState<string | null>(null)
 
@@ -120,6 +122,28 @@ export function DigestToC({
             })}
           </ul>
         </div>
+      )}
+
+      {/* ── モデル使い分けガイド ── */}
+      {showModelGuide && (
+        <a
+          href="/guides/claude-model-guide"
+          style={{ border: '1px solid var(--border)', borderRadius: '12px', padding: '14px' }}
+          className="flex items-start gap-3 transition-colors hover:border-[var(--accent)]"
+        >
+          <span className="mt-0.5 text-base">💡</span>
+          <div className="min-w-0">
+            <p style={{ color: 'var(--text)' }} className="mb-0.5 text-xs font-semibold leading-snug">
+              モデル使い分けガイド
+            </p>
+            <p style={{ color: 'var(--text-muted)' }} className="text-[10px] leading-snug">
+              Opus / Sonnet / Haiku をどう選ぶか
+            </p>
+            <p style={{ color: 'var(--accent)' }} className="mt-1.5 text-[10px] font-semibold">
+              ガイドを読む →
+            </p>
+          </div>
+        </a>
       )}
 
       {/* ── 今週の人気トピック ── */}

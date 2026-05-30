@@ -177,15 +177,6 @@ export default async function DigestPage({
                         <WorkflowCard workflow={claudeDigest.workflow} />
                       </>
                     )}
-                    <div style={{ border: '1px solid var(--border)', background: 'var(--hover)' }} className="mt-6 flex items-center justify-between rounded-xl px-4 py-3">
-                      <div className="flex items-center gap-2">
-                        <span className="text-base">💡</span>
-                        <span style={{ color: 'var(--text)' }} className="text-sm font-medium">モデル使い分けガイド — Opus / Sonnet / Haiku をどう選ぶか</span>
-                      </div>
-                      <Link href="/guides/claude-model-guide" style={{ color: 'var(--accent)' }} className="shrink-0 text-xs font-semibold hover:underline">
-                        ガイドを読む →
-                      </Link>
-                    </div>
                   </section>
                 ) : claudeDoc ? (
                   <MarkdownDoc content={claudeDoc} type="claude" id="section-0" date={date} likedKeys={likedKeys} />
@@ -348,7 +339,7 @@ export default async function DigestPage({
               padding: '40px 20px 40px 16px',
             }}
           >
-            <DigestToC sections={tocSections} popularTopics={popularTopics} popularIdeas={popularIdeas} />
+            <DigestToC sections={tocSections} popularTopics={popularTopics} popularIdeas={popularIdeas} showModelGuide={!!claudeDigest} />
           </div>
         )}
       </div>
