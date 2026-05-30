@@ -112,10 +112,12 @@ export async function getAllCases(): Promise<SuccessCase[]> {
       await ensureTable()
       const sql = getSql()
       const rows = await sql`SELECT data FROM success_cases ORDER BY date DESC`
-      return rows.flatMap(r => {
-        const file = r.data as SuccessCasesFile
-        return file.cases.map(c => ({ ...c, sourceDate: file.date }))
-      })
+      if (rows.length > 0) {
+        return rows.flatMap(r => {
+          const file = r.data as SuccessCasesFile
+          return file.cases.map(c => ({ ...c, sourceDate: file.date }))
+        })
+      }
     } catch (err) {
       markUnavailable()
     }
