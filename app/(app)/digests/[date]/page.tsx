@@ -1,4 +1,4 @@
-import { notFound } from 'next/navigation'
+import { notFound, redirect } from 'next/navigation'
 import type { Metadata } from 'next'
 import Link from 'next/link'
 import { getIronSession } from 'iron-session'
@@ -92,6 +92,8 @@ export default async function DigestPage({
 
   const hasContent = digest || claudeDigest || ideaDigest || claudeDoc || ideasDoc
   if (!hasContent) notFound()
+
+  if (!session.userId) redirect('/signup')
 
   const todayJST = new Date(Date.now() + 9 * 60 * 60 * 1000).toISOString().slice(0, 10)
   const user = session.userId ? await getUserById(session.userId).catch(() => null) : null

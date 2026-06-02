@@ -1,16 +1,17 @@
 import type { Metadata } from 'next'
 import Link from 'next/link'
+import { BRAND_SUBLINE, BRAND_TAGLINE } from '@/lib/brand'
 
 export const metadata: Metadata = {
   title: 'DevKnow とは？',
-  description: 'AIと開発を、もっと身近にするニュース＆アイデアメディア。毎日の厳選ダイジェスト・個人開発アイデア・実践ガイドをお届けします。',
+  description: `${BRAND_TAGLINE}。${BRAND_SUBLINE}。毎日の厳選ダイジェスト・個人開発アイデア・実践ガイドをお届けします。`,
 }
 
 const features = [
   {
     emoji: '⚡',
     title: '毎日の AI ツールニュース',
-    desc: 'Claude・Cursor・Codex・GitHub Copilot など主要 AI ツールの最新アップデートを毎日厳選。使えるTipsとワークフローもセットで届きます。',
+    desc: 'Claude・Cursor・Codex などのアップデートを、コピペできる Tips とワークフローまで落とし込んで毎日届けます。',
   },
   {
     emoji: '💡',
@@ -91,8 +92,8 @@ export default function AboutPage() {
             DevKnow とは？
           </h1>
           <p style={{ color: 'var(--text-muted)' }} className="text-base leading-relaxed">
-            AI と開発を、もっと身近にするニュース＆アイデアメディアです。<br />
-            毎日、AI ツールの最新情報と個人開発アイデアを厳選してお届けします。
+            {BRAND_TAGLINE}。<br />
+            {BRAND_SUBLINE} — 毎日、AI ツールの最新情報と個人開発アイデアを厳選してお届けします。
           </p>
         </div>
 
