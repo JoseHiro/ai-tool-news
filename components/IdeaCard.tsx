@@ -12,12 +12,6 @@ const directionLabel = {
 }
 const platformLabel = { web: 'Web', mobile: 'Mobile', extension: '拡張機能', cli: 'CLI' }
 
-function scoreColor(score: number) {
-  if (score >= 85) return '#22c55e'
-  if (score >= 75) return '#f59e0b'
-  return '#94a3b8'
-}
-
 export function IdeaCard({
   idea,
   contentDate,
@@ -28,7 +22,6 @@ export function IdeaCard({
   initialLiked?: boolean
 }) {
   const [open, setOpen] = useState(false)
-  const color = scoreColor(idea.score)
   const contentKey = idea.name.toLowerCase().replace(/\s+/g, '-')
 
   return (
@@ -38,13 +31,12 @@ export function IdeaCard({
         onClick={() => setOpen(o => !o)}
         className="w-full px-4 py-3 flex items-center gap-4 hover:bg-[var(--hover)] transition-colors cursor-pointer"
       >
-        {/* Score box */}
+        {/* Emoji icon */}
         <div
-          style={{ background: `${color}15`, border: `1px solid ${color}30` }}
-          className="shrink-0 rounded-xl px-3 py-2 text-center min-w-[52px]"
+          style={{ background: 'var(--hover)', border: '1px solid var(--border)' }}
+          className="shrink-0 rounded-xl flex items-center justify-center w-[52px] h-[52px] text-2xl"
         >
-          <p style={{ color }} className="text-lg font-black tabular-nums leading-none">{idea.score}</p>
-          <p style={{ color: 'var(--text-muted)' }} className="text-[9px] mt-0.5">スコア</p>
+          {idea.emoji}
         </div>
 
         {/* Name + direction + overview */}

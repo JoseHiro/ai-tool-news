@@ -1,0 +1,67 @@
+{
+  "date": "2026-05-31",
+  "actionPrompt": "GitHub Copilot のトークン課金移行（6月1日）前に組織の使用量上限を確認する",
+  "tools": ["GitHub Copilot", "Grok build", "Claude Code", "Codex"],
+  "updates": [
+    {
+      "tool": "GitHub Copilot",
+      "title": "Claude Opus 4.8 追加＋トークン課金モデルへ移行（6月1日開始）",
+      "body": "GitHub Copilot に Claude Opus 4.8 が追加され、6月1日よりトークン課金モデルへ移行。管理者向けの使用量上限・コスト管理設定ガイドが公開された。組織ルールの見直しが必要になるケースあり。\n\n料金急増の事例も複数報告されており、移行前に設定確認を推奨。\n\n参考: @PonderoAI による課金計算・管理者設定まとめ（本日投稿）",
+      "importance": "high"
+    },
+    {
+      "tool": "Grok build",
+      "title": "Design Cloner Workflow — Firecrawl 連携でサイトを自動クローン",
+      "body": "Grok build の新しい design cloner workflow を Firecrawl と組み合わせることで、複雑なサイトを 250 以上のアーティファクトに分解・自動パッケージングできることを @ericciarla（Firecrawl 共同創業者）が実演。\n\nUI コンポーネント抽出・デザイン参考取り込みのワークフローとして有効。",
+      "importance": "medium"
+    }
+  ],
+  "tips": [
+    {
+      "title": "Claude Code の実践コマンド 12 選",
+      "description": "/memory（セッション記憶の引き継ぎ）、/init + CLAUDE.md（プロジェクト設定固定）、/hooks（コミット前後の自動処理）、/agents（サブエージェント分割）、/skills（繰り返しタスクの登録）、/effort（思考深度調整）が特に実用的。@santtiagom_ が日常業務での活用例付きでまとめた投稿がいいね 65 超。"
+    },
+    {
+      "title": "Claude Code + Cursor で繰り返し業務を 10 分で自動化",
+      "description": "商品タイトルの大量更新・自動レポート生成・価格追跡を Claude Code と Cursor の組み合わせで構築。@digitalvendorx の事例では従来数時間かかっていた繰り返し作業を大幅短縮。CLAUDE.md でルールを固定し、Cursor Agent で実行するのがポイント。"
+    }
+  ],
+  "workflow": {
+    "title": "Claude Code + Cursor で繰り返し業務を自動化する 4 ステップ",
+    "steps": [
+      {
+        "label": "CLAUDE.md にプロジェクト固有のルールを定義（対象ファイル・禁止操作・コード規約）"
+      },
+      {
+        "label": "/hooks でコミット前後に自動テスト・Lint を実行するよう設定",
+        "code": "/hooks\n# pre-commit: pnpm lint && pnpm tsc --noEmit\n# post-commit: echo 'Done'"
+      },
+      {
+        "label": "Cursor Agent モードで繰り返しタスク（CSV インポート・レポート生成）を自然言語で指示"
+      },
+      {
+        "label": "/skills に登録して次回から 1 コマンドで再実行できるようにする"
+      }
+    ]
+  },
+  "modelGuide": [
+    {
+      "model": "Claude Opus 4.7",
+      "useCase": "アーキテクチャ設計・複雑なリファクタリング・コードベース全体のレビュー",
+      "cost": "high",
+      "when": "重要な設計判断・週次の深いレビュー時"
+    },
+    {
+      "model": "Claude Sonnet 4.6",
+      "useCase": "日常的なコード生成・PR レビュー補助・ドキュメント作成",
+      "cost": "medium",
+      "when": "通常の開発作業全般"
+    },
+    {
+      "model": "Claude Haiku 4.5",
+      "useCase": "コード補完・クイック質問・軽量なテキスト処理",
+      "cost": "low",
+      "when": "レスポンス速度優先・大量リクエスト処理"
+    }
+  ]
+}

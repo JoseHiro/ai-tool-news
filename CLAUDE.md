@@ -196,6 +196,7 @@ AI 開発ツール全般（Claude・Codex・Cursor・GitHub Copilot・Gemini Cod
 ```typescript
 {
   date: string                    // "YYYY-MM-DD"
+  actionPrompt?: string           // ヘッダー「今日の一手」用（20〜40字）。未指定時は workflow.title を使用
   tools: string[]                 // 今日カバーしたツール例: ["Claude", "Cursor"]
   updates: {
     tool: string                  // "Claude" | "Cursor" | "Codex" | "Copilot" | "Gemini" | "Windsurf" | etc.
@@ -226,6 +227,7 @@ AI 開発ツール全般（Claude・Codex・Cursor・GitHub Copilot・Gemini Cod
 ```
 
 **ルール:**
+- **`actionPrompt`**: 今日読者が最初に試すべき一手を短く（例: 「Opus 4.8 の /ultracode でコードベース全体をレビュー」）。workflow.title と同内容でも可
 - **`updates: []` は valid**。情報がない日に無理に出さない
 - 架空の情報・不確かなアップデートは書かない。不確かなら `updates` ではなく `tips` に入れる
 - Grok リサーチ結果がある場合はそれを優先して使う

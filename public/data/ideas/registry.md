@@ -9,6 +9,8 @@
 
 | 日付 | テーマ | ドメイン |
 |---|---|---|
+| 2026-06-02 | 「なっぷ」の不満と海外ヒットアプリの空白地帯から見えるキャンプ特化の非アプリ行動を置き換える | camping |
+| 2026-05-31 | 写真・記録・整理に「紙と感覚」を使い続ける手芸コミュニティの非アプリ行動を置き換える | craft/photo |
 | 2026-05-30 | 海外成功事例（Grok B）が証明する「習慣・文化体験」の日本語版空白地帯を埋める | spiritual/culture・health・consumer-finance |
 | 2026-05-29 | 「Excelや紙で代用されたまま」の非アプリ行動をシンプルに置き換える | gaming / travel / automotive |
 | 2026-05-27 | 「紙・Excelで代用されたまま」の日常ニッチをアプリ化 | outdoor / pet-care / real-estate / music-education |
@@ -24,6 +26,8 @@
 
 ## 使用済みターゲット層
 
+- キャンパー・車中泊愛好家（20〜60代、非エンジニア）
+- ハンドメイド作家・手芸愛好家（30〜50代女性、minne/Creema 出品者）
 - 登山者・アウトドア愛好家（40〜60代、非IT）
 - 御朱印収集者・寺社巡り好き（20〜50代、特に30〜40代女性）
 - 禁酒・節酒・減酒に取り組む人（30〜60代、飲みすぎを自覚している会社員）
@@ -51,6 +55,8 @@
 
 ## 使用済み競合起点（直近30日）
 
+The Dyrt / CAMP NOTE / なっぷ / hinata / Carstay / iOverlander /
+PhotoPills / Moment Pro Camera / Ravelry / Adobe Scan / Microsoft Lens /
 ホトカミ / 御朱印マップ / 神社がいいね / Camino de Santiago系巡礼アプリ /
 Sober Tracker(海外) / マネーフォワード ME / Zaim / Flowfy /
 YAMAP / ヤマレコ / コンパス / VitusVet / アニコムホームズ / petoco /
@@ -92,6 +98,8 @@ HotSchedules / 英検公式アプリ / スタディサプリ英語
 
 ## 使用済みアイデア名
 
+CampKit JP / SotoMap / VanLog JP /
+CraftCam JP / PatternScan JP / CraftLog /
 GoShuinBook JP / SoberLog JP / CashFlow JP /
 ScoreBoard JP / TabiNote JP / CarLog JP / CardRuler JP /
 YamaAlert JP / VaccineBook JP / RoomCheck / PracticeLog JP /

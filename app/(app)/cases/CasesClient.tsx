@@ -1,5 +1,6 @@
 'use client'
 
+import type React from 'react'
 import type { SuccessCase } from '@/types/digest'
 
 type Badge = 'NEW' | 'SHIPPED' | 'STACK' | 'FIRST APP'
@@ -18,27 +19,63 @@ function getBadge(c: SuccessCase, today: string): Badge {
   return 'SHIPPED'
 }
 
-const ICON_GRADIENTS = [
-  ['#3b82f6', '#60a5fa'],
-  ['#8b5cf6', '#a78bfa'],
-  ['#10b981', '#34d399'],
-  ['#f59e0b', '#fbbf24'],
-  ['#ef4444', '#f87171'],
-  ['#ec4899', '#f472b6'],
-  ['#6366f1', '#818cf8'],
-  ['#0ea5e9', '#38bdf8'],
-]
+const PLATFORM_ICON: Record<string, { color: string; icon: React.ReactNode }> = {
+  mobile: {
+    color: '#3b82f6',
+    icon: (
+      <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round">
+        <rect x="5" y="2" width="14" height="20" rx="2" ry="2" />
+        <line x1="12" y1="18" x2="12.01" y2="18" strokeWidth="2" />
+      </svg>
+    ),
+  },
+  web: {
+    color: '#10b981',
+    icon: (
+      <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round">
+        <circle cx="12" cy="12" r="10" />
+        <line x1="2" y1="12" x2="22" y2="12" />
+        <path d="M12 2a15.3 15.3 0 0 1 4 10 15.3 15.3 0 0 1-4 10 15.3 15.3 0 0 1-4-10 15.3 15.3 0 0 1 4-10z" />
+      </svg>
+    ),
+  },
+  extension: {
+    color: '#f59e0b',
+    icon: (
+      <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round">
+        <path d="M20.5 11H19V7a2 2 0 0 0-2-2h-4V3.5A2.5 2.5 0 0 0 10.5 1 2.5 2.5 0 0 0 8 3.5V5H4a2 2 0 0 0-2 2v3.8h1.5a2.5 2.5 0 0 1 0 5H2V19a2 2 0 0 0 2 2h4v-1.5a2.5 2.5 0 0 1 5 0V21h4a2 2 0 0 0 2-2v-4h1.5a2.5 2.5 0 0 0 0-5z" />
+      </svg>
+    ),
+  },
+  mac: {
+    color: '#6366f1',
+    icon: (
+      <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round">
+        <rect x="2" y="3" width="20" height="14" rx="2" ry="2" />
+        <line x1="8" y1="21" x2="16" y2="21" />
+        <line x1="12" y1="17" x2="12" y2="21" />
+      </svg>
+    ),
+  },
+  other: {
+    color: '#8b5cf6',
+    icon: (
+      <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round">
+        <polyline points="16 18 22 12 16 6" />
+        <polyline points="8 6 2 12 8 18" />
+      </svg>
+    ),
+  },
+}
 
-function AppIcon({ name }: { name: string }) {
-  const idx = name.split('').reduce((a, c) => a + c.charCodeAt(0), 0) % ICON_GRADIENTS.length
-  const [from, to] = ICON_GRADIENTS[idx]
-  const initial = name.replace(/\s/g, '')[0]?.toUpperCase() ?? '?'
+function AppIcon({ platform }: { platform: string }) {
+  const { color, icon } = PLATFORM_ICON[platform] ?? PLATFORM_ICON.other
   return (
     <div
-      style={{ background: `linear-gradient(135deg, ${from}, ${to})` }}
-      className="flex h-[68px] w-[68px] shrink-0 items-center justify-center rounded-2xl text-2xl font-bold text-white shadow-sm"
+      style={{ background: `${color}18`, border: `1px solid ${color}30`, color }}
+      className="flex h-[68px] w-[68px] shrink-0 items-center justify-center rounded-2xl"
     >
-      {initial}
+      {icon}
     </div>
   )
 }
@@ -105,7 +142,7 @@ function CaseCard({ c, today }: { c: SuccessCase; today: string }) {
       style={{ border: '1px solid var(--border)' }}
       className="flex items-center gap-5 rounded-2xl p-5 transition-shadow hover:shadow-sm"
     >
-      <AppIcon name={c.name} />
+      <AppIcon platform={c.platform} />
 
       <div className="min-w-0 flex-1">
         <div className="mb-1.5 flex flex-wrap items-center gap-2">
@@ -174,23 +211,6 @@ export function CasesClient({ cases, today }: { cases: SuccessCase[]; today: str
         ))}
       </div>
 
-      <div
-        style={{ background: 'var(--hover)', border: '1px solid var(--border)' }}
-        className="mt-6 flex items-center justify-between gap-4 rounded-2xl px-5 py-4"
-      >
-        <div className="flex items-center gap-3">
-          <span className="text-lg">💡</span>
-          <p style={{ color: 'var(--text-muted)' }} className="text-xs leading-relaxed">
-            あなたのアプリも掲載しませんか？成功事例をシェアして開発者コミュニティにインスピレーションを与えましょう。
-          </p>
-        </div>
-        <button
-          style={{ border: '1px solid var(--border)', color: 'var(--text)' }}
-          className="shrink-0 rounded-lg px-4 py-2 text-xs font-medium transition-colors hover:bg-[var(--hover)]"
-        >
-          事例を投稿する →
-        </button>
-      </div>
     </div>
   )
 }
