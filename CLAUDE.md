@@ -4,7 +4,7 @@
 
 ## Daily Digest 生成仕様
 
-毎日 `public/data/claude/[YYYY-MM-DD].json` と `public/data/ideas/[YYYY-MM-DD].json` の2ファイルを生成する。
+毎日 `public/data/claude/[YYYY-MM-DD].json` と `public/data/ideas/[YYYY-MM-DD].json` と `public/data/cases/[YYYY-MM-DD].json` の3ファイルを生成する。
 日付は JST（UTC+9）の当日。出力は必ず **valid JSON のみ**（コードブロック・説明文は不要）。
 
 ---
@@ -21,7 +21,13 @@
    - ターゲット層: [具体的に]
    - ドメイン: [前回と被らないもの]
    ```
-4. 生成後に `registry.md` へ今日の内容を追記する
+4. **各アイデア候補を採用する前に以下のゲートチェックを全項目通過させる**:
+   - [ ] **App Store 被り**: 直接競合が 3 件以上かつ各 1,000 レビュー以上 → 除外。Grok テンプレートD で確認する
+   - [ ] **法的リスク**: 弁護士法72条（法律文書生成）/ 薬機法 / 金商法 / e-Tax 認定 / 著作権 など規制対象か判定。`legalRisk: "high"` の場合は `conclusion` に具体的な法律名を明記し、回避策がなければ除外
+   - [ ] **外部 API 商用利用**: 依存する外部 API が事前申請なしに商用利用可能か確認（LINE Messaging API・公共交通 API・地図 API など）
+   - [ ] **個人開発規模**: MVP 完成が 12 週以内（= `mvpWeeks ≤ 12`）に収まるか。超える場合は除外
+5. 生成後に `registry.md` へ今日の内容を追記する
+6. Grok B の成功事例を `public/data/cases/[date].json` に保存する（スキーマは後述）
 
 ---
 
@@ -35,7 +41,11 @@
 （ここに Grok 検索結果を貼り付け）
 ---
 
-今日（JST）の Daily Digest を生成して public/data/claude/[date].json と public/data/ideas/[date].json に保存して。
+今日（JST）の Daily Digest を生成して以下の3ファイルに保存して。
+- public/data/claude/[date].json
+- public/data/ideas/[date].json
+- public/data/cases/[date].json（Grok B の成功事例）
+
 スキーマと品質ルールは CLAUDE.md に記載されている。
 生成前に public/data/ideas/registry.md を読んで被りを確認すること。
 生成後に registry.md を更新すること。
@@ -149,39 +159,35 @@ X をリアルタイム検索して「こんなアプリが欲しい」「〇〇
 ━━━━━━━━━━━━━━━━━━━━━━━━━━━━
 ```
 
----A
-今日（2026-05-26）のX検索結果まとめ
-Grok Build
+---
 
-Grok Build / Grok Build BetaがSuperGrokとX Premium+ユーザー向けに公開。Plan Mode、Imagineによる画像・動画生成、CLIでのautomation/orchestrator構築が可能に / @teslaownersSV / https://x.com/teslaownersSV/status/2059335581877031052
-Grok Build / Grok Build v0.2.0 updateリリース。短期間で大幅改善 / @XFreeze / https://x.com/XFreeze/status/2059324720789504377
+#### ✅ テンプレートD — App Store 被り確認（アイデアごとに実行）
 
-Cursor
+各アイデアを確定する前に Grok に投げる。テンプレートB・C とは独立した検索。
 
-Cursor / CursorのAPI関連制限（自作コードのホスティング不可）の更新情報 / @jpschroeder / https://x.com/jpschroeder/status/2059319949240271299 (Likes 200)
-Cursor / Remodex内でCursor AI CLIが近日使用可能に（SSH + Terminal機能） / @emanueledpt / https://x.com/emanueledpt/status/2059282394130059493 (Likes 50)
+```
+以下のアイデアについて、App Store（日本・米国）と Google Play を検索して、
+すでに同じコンセプトのアプリが存在するか確認してください。
 
-Claude / Codex
+【確認するアイデア】
+アプリ名（案）: [名前]
+コンセプト: [一言で説明]
+対象ユーザー: [ターゲット]
+差別化ポイント: [既存アプリとの違い]
 
-Codex / App shots（画面キャプチャ）を積極活用したトラブルシューティングTips。Twitter DMのissue対応に即適用 / @jxnlco (OpenAI) / https://x.com/jxnlco/status/2059335932223148488 (Likes 114)
-Claude Code / Claude関連アカウント推奨リスト（@bcherny, @trq212らがtips共有） / @katedeyneka / https://x.com/katedeyneka/status/2059329224004256040 (Likes 369)
+【調査内容】
+1. 同じコンセプトのアプリが App Store / Google Play に何件あるか（日本・米国それぞれ）
+2. 上位3件: アプリ名 / 評価数 / 価格 / 最終アップデート年月 / 日本語対応の有無
+3. 参入余地の判定:
+   - ❌ 飽和: 評価数1,000以上の直接競合が3件以上 → 除外推奨
+   - ⚠️ 競合あり: 評価数1,000以上の競合が1〜2件 → 差別化が明確なら可
+   - ✅ 余地あり: 競合が少ない / 日本語版なし / 直近2年以上更新なし
+4. 余地がある場合、空いているポジション（価格帯・言語・特定ニッチ）を具体的に
 
-その他（Windsurf / Gemini Codeなど）
+判定結果を「❌ / ⚠️ / ✅」で先頭に明記して回答してください。
+```
 
-Windsurf / Windsurf CEOの洞察（Moat is a verb）引用 + ツールTier ListでA-Tierに位置づけ / @StartupArchive_ / https://x.com/StartupArchive_/status/2059301030278595016 (Likes 79)
-
-注記:
-
-今日の日付（since:2026-05-26）に限定し、いいね数・信頼性・除外条件を考慮して抽出。
-公式リリースやエンジニアの実践Tipsを中心にヒット。憶測・求人・低信頼投稿は除外。
-他のツール（GitHub Copilotなど）は今日の該当高品質投稿が少なかった。
-
-B
-以下は、Xのリアルタイム検索で確認できた条件をすべて満たす個人開発の成功事例です。
-（信頼性フィルター：App Store/Google Playの収益・DLスクリーンショットあり、具体的な数字明記、同一アプリ/開発者で複数投稿あり、既にリリース済みのみ採用。求人・憶測・1投稿のみ・曖昧なものは除外）
-
-勇者60秒RPG / ゲーム（テキストRPG） / 約2ヶ月で売上85,000円（App Store 69,000円 + Stripe 22,000円 + AdMob 4,000円）、直近1日でApp Store売上10,000円 / 開発者 @punimaru_dev / https://apps.apple.com/app/勇者60秒RPG/id6761117151 (スクリーンショット複数投稿あり)
-旅行思い出マップ / ユーティリティ（旅行記録・地図アプリ） / 2026年4月収益405,198円（App Store 285,604円 + Admob 117,078円 + Google Play 2,516円）、3月は1,032,284円、12万DL突破 / 開発者 @tsuzuki817 / https://apps.apple.com/jp/app/旅行思い出マップ/id6478291625 （iOS）および Google Play版あり (月次収益公開を複数回投稿、スクリーンショットあり)
+---
 
 ### 📄 ファイル1: `public/data/claude/[date].json`
 
@@ -190,6 +196,7 @@ AI 開発ツール全般（Claude・Codex・Cursor・GitHub Copilot・Gemini Cod
 ```typescript
 {
   date: string                    // "YYYY-MM-DD"
+  actionPrompt?: string           // ヘッダー「今日の一手」用（20〜40字）。未指定時は workflow.title を使用
   tools: string[]                 // 今日カバーしたツール例: ["Claude", "Cursor"]
   updates: {
     tool: string                  // "Claude" | "Cursor" | "Codex" | "Copilot" | "Gemini" | "Windsurf" | etc.
@@ -220,6 +227,7 @@ AI 開発ツール全般（Claude・Codex・Cursor・GitHub Copilot・Gemini Cod
 ```
 
 **ルール:**
+- **`actionPrompt`**: 今日読者が最初に試すべき一手を短く（例: 「Opus 4.8 の /ultracode でコードベース全体をレビュー」）。workflow.title と同内容でも可
 - **`updates: []` は valid**。情報がない日に無理に出さない
 - 架空の情報・不確かなアップデートは書かない。不確かなら `updates` ではなく `tips` に入れる
 - Grok リサーチ結果がある場合はそれを優先して使う
@@ -276,7 +284,13 @@ AI 開発ツール全般（Claude・Codex・Cursor・GitHub Copilot・Gemini Cod
       threat: "high" | "medium" | "low"
       weakness: string            // 具体的に（「日本語が弱い」ではなく何が弱いか）
     }[]
-    conclusion: string            // ✅ 一言評価。法的・規制リスクがあれば ⚠️ で明記
+    feasibility: {
+      mvpWeeks: number            // MVP 完成の目安（週数）。12週以内が採用条件
+      legalRisk: "none" | "low" | "high"
+                                  // "high" → conclusion に具体的な法律名を必記・回避策なければ除外
+      apiDependency: string       // 依存する主要外部 API。"なし" も可
+    }
+    conclusion: string            // ✅ 一言評価。legalRisk:"high" は具体的な法律名と回避策を必記
     tags: string[]                // ["会議", "文字起こし", "Whisper"]
   }[]
 }
@@ -314,8 +328,10 @@ AI 開発ツール全般（Claude・Codex・Cursor・GitHub Copilot・Gemini Cod
 - スコアは 60〜95 の範囲。根拠のない高得点禁止
 - **具体的な数字を入れる**（DAU・価格・レビュー数など。不明なら `"要調査"`）
 - **競合の弱点は具体的に**（「〇〇の決済に未対応」「〇〇のサイトをパースできない」レベル）
-- **個人または小チームが作れる規模に限定**（大規模B2B SaaS・企業間連携が必要なものは除外）
-- **規制・法的リスクがある場合は `conclusion` に ⚠️ で明記する**（例: 弁護士法72条・e-Tax 認定要件など）
+- **`mvpWeeks` は 12 以下**。超える場合は除外（個人が3ヶ月で MVP 出せる規模に限定）
+- **`legalRisk: "high"` の場合**: 具体的な法律名（例: 弁護士法72条・薬機法・金商法2条）と回避策を `conclusion` に明記。回避策がなければ採用しない
+- **App Store 被りチェック（テンプレートD）を通過したアイデアのみ採用**。❌ 判定は除外、⚠️ 判定は差別化が明確な場合のみ採用
+- 外部 API 商用利用が不明な場合は `apiDependency` に「要確認」と記載し、`legalRisk: "low"` 以上にする
 - モバイルは React Native、Web は Next.js を前提にする
 
 **多様性ルール（必須）:**
@@ -324,3 +340,33 @@ AI 開発ツール全般（Claude・Codex・Cursor・GitHub Copilot・Gemini Cod
 - ターゲット層: エンジニア以外（クリエイター・一般消費者・非ITフリーランス・学生・特定の趣味コミュニティなど）を週3件以上含める
 - 前日と同じドメインカテゴリ（devtools・fintech・content など）を連続させない
 - **生成前に `registry.md` を確認し、直近14日以内に使ったテーマ・競合起点と被らせない**
+
+---
+
+### 📄 ファイル3: `public/data/cases/[date].json`
+
+Grok B で発掘した個人開発の成功事例。毎日3〜10件を収録する。スキーマ:
+
+```typescript
+{
+  date: string                     // "YYYY-MM-DD"
+  cases: {
+    name: string                   // アプリ名
+    platform: "mobile" | "web" | "extension" | "mac" | "other"
+    category: string               // カテゴリ（自由文: "旅行計画" / "ゲーム" / "生産性" など）
+    metricLabel: "MRR" | "売上" | "DL" | "レビュー数" | "その他"
+    metricValue: number            // ソート用数値（USD は USD 額、JPY は JPY 額、DL/レビューは件数）
+    metricDisplay: string          // 表示用: "$405 MRR" / "¥85k/月" / "16,000 DL"
+    metricCurrency: "USD" | "JPY" | "count"
+    developer: string              // "@username"
+    url?: string                   // App Store / Play Store URL（任意）
+    notes?: string                 // 補足・context
+  }[]
+}
+```
+
+**ルール:**
+- Grok B の信頼性フィルターを通過した事例のみ収録（アプリリンク or スクリーンショット + 具体的数字が必須）
+- 架空の数字・憶測は書かない
+- `metricValue` はソートに使うので正確な数値を入れる（$3k MRR → 3000、¥85k → 85000）
+- Grok B 結果がない日は `"cases": []` で OK

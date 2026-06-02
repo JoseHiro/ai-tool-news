@@ -52,7 +52,7 @@ export default async function GuidePage({
 
   return (
     <div className="px-8 py-10">
-      <div className="mx-auto flex max-w-4xl gap-10">
+      <div className="mx-auto flex max-w-6xl gap-10">
         {/* Main */}
         <div className="min-w-0 flex-1">
           {/* Back */}
@@ -105,7 +105,7 @@ export default async function GuidePage({
         </div>
 
         {/* ToC */}
-        <div className="hidden w-44 shrink-0 xl:block">
+        <div className="hidden w-72 shrink-0 xl:block">
           <GuideToC sections={sections} />
         </div>
       </div>

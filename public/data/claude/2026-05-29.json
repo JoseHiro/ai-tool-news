@@ -1,0 +1,86 @@
+{
+  "date": "2026-05-29",
+  "tools": ["Claude", "Codex", "Grok Build"],
+  "updates": [
+    {
+      "tool": "Claude",
+      "title": "Claude Opus 4.8 リリース — 数百の並列サブエージェント・Fast mode 2.5倍速で価格1/3",
+      "body": "Anthropic が Claude Opus 4.8 を正式リリース。推論精度（sharper judgment）が向上し、数百の並列サブエージェントを使った自律的な長期タスクが可能に。Fast mode は Opus 4.7 比 2.5倍の速度で価格は1/3。Cursor・Claude Code・GitHub Copilot・Windsurf で即日利用可能（@lucas_flatwhite）。",
+      "importance": "high"
+    },
+    {
+      "tool": "Codex",
+      "title": "Codex Mobile iOS大アップデート — /side会話・end-of-turn diff・one-tapモデル切替",
+      "body": "OpenAI が Codex Mobile（iOS）を大幅強化。/side コマンドでサイド会話を起動、ターン終了時に変更差分をまとめて表示する end-of-turn diff、アーカイブスレッド、ワンタップのモデル切り替え、Spotlight・Shortcuts 対応などデスクトップ並みの操作性を実現（@reach_vb、いいね88）。",
+      "importance": "medium"
+    },
+    {
+      "tool": "Grok Build",
+      "title": "Grok Build が GitHub Copilot Pro+ の代替候補に — 推論精度とバグ検出で優位",
+      "body": "Grok Build を GitHub Copilot Pro+ の代替としてテストしたエンジニアが推論の頑健性・速度・バグ検出精度で優位と報告。agentic coding 用途での採用が広がりつつある（@hugo_kemnitz）。",
+      "importance": "low"
+    }
+  ],
+  "tips": [
+    {
+      "title": "Opus 4.8 のシステムプロンプト変更を把握しておく",
+      "description": "Opus 4.7→4.8 でシステムプロンプトが更新された。主な変更：愛称での呼び方を禁止、ユーザーへの依存防止強化、long_conversation_reminder の削除。既存のプロンプトが意図しない挙動を示す場合はこれらの変更を確認すること（@Ru_Acker、いいね84）。"
+    },
+    {
+      "title": "/ultracode で Opus 4.8 が複数エージェントを自律生成",
+      "description": "Claude Code で /ultracode コマンドを使うと、Opus 4.8 が自律的に複数のサブエージェントを生成してタスクを分散処理する。大規模リファクタリングやコードベース全体の分析に有効（@RoundtableSpace、いいね33）。",
+      "code": {
+        "lang": "bash",
+        "code": "# Opus 4.8 に切り替えて /ultracode を起動\n/model claude-opus-4-8\n/ultracode\n\n# 例: コードベース全体の問題を洗い出す\n# Opus が自律的にサブエージェントを生成し並列実行する"
+      }
+    },
+    {
+      "title": "Opus 4.8 Fast mode でコスパを大幅改善",
+      "description": "Opus 4.8 の Fast mode は通常比2.5倍の速度で価格は1/3。設計判断・セキュリティレビューなど Opus レベルが必要なタスクでも Fast mode を使えばコストを抑えながら品質を維持できる。",
+      "code": {
+        "lang": "bash",
+        "code": "# Fast mode は /fast コマンドでトグル\n/fast\n\n# Opus 4.8 + Fast mode の組み合わせが最もコスパが良い"
+      }
+    }
+  ],
+  "workflow": {
+    "title": "Opus 4.8 × /ultracode でコードベース全体を自律レビュー",
+    "steps": [
+      {
+        "label": "Opus 4.8 に切り替える",
+        "code": "/model claude-opus-4-8"
+      },
+      {
+        "label": "/ultracode を起動してレビュー対象を指示する",
+        "code": "/ultracode\n「src/ 以下の全ファイルを読んで、セキュリティリスク・パフォーマンス問題・型エラーを優先度順にリストアップして」"
+      },
+      {
+        "label": "Opus が複数サブエージェントを生成し並列でコードを走査する（待つだけ）"
+      },
+      {
+        "label": "優先度 high の問題から修正を依頼する",
+        "code": "「優先度 high のうち認証フロー周りを先に修正して。他は次のセッションに回す」"
+      }
+    ]
+  },
+  "modelGuide": [
+    {
+      "model": "Claude Opus 4.8",
+      "useCase": "複雑な設計・セキュリティレビュー・自律エージェント",
+      "cost": "high",
+      "when": "Fast mode で価格1/3・速度2.5倍。設計判断・/ultracode での並列実行に最適"
+    },
+    {
+      "model": "Claude Sonnet 4.6",
+      "useCase": "日常的なコーディング・バグ修正・PR作成",
+      "cost": "medium",
+      "when": "コーディングセッションのデフォルト。ほとんどのタスクはSonnetで十分"
+    },
+    {
+      "model": "Claude Haiku 4.5",
+      "useCase": "単純な変換・フォーマット・自動化パイプライン",
+      "cost": "low",
+      "when": "大量の定型処理・テキスト変換・自動化の各ステップ"
+    }
+  ]
+}

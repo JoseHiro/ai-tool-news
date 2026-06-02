@@ -16,7 +16,7 @@ export default async function IdeasPage() {
   if (!canView) {
     return (
       <div className="px-8 py-10">
-        <div className="mx-auto max-w-4xl">
+        <div className="mx-auto max-w-5xl">
           <p style={{ color: 'var(--accent)' }} className="mb-1 text-xs font-semibold uppercase tracking-widest">DevKnow</p>
           <h1 style={{ color: 'var(--text)' }} className="mb-8 text-2xl font-bold">個人開発アイデア</h1>
           <Paywall />
@@ -29,7 +29,7 @@ export default async function IdeasPage() {
 
   return (
     <div className="px-8 py-10">
-      <div className="mx-auto max-w-4xl">
+      <div className="mx-auto max-w-5xl">
         <p style={{ color: 'var(--accent)' }} className="mb-1 text-xs font-semibold uppercase tracking-widest">
           DevKnow
         </p>

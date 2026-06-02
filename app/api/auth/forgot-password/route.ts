@@ -1,6 +1,7 @@
 import { NextRequest } from 'next/server'
 import { findUserByEmail } from '@/lib/users'
 import { generateResetToken } from '@/lib/reset-token'
+import { sendPasswordResetEmail } from '@/lib/email'
 
 export async function POST(req: NextRequest) {
   const { email } = await req.json()
@@ -15,8 +16,7 @@ export async function POST(req: NextRequest) {
   const base = process.env.NEXT_PUBLIC_BASE_URL ?? 'http://localhost:3000'
   const resetUrl = `${base}/reset-password?email=${encodeURIComponent(user.email)}&token=${token}&expires=${expires}`
 
-  // TODO: replace with email delivery (Resend / SendGrid)
-  console.log(`[password-reset] ${user.email} → ${resetUrl}`)
+  await sendPasswordResetEmail(user.email, resetUrl)
 
   return Response.json({ ok: true })
 }

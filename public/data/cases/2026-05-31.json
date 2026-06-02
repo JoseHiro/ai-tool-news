@@ -1,0 +1,82 @@
+{
+  "date": "2026-05-31",
+  "cases": [
+    {
+      "name": "Nomad Table",
+      "platform": "mobile",
+      "category": "ソーシャル（旅行）",
+      "metricLabel": "MRR",
+      "metricValue": 100000,
+      "metricDisplay": "$100K MRR",
+      "metricCurrency": "USD",
+      "developer": "@jayvraavi",
+      "notes": "2M+ downloads、ソロ開発"
+    },
+    {
+      "name": "Second AI App",
+      "platform": "mobile",
+      "category": "AI ツール",
+      "metricLabel": "MRR",
+      "metricValue": 8000,
+      "metricDisplay": "~$8K/月",
+      "metricCurrency": "USD",
+      "developer": "@alexcooldev",
+      "notes": "2本目のアプリ、継続成長中"
+    },
+    {
+      "name": "Kyan's Charted App",
+      "platform": "mobile",
+      "category": "ライフスタイル",
+      "metricLabel": "売上",
+      "metricValue": 25000,
+      "metricDisplay": "$25K revenue",
+      "metricCurrency": "USD",
+      "developer": "@kyanbuilds",
+      "notes": "4月単月、App Store チャート入り"
+    },
+    {
+      "name": "Flowfy",
+      "platform": "mobile",
+      "category": "Finance",
+      "metricLabel": "売上",
+      "metricValue": 22000,
+      "metricDisplay": "$22K revenue",
+      "metricCurrency": "USD",
+      "developer": "@AlbertoAIcode",
+      "notes": "100K+ downloads、有機的成長のみ"
+    },
+    {
+      "name": "TCG Collector App",
+      "platform": "mobile",
+      "category": "コレクション",
+      "metricLabel": "MRR",
+      "metricValue": 409,
+      "metricDisplay": "$409 MRR",
+      "metricCurrency": "USD",
+      "developer": "@cesaralvarezll",
+      "notes": "100+ サブスク、総収益 $1.5K"
+    },
+    {
+      "name": "App Stack（Sober Tracker 他）",
+      "platform": "mobile",
+      "category": "健康・フィットネス",
+      "metricLabel": "MRR",
+      "metricValue": 400,
+      "metricDisplay": "$400+ MRR",
+      "metricCurrency": "USD",
+      "developer": "@TerekhinIvan",
+      "notes": "複数アプリ運用、$1,501/28日"
+    },
+    {
+      "name": "First Utility iOS App",
+      "platform": "mobile",
+      "category": "ユーティリティ",
+      "metricLabel": "MRR",
+      "metricValue": 102,
+      "metricDisplay": "$102 MRR",
+      "metricCurrency": "USD",
+      "developer": "@amrayupon",
+      "notes": "完全有機的、1ヶ月以内に達成"
+    }
+  ]
+}

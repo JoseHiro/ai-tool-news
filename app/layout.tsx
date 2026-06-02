@@ -1,5 +1,6 @@
 import type { Metadata } from 'next'
 import { Geist, Geist_Mono } from 'next/font/google'
+import { Analytics } from '@vercel/analytics/next'
 import './globals.css'
 
 const geistSans = Geist({ variable: '--font-geist-sans', subsets: ['latin'] })
@@ -11,7 +12,7 @@ const baseUrl = process.env.NEXT_PUBLIC_BASE_URL
 export const metadata: Metadata = {
   metadataBase: new URL(baseUrl),
   title: { default: 'DevKnow', template: '%s | DevKnow' },
-  description: 'エンジニア向け。AI・個人開発・デイリーダイジェスト。',
+  description: '読むだけで終わらないAIメディア。AIアップデートを、実践レベルまで整理。',
   openGraph: {
     siteName: 'DevKnow',
     locale: 'ja_JP',
@@ -32,6 +33,7 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
       </head>
       <body className="antialiased">
         {children}
+        <Analytics />
       </body>
     </html>
   )

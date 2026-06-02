@@ -1,10 +1,6 @@
 import type { ClaudeDigest } from '@/types/digest'
 import { getDateColor } from '@/lib/gradient'
 
-function estimateReadTime(body: string): number {
-  return Math.max(1, Math.round(body.replace(/\s/g, '').length / 400))
-}
-
 function CalendarIcon() {
   return (
     <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
@@ -19,15 +15,6 @@ function CalendarIcon() {
 function formatDate(date: string) {
   const [y, m, d] = date.split('-')
   return `${y}年${m}月${d}日`
-}
-
-function ClockIcon() {
-  return (
-    <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
-      <circle cx="12" cy="12" r="10" />
-      <polyline points="12 6 12 12 16 14" />
-    </svg>
-  )
 }
 
 function CodeCube({ color }: { color: string }) {
@@ -55,7 +42,6 @@ export function DigestHero({
   date: string
 }) {
   const color = getDateColor(date)
-  const readTime = estimateReadTime(update.body)
 
   return (
     <div
@@ -71,7 +57,7 @@ export function DigestHero({
           style={{ background: `${color}20`, color, border: `1px solid ${color}40` }}
           className="rounded-full px-3 py-1 text-xs font-semibold"
         >
-          CLAUDE / CLAUDE CODE アップデート
+          {update.tool} アップデート
         </span>
         <div className="flex items-center gap-1.5" style={{ color: 'var(--text-muted)' }}>
           <CalendarIcon />
@@ -94,12 +80,12 @@ export function DigestHero({
           {/* Subtitle */}
           <p
             style={{ color: 'var(--text-muted)' }}
-            className="mb-6 line-clamp-2 text-base leading-relaxed"
+            className="mb-6 text-base leading-relaxed"
           >
             {update.body}
           </p>
 
-          {/* Author + read time */}
+          {/* Author */}
           <div className="flex items-center gap-3">
             <div
               style={{ background: color }}
@@ -110,10 +96,6 @@ export function DigestHero({
             <span style={{ color: 'var(--text)' }} className="text-sm font-medium">
               DevKnow 編集部
             </span>
-            <div className="flex items-center gap-1.5" style={{ color: 'var(--text-muted)' }}>
-              <ClockIcon />
-              <span className="text-sm">{readTime}分で読めます</span>
-            </div>
           </div>
         </div>
 

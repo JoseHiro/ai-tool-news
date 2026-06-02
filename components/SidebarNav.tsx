@@ -41,6 +41,13 @@ function GuidesIcon() {
     </svg>
   )
 }
+function CasesIcon() {
+  return (
+    <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+      <polyline points="22 12 18 12 15 21 9 3 6 12 2 12" />
+    </svg>
+  )
+}
 function HeartIcon() {
   return (
     <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
@@ -57,6 +64,7 @@ export function SidebarNav({ isAuthed }: { isAuthed: boolean }) {
   const items: Item[] = [
     { href: '/', label: 'ホーム', icon: <HomeIcon />, exact: true },
     { href: '/ideas', label: '開発アイデア', icon: <IdeasIcon /> },
+    { href: '/cases', label: '成功事例', icon: <CasesIcon /> },
     { href: '/tips', label: 'Claude Tips', icon: <TipsIcon /> },
     { href: '/guides', label: 'ガイド', icon: <GuidesIcon /> },
     ...(isAuthed ? [

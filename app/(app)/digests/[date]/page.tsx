@@ -1,9 +1,10 @@
-import { notFound } from 'next/navigation'
+import { notFound, redirect } from 'next/navigation'
 import type { Metadata } from 'next'
 import Link from 'next/link'
 import { getIronSession } from 'iron-session'
 import { cookies } from 'next/headers'
 import { getDigest, getClaudeDigest, getIdeaDigest } from '@/lib/storage'
+import { getCasesForDate } from '@/lib/cases'
 import { readDocFile, extractSubHeadings, getAdjacentDates } from '@/lib/docs'
 import { sessionOptions, type SessionData } from '@/lib/session'
 import { getUserById, getSubscribedUntil } from '@/lib/users'
@@ -15,7 +16,7 @@ import { DigestToC } from '@/components/DigestToC'
 import { XPostButton } from '@/components/XPostButton'
 import { Paywall } from '@/components/Paywall'
 import { ContentDisclaimer } from '@/components/ContentDisclaimer'
-import { UpdateCard, TipCard, WorkflowCard, ModelGuideTable } from '@/components/NewsCard'
+import { UpdateCard, TipCard, WorkflowCard } from '@/components/NewsCard'
 import { IdeaCard } from '@/components/IdeaCard'
 import { DigestHero } from '@/components/DigestHero'
 
@@ -76,7 +77,7 @@ export default async function DigestPage({
   params: Promise<{ date: string }>
 }) {
   const { date } = await params
-  const [digest, session, claudeDigest, ideaDigest, claudeDoc, ideasDoc, adjacent, popularTopics, popularIdeas] = await Promise.all([
+  const [digest, session, claudeDigest, ideaDigest, claudeDoc, ideasDoc, adjacent, popularTopics, popularIdeas, casesForDate] = await Promise.all([
     getDigest(date),
     getIronSession<SessionData>(await cookies(), sessionOptions),
     getClaudeDigest(date),
@@ -86,10 +87,13 @@ export default async function DigestPage({
     getAdjacentDates(date),
     getWeeklyTopLiked(5, 'tip').catch(() => []),
     getWeeklyTopLiked(3, 'idea').catch(() => []),
+    getCasesForDate(date).catch(() => null),
   ])
 
   const hasContent = digest || claudeDigest || ideaDigest || claudeDoc || ideasDoc
   if (!hasContent) notFound()
+
+  if (!session.userId) redirect('/signup')
 
   const todayJST = new Date(Date.now() + 9 * 60 * 60 * 1000).toISOString().slice(0, 10)
   const user = session.userId ? await getUserById(session.userId).catch(() => null) : null
@@ -101,25 +105,27 @@ export default async function DigestPage({
 
   const heroUpdate = claudeDigest?.updates.find(u => u.importance === 'high')
 
+  const hasCases = casesForDate && casesForDate.length > 0
+
   const tocSections = claudeDigest ? [
     {
-      heading: '🆕 Claude 最新アップデート',
+      heading: '🆕 AI ツール最新アップデート',
       sub: [
         ...(claudeDigest.tips.length > 0 ? [{ label: '実践Tips', subIndex: 100 }] : []),
         ...(claudeDigest.workflow ? [{ label: 'ワークフロー', subIndex: 101 }] : []),
-        ...(claudeDigest.modelGuide.length > 0 ? [{ label: 'モデル使い分けガイド', subIndex: 102 }] : []),
       ],
     },
     ...(ideaDigest ? [{ heading: '💰 個人開発アイデア', sub: [] }] : []),
+    ...(hasCases ? [{ heading: '🚩 成功事例', sub: [] }] : []),
   ] : [
-    ...(claudeDoc ? [{ heading: '🆕 Claude / Claude Code アップデート', sub: extractSubHeadings(claudeDoc, 'claude') }] : []),
+    ...(claudeDoc ? [{ heading: '🆕 AI ツール最新アップデート', sub: extractSubHeadings(claudeDoc, 'claude') }] : []),
     ...(ideasDoc ? [{ heading: '💰 個人開発アイデア', sub: extractSubHeadings(ideasDoc, 'ideas') }] : []),
     ...(digest ? parseSectionHeadings(digest.content).map(h => ({ heading: h, sub: [] })) : []),
   ]
 
   return (
     <div className="min-h-full px-8 py-10">
-      <div className="mx-auto flex min-h-full max-w-4xl gap-10">
+      <div className="mx-auto flex min-h-full max-w-6xl gap-10">
         {/* Main */}
         <div className="min-w-0 flex-1">
           {heroUpdate && <DigestHero update={heroUpdate} date={date} />}
@@ -132,27 +138,29 @@ export default async function DigestPage({
                   <section>
                     <div className="mb-5 flex items-center justify-between" id="section-0">
                       <h2 style={{ color: 'var(--text)' }} className="text-xl font-bold">
-                        Claude 最新アップデート
+                        AI ツール最新アップデート
                       </h2>
                       <Link href="/tips" style={{ color: 'var(--text-muted)' }} className="text-sm transition-colors hover:text-[var(--text)]">
                         すべて見る →
                       </Link>
                     </div>
-                    <div className="space-y-2">
-                      {claudeDigest.updates.map((u, i) => (
-                        <UpdateCard
-                          key={i}
-                          update={u}
-                          contentDate={date}
-                          contentKey={`update-${i}`}
-                          initialLiked={likedKeys?.includes(`tip:${date}:update-${i}`) ?? false}
-                        />
-                      ))}
-                    </div>
+                    {claudeDigest.updates.filter(u => u !== heroUpdate).length > 0 && (
+                      <div className="space-y-2">
+                        {claudeDigest.updates.filter(u => u !== heroUpdate).map((u, i) => (
+                          <UpdateCard
+                            key={i}
+                            update={u}
+                            contentDate={date}
+                            contentKey={`update-${i}`}
+                            initialLiked={likedKeys?.includes(`tip:${date}:update-${i}`) ?? false}
+                          />
+                        ))}
+                      </div>
+                    )}
                     {claudeDigest.tips.length > 0 && (
                       <>
                         <h3 id="section-0-sub-100" style={{ color: 'var(--text)' }} className="mb-3 mt-6 text-sm font-semibold">⚡ 実践Tips</h3>
-                        <div className="space-y-2">
+                        <div className="grid grid-cols-1 gap-2 sm:grid-cols-2">
                           {claudeDigest.tips.map((t, i) => (
                             <TipCard
                               key={i}
@@ -169,12 +177,6 @@ export default async function DigestPage({
                       <>
                         <h3 id="section-0-sub-101" style={{ color: 'var(--text)' }} className="mb-3 mt-6 text-sm font-semibold">🛠 ワークフロー</h3>
                         <WorkflowCard workflow={claudeDigest.workflow} />
-                      </>
-                    )}
-                    {claudeDigest.modelGuide.length > 0 && (
-                      <>
-                        <h3 id="section-0-sub-102" style={{ color: 'var(--text)' }} className="mb-3 mt-6 text-sm font-semibold">💡 モデル使い分けガイド</h3>
-                        <ModelGuideTable guide={claudeDigest.modelGuide} />
                       </>
                     )}
                   </section>
@@ -211,6 +213,69 @@ export default async function DigestPage({
                 ) : ideasDoc ? (
                   <MarkdownDoc content={ideasDoc} type="ideas" id={`section-${claudeDoc ? 1 : 0}`} date={date} likedKeys={likedKeys} />
                 ) : null}
+
+                {/* 成功事例 */}
+                {hasCases && casesForDate && (
+                  <section id="section-cases">
+                    <div className="mb-4 flex items-center justify-between">
+                      <h2 style={{ color: 'var(--text)' }} className="text-xl font-bold">
+                        🚩 成功事例
+                      </h2>
+                      <Link href="/cases" style={{ color: 'var(--text-muted)' }} className="text-sm transition-colors hover:text-[var(--text)]">
+                        すべて見る →
+                      </Link>
+                    </div>
+                    <div className="space-y-3">
+                      {casesForDate.map((c, i) => {
+                        const GRADIENTS = [
+                          ['#3b82f6','#60a5fa'],['#8b5cf6','#a78bfa'],['#10b981','#34d399'],
+                          ['#f59e0b','#fbbf24'],['#ef4444','#f87171'],['#ec4899','#f472b6'],
+                          ['#6366f1','#818cf8'],['#0ea5e9','#38bdf8'],
+                        ]
+                        const idx = c.name.split('').reduce((a, ch) => a + ch.charCodeAt(0), 0) % GRADIENTS.length
+                        const [from, to] = GRADIENTS[idx]
+                        const initial = c.name.replace(/\s/g, '')[0]?.toUpperCase() ?? '?'
+                        const hasMetric = c.metricValue > 0
+                        const metricColor = c.metricLabel === 'MRR' || c.metricLabel === '売上' ? '#10b981' : '#3b82f6'
+                        const boxColor = c.metricDisplay === '複数アプリ運用' ? '#8b5cf6' : '#6b7280'
+                        return (
+                          <div key={i} style={{ border: '1px solid var(--border)' }} className="flex items-center gap-4 rounded-2xl p-4">
+                            <div style={{ background: `linear-gradient(135deg, ${from}, ${to})` }}
+                              className="flex h-14 w-14 shrink-0 items-center justify-center rounded-xl text-lg font-bold text-white">
+                              {initial}
+                            </div>
+                            <div className="min-w-0 flex-1">
+                              <p style={{ color: 'var(--text)' }} className="mb-1 text-sm font-bold">{c.name}</p>
+                              <div className="mb-1.5 flex flex-wrap gap-1">
+                                <span style={{ color: 'var(--text-muted)', border: '1px solid var(--border)' }} className="rounded px-1.5 py-0.5 text-[10px]">
+                                  {c.platform === 'mobile' ? 'iOS' : c.platform === 'web' ? 'Web' : c.platform}
+                                </span>
+                                <span style={{ color: 'var(--text-muted)', border: '1px solid var(--border)' }} className="rounded px-1.5 py-0.5 text-[10px]">
+                                  {c.category}
+                                </span>
+                              </div>
+                              {c.notes && (
+                                <p style={{ color: 'var(--text-muted)' }} className="text-xs leading-relaxed">{c.notes}</p>
+                              )}
+                              <p style={{ color: 'var(--text-muted)' }} className="mt-1 text-[11px]">{c.developer}</p>
+                            </div>
+                            {hasMetric ? (
+                              <div className="shrink-0 text-center">
+                                <p style={{ color: metricColor }} className="text-[10px] font-semibold uppercase">{c.metricLabel}</p>
+                                <p style={{ color: metricColor }} className="text-xl font-bold tabular-nums leading-tight">{c.metricDisplay}</p>
+                              </div>
+                            ) : (
+                              <div style={{ background: `${boxColor}10`, border: `1px solid ${boxColor}25` }}
+                                className="shrink-0 rounded-xl px-3 py-2 text-center">
+                                <p style={{ color: boxColor }} className="text-xs font-semibold leading-snug">{c.metricDisplay}</p>
+                              </div>
+                            )}
+                          </div>
+                        )
+                      })}
+                    </div>
+                  </section>
+                )}
 
                 {/* レガシーMDダイジェスト */}
                 {digest && (
@@ -269,14 +334,14 @@ export default async function DigestPage({
 
         {canView && (
           <div
-            className="hidden w-60 shrink-0 xl:block"
+            className="hidden w-72 shrink-0 xl:block"
             style={{
               background: 'var(--bg)',
               margin: '-40px -32px -40px 0',
               padding: '40px 20px 40px 16px',
             }}
           >
-            <DigestToC sections={tocSections} popularTopics={popularTopics} popularIdeas={popularIdeas} />
+            <DigestToC sections={tocSections} popularTopics={popularTopics} popularIdeas={popularIdeas} showModelGuide={!!claudeDigest} />
           </div>
         )}
       </div>

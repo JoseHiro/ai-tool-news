@@ -6,17 +6,11 @@ import { LikeButton } from '@/components/LikeButton'
 
 const threatColor = { high: 'text-red-400', medium: 'text-amber-400', low: 'text-green-400' }
 const directionLabel = {
-  'overseas-to-japan': '🌏 海外→日本',
-  'japan-to-overseas': '🗾 日本→海外',
-  'cheaper-alternative': '💸 安価な代替',
+  'overseas-to-japan': '海外→日本',
+  'japan-to-overseas': '日本→海外',
+  'cheaper-alternative': '安価な代替',
 }
 const platformLabel = { web: 'Web', mobile: 'Mobile', extension: '拡張機能', cli: 'CLI' }
-
-function scoreColor(score: number) {
-  if (score >= 85) return '#22c55e'
-  if (score >= 75) return '#f59e0b'
-  return '#94a3b8'
-}
 
 export function IdeaCard({
   idea,
@@ -28,7 +22,6 @@ export function IdeaCard({
   initialLiked?: boolean
 }) {
   const [open, setOpen] = useState(false)
-  const color = scoreColor(idea.score)
   const contentKey = idea.name.toLowerCase().replace(/\s+/g, '-')
 
   return (
@@ -36,27 +29,28 @@ export function IdeaCard({
       {/* Compact header row — always visible */}
       <div
         onClick={() => setOpen(o => !o)}
-        className="w-full px-4 py-3 flex items-center gap-3 hover:bg-[var(--hover)] transition-colors cursor-pointer"
+        className="w-full px-4 py-3 flex items-center gap-4 hover:bg-[var(--hover)] transition-colors cursor-pointer"
       >
-        <span className="text-xl shrink-0">{idea.emoji}</span>
-
-        {/* Score badge */}
-        <span
-          style={{ color, border: `1px solid ${color}55`, background: `${color}15` }}
-          className="shrink-0 rounded-lg px-2 py-0.5 text-xs font-bold tabular-nums"
+        {/* Emoji icon */}
+        <div
+          style={{ background: 'var(--hover)', border: '1px solid var(--border)' }}
+          className="shrink-0 rounded-xl flex items-center justify-center w-[52px] h-[52px] text-2xl"
         >
-          {idea.score}
-        </span>
+          {idea.emoji}
+        </div>
 
-        {/* Name + overview */}
+        {/* Name + direction + overview */}
         <div className="flex-1 min-w-0">
-          <div className="flex items-center gap-2 flex-wrap">
-            <span style={{ color: 'var(--text)' }} className="text-sm font-semibold">{idea.name}</span>
-            <span style={{ color: 'var(--accent)', opacity: 0.85 }} className="text-xs shrink-0">
+          <div className="flex items-center gap-2 flex-wrap mb-0.5">
+            <span style={{ color: 'var(--text)' }} className="text-sm font-bold">{idea.name}</span>
+            <span
+              style={{ background: 'var(--hover)', color: 'var(--text-muted)', border: '1px solid var(--border)' }}
+              className="shrink-0 rounded-full px-2 py-0.5 text-[10px]"
+            >
               {directionLabel[idea.direction]}
             </span>
           </div>
-          <p style={{ color: 'var(--text-muted)' }} className="text-xs truncate mt-0.5">{idea.overview}</p>
+          <p style={{ color: 'var(--text-muted)' }} className="text-xs line-clamp-2 leading-relaxed">{idea.overview}</p>
         </div>
 
         {/* Top 2 tags (hidden on mobile) */}
@@ -99,7 +93,7 @@ export function IdeaCard({
       {/* Expanded details */}
       {open && (
         <div
-          style={{ borderTop: '1px solid var(--border)', background: 'var(--hover)' }}
+          style={{ borderTop: '1px solid var(--border)', background: 'var(--bg)' }}
           className="px-4 py-4 space-y-4"
         >
           {/* Platform */}
@@ -112,49 +106,100 @@ export function IdeaCard({
 
           {/* Market + Revenue grid */}
           <div className="grid grid-cols-1 gap-3 sm:grid-cols-2">
-            <div style={{ background: 'var(--bg)', border: '1px solid var(--border)' }} className="rounded-lg p-3 space-y-1">
-              <p style={{ color: 'var(--text-muted)' }} className="text-[10px] font-semibold uppercase tracking-wider">市場</p>
-              <p style={{ color: 'var(--text)' }} className="text-xs">🎯 {idea.market.target}</p>
-              <p style={{ color: 'var(--text)' }} className="text-xs">📊 {idea.market.size}</p>
-              <p style={{ color: 'var(--text-muted)' }} className="text-xs">💡 {idea.market.gap}</p>
+            {/* Market */}
+            <div style={{ border: '1px solid var(--border)' }} className="rounded-lg overflow-hidden">
+              <p style={{ color: 'var(--text-muted)', background: 'var(--hover)', borderBottom: '1px solid var(--border)' }} className="px-3 py-1.5 text-[10px] font-semibold uppercase tracking-wider">
+                市場
+              </p>
+              <div style={{ borderBottom: '1px solid var(--border)' }} className="px-3 py-2.5">
+                <p style={{ color: 'var(--text-muted)' }} className="mb-0.5 text-[10px]">ターゲット</p>
+                <p style={{ color: 'var(--text)' }} className="text-xs leading-relaxed">{idea.market.target}</p>
+              </div>
+              <div style={{ borderBottom: '1px solid var(--border)' }} className="px-3 py-2.5">
+                <p style={{ color: 'var(--text-muted)' }} className="mb-0.5 text-[10px]">市場規模</p>
+                <p style={{ color: 'var(--text)' }} className="text-xs leading-relaxed">{idea.market.size}</p>
+              </div>
+              <div className="px-3 py-2.5">
+                <p style={{ color: 'var(--text-muted)' }} className="mb-0.5 text-[10px]">競合の隙間</p>
+                <p style={{ color: 'var(--text-muted)' }} className="text-xs leading-relaxed">{idea.market.gap}</p>
+              </div>
             </div>
-            <div style={{ background: 'var(--bg)', border: '1px solid var(--border)' }} className="rounded-lg p-3 space-y-1">
-              <p style={{ color: 'var(--text-muted)' }} className="text-[10px] font-semibold uppercase tracking-wider">収益</p>
-              <p style={{ color: 'var(--text)' }} className="text-xs">無料: {idea.revenue.free}</p>
-              <p style={{ color: 'var(--text)' }} className="text-xs font-semibold">{idea.revenue.price}</p>
-              <p style={{ color: 'var(--text-muted)' }} className="text-xs">{idea.revenue.model}</p>
+
+            {/* Revenue */}
+            <div style={{ border: '1px solid var(--border)' }} className="rounded-lg overflow-hidden">
+              <p style={{ color: 'var(--text-muted)', background: 'var(--hover)', borderBottom: '1px solid var(--border)' }} className="px-3 py-1.5 text-[10px] font-semibold uppercase tracking-wider">
+                収益
+              </p>
+              <div style={{ borderBottom: '1px solid var(--border)' }} className="px-3 py-2.5">
+                <p style={{ color: 'var(--text-muted)' }} className="mb-0.5 text-[10px]">無料プラン</p>
+                <p style={{ color: 'var(--text)' }} className="text-xs leading-relaxed">{idea.revenue.free}</p>
+              </div>
+              <div style={{ borderBottom: '1px solid var(--border)' }} className="px-3 py-2.5">
+                <p style={{ color: 'var(--text-muted)' }} className="mb-0.5 text-[10px]">価格</p>
+                <p style={{ color: 'var(--text)' }} className="text-xs font-semibold leading-relaxed">{idea.revenue.price}</p>
+              </div>
+              <div className="px-3 py-2.5">
+                <p style={{ color: 'var(--text-muted)' }} className="mb-0.5 text-[10px]">モデル</p>
+                <p style={{ color: 'var(--text)' }} className="text-xs leading-relaxed">{idea.revenue.model}</p>
+              </div>
             </div>
           </div>
 
-          {/* Features */}
-          <div>
-            <p style={{ color: 'var(--text-muted)' }} className="mb-1.5 text-[10px] font-semibold uppercase tracking-wider">主な機能</p>
-            <ul className="space-y-0.5">
-              {idea.features.map((f, i) => (
-                <li key={i} style={{ color: 'var(--text)' }} className="flex items-start gap-1.5 text-xs">
-                  <span style={{ color: 'var(--accent)' }} className="mt-0.5 shrink-0">›</span>
-                  {f}
-                </li>
-              ))}
-            </ul>
-          </div>
+          {/* Features + AI Usage grid */}
+          <div className="grid grid-cols-1 gap-3 sm:grid-cols-2">
+            {/* Features */}
+            <div style={{ border: '1px solid var(--border)', background: 'rgba(0,0,0,0.02)' }} className="rounded-xl p-4">
+              <p style={{ color: 'var(--text)' }} className="mb-3 text-xs font-semibold">主な機能</p>
+              <ul className="space-y-2">
+                {idea.features.map((f, i) => (
+                  <li key={i} style={{ color: 'var(--text)' }} className="flex items-start gap-2 text-xs leading-relaxed">
+                    <svg style={{ color: 'var(--accent)', opacity: 0.75 }} className="mt-0.5 shrink-0 w-3.5 h-3.5" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+                      <circle cx="12" cy="12" r="10" />
+                      <polyline points="9 12 11 14 15 10" />
+                    </svg>
+                    {f}
+                  </li>
+                ))}
+              </ul>
+            </div>
 
-          {/* AI Usage */}
-          <div style={{ background: 'var(--bg)', border: '1px solid var(--border)' }} className="rounded-lg p-3">
-            <p style={{ color: 'var(--text-muted)' }} className="mb-1 text-[10px] font-semibold uppercase tracking-wider">AI活用</p>
-            <p style={{ color: 'var(--text)' }} className="text-xs leading-relaxed">{idea.aiUsage}</p>
+            {/* AI Usage */}
+            <div style={{ border: '1px solid var(--border)', background: 'rgba(0,0,0,0.02)' }} className="rounded-xl p-4">
+              <p style={{ color: 'var(--accent)' }} className="mb-3 text-xs font-semibold">AI活用</p>
+              <p style={{ color: 'var(--text)' }} className="text-xs leading-relaxed">{idea.aiUsage}</p>
+            </div>
           </div>
 
           {/* Competitors */}
           <div>
-            <p style={{ color: 'var(--text-muted)' }} className="mb-1.5 text-[10px] font-semibold uppercase tracking-wider">競合</p>
-            <div className="space-y-1">
-              {idea.competitors.map((c, i) => (
-                <div key={i} className="flex items-start gap-2 text-xs">
-                  <span className={`shrink-0 font-semibold ${threatColor[c.threat]}`}>{c.name}</span>
-                  <span style={{ color: 'var(--text-muted)' }}>— {c.weakness}</span>
-                </div>
-              ))}
+            <p style={{ color: 'var(--text-muted)' }} className="mb-2 text-[10px] font-semibold uppercase tracking-wider">競合と優位性</p>
+            <div style={{ border: '1px solid var(--border)' }} className="overflow-hidden rounded-lg">
+              <table className="w-full text-xs">
+                <thead>
+                  <tr style={{ background: 'var(--bg)', color: 'var(--text-muted)', borderBottom: '1px solid var(--border)' }}>
+                    <th className="px-3 py-2 text-left font-semibold">サービス</th>
+                    <th className="px-3 py-2 text-left font-semibold">弱点</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  {idea.competitors.map((c, i) => (
+                    <tr key={i} style={{ borderTop: i > 0 ? '1px solid var(--border)' : undefined, background: 'var(--bg)' }}>
+                      <td className="px-3 py-2 font-semibold whitespace-nowrap" style={{ color: 'var(--text)' }}>
+                        <span className={`mr-1.5 inline-block h-1.5 w-1.5 rounded-full align-middle ${threatColor[c.threat]}`} style={{ background: 'currentColor' }} />
+                        {c.name}
+                      </td>
+                      <td className="px-3 py-2 leading-relaxed" style={{ color: 'var(--text-muted)' }}>{c.weakness}</td>
+                    </tr>
+                  ))}
+                  <tr style={{ borderTop: '1px solid var(--border)', background: `var(--accent)18` }}>
+                    <td className="px-3 py-2 font-semibold whitespace-nowrap" style={{ color: 'var(--accent)' }}>
+                      <span className="mr-1.5 inline-block h-1.5 w-1.5 rounded-full align-middle bg-current" />
+                      {idea.name}（本アイデア）
+                    </td>
+                    <td className="px-3 py-2" style={{ color: 'var(--text-muted)' }}>—</td>
+                  </tr>
+                </tbody>
+              </table>
             </div>
           </div>
 

@@ -1,8 +1,33 @@
+// ---- Success cases types ---------------------------------------------------
+
+export interface SuccessCase {
+  name: string
+  platform: 'mobile' | 'web' | 'extension' | 'mac' | 'other'
+  category: string
+  metricLabel: 'MRR' | '売上' | 'DL' | 'レビュー数' | 'その他'
+  metricValue: number
+  metricDisplay: string
+  metricCurrency: 'USD' | 'JPY' | 'count'
+  developer: string
+  url?: string
+  notes?: string
+  /** 読み込み時にファイルの日付から自動付与される */
+  sourceDate?: string
+}
+
+export interface SuccessCasesFile {
+  date: string
+  cases: SuccessCase[]
+}
+
 // ---- Structured digest types (JSON-based) ---------------------------------
 
 export interface ClaudeDigest {
   date: string
+  /** ヘッダー「今日の一手」用。未指定時は workflow / tips から自動生成 */
+  actionPrompt?: string
   updates: {
+    tool: string
     title: string
     body: string
     importance: 'high' | 'medium' | 'low'

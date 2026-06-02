@@ -1,4 +1,5 @@
 import Link from 'next/link'
+import { BRAND_SUBLINE, BRAND_TAGLINE } from '@/lib/brand'
 import { BrandMark } from '@/components/BrandMark'
 import { getIronSession } from 'iron-session'
 import { cookies } from 'next/headers'
@@ -37,8 +38,8 @@ export async function Sidebar() {
     >
       <div className="px-4 py-5">
         <BrandMark variant="sidebar" />
-        <p style={{ color: 'var(--text-muted)' }} className="mt-2 text-[11px]">
-          開発者向けニュース
+        <p style={{ color: 'var(--text-muted)' }} className="mt-2 text-[11px] leading-snug">
+          {BRAND_SUBLINE}
         </p>
       </div>
 
@@ -73,7 +74,7 @@ export async function Sidebar() {
           DevKnowとは？
         </p>
         <p style={{ color: 'var(--text-muted)' }} className="mb-2.5 text-[11px] leading-relaxed">
-          AIと開発を、もっと身近にするニュース＆アイデアメディア
+          {BRAND_TAGLINE}
         </p>
         <Link
           href="/about"

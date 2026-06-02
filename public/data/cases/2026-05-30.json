@@ -1,0 +1,57 @@
+{
+  "date": "2026-05-30",
+  "cases": [
+    {
+      "name": "海外向けニッチユーティリティアプリ（名称非公開）",
+      "platform": "mobile",
+      "category": "ユーティリティ",
+      "metricLabel": "MRR",
+      "metricValue": 700,
+      "metricDisplay": "$700+ MRR",
+      "metricCurrency": "USD",
+      "developer": "@statistics1012",
+      "notes": "日本人開発者が海外（英語圏）向けに開発したニッチ iOS ユーティリティアプリ。AI を活用して開発し、2026年3月末ローンチ後すぐに MRR $700 超えを達成。詳細はニュースレターで定期報告中。海外市場をターゲットにした日本人個人開発者の成功事例。"
+    },
+    {
+      "name": "Reelful",
+      "platform": "mobile",
+      "category": "動画編集",
+      "metricLabel": "その他",
+      "metricValue": 0,
+      "metricDisplay": "リリース済み",
+      "metricCurrency": "count",
+      "developer": "元 Snapchat ML エンジニア",
+      "notes": "AI 自律型（Agentic）ビデオ編集 iOS アプリ。カメラロールの素材を投入するだけで10分以内にリール動画を生成・編集。元 Snapchat の ML エンジニアが開発。収益数値は非公開だがリリース済み・実動確認済み。"
+    },
+    {
+      "name": "Flowfy",
+      "platform": "mobile",
+      "category": "家計管理・Finance",
+      "metricLabel": "その他",
+      "metricValue": 0,
+      "metricDisplay": "リリース済み",
+      "metricCurrency": "count",
+      "notes": "個人向け予算・収支管理 iOS アプリ。App Store Finance カテゴリでリリース済み。キャッシュフロー可視化・カテゴリ別グラフ・リアルタイム分析・予算設定が可能。直感的 UI で「習慣改善」と「貯蓄目標」をサポート。収益数値は非公開。CashFlow JP のアイデア起点。"
+    },
+    {
+      "name": "Sober Tracker（App Stack）",
+      "platform": "mobile",
+      "category": "健康習慣",
+      "metricLabel": "その他",
+      "metricValue": 0,
+      "metricDisplay": "複数アプリ運用",
+      "metricCurrency": "count",
+      "notes": "禁酒・節酒追跡アプリを中心に Water Tracker・Smoke Tracker など健康習慣系アプリをポートフォリオ型で運用。プライバシー重視・アカウント不要・端末保存で支持を得ている。収益数値は非公開だが複数アプリで継続運用中。SoberLog JP のアイデア起点。"
+    },
+    {
+      "name": "Nika TCG: OPTCG Scanner",
+      "platform": "mobile",
+      "category": "コレクション・TCG",
+      "metricLabel": "その他",
+      "metricValue": 0,
+      "metricDisplay": "初アプリリリース済み",
+      "metricCurrency": "count",
+      "notes": "One Piece TCG（トレーディングカードゲーム）専門のコレクション管理・スキャナー iOS アプリ。開発者の初アプリとしてリリース。収益数値は非公開だが App Store でリリース確認済み。"
+    }
+  ]
+}

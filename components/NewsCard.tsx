@@ -195,7 +195,7 @@ export function TipCard({
           >
             TIPS
           </span>
-          <p style={{ color: 'var(--text)' }} className="text-sm font-semibold leading-snug line-clamp-1">
+          <p style={{ color: 'var(--text)' }} className="text-sm font-semibold leading-snug line-clamp-2">
             {tip.title}
           </p>
         </div>
@@ -216,7 +216,7 @@ export function TipCard({
       {/* Expanded content */}
       {open && (
         <div
-          style={{ borderTop: '1px solid var(--border)', background: 'var(--hover)' }}
+          style={{ borderTop: '1px solid var(--border)' }}
           className="space-y-4 px-5 py-4"
         >
           <p style={{ color: 'var(--text-muted)' }} className="text-sm leading-relaxed">

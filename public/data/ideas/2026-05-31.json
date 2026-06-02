@@ -1,0 +1,160 @@
+{
+  "date": "2026-05-31",
+  "theme": "写真・記録・整理に「紙と感覚」を使い続ける手芸コミュニティの非アプリ行動を置き換える",
+  "perspective": "Grok C リサーチが浮き彫りにした手芸ニッチ。照明・型紙・進捗記録のすべてが紙・LINE・Excel で代用されたまま。国内外で「手芸専用」アプリがほぼ空白地帯になっている。",
+  "ideas": [
+    {
+      "name": "CraftCam JP",
+      "emoji": "📸",
+      "score": 77,
+      "overview": "手芸作品の撮影に特化したカメラアプリ。照明ガイド・マクロ補正・SNS 映えテンプレートで「うまく撮れない」悩みを解消する。",
+      "platform": "mobile",
+      "direction": "overseas-to-japan",
+      "source": "Grok C: PhotoPills / Moment Pro Camera が米国で高評価だが日本語・手芸向けが存在しない。X で「照明ムラで色味が悪い」投稿いいね 30+",
+      "market": {
+        "target": "ハンドメイド作家・手芸愛好家（30〜50代女性、minne/Creema 出品者）",
+        "size": "minne 登録作家 100 万人超、Creema 約 50 万人。写真品質が売上に直結する層",
+        "gap": "PhotoPills は天文撮影向けで手芸不可。Canva は加工ツールで撮影支援なし。手芸専用撮影ガイドは市場に存在しない"
+      },
+      "revenue": {
+        "free": "1日 3 枚まで補正・テンプレ 3 種",
+        "model": "買い切り",
+        "price": "¥480"
+      },
+      "features": [
+        "作品サイズ別の照明・距離ガイド表示",
+        "マクロ撮影特化モード（刺繍・ビーズ対応）",
+        "色温度自動補正（実物の色に近づける）",
+        "手芸向け SNS 映えフィルター 10 種",
+        "作品フォルダ整理＋タグ付け"
+      ],
+      "aiUsage": "Claude Vision で撮影画像の照明ムラ・ピントを自動診断。補正パラメータを推定して適用。手芸カテゴリ（刺繍・編み物・レジン等）を自動分類。",
+      "competitors": [
+        {
+          "name": "PhotoPills",
+          "threat": "low",
+          "weakness": "天文・屋外撮影専用。室内手芸撮影のガイドが皆無。英語のみで日本語 UI なし"
+        },
+        {
+          "name": "Canva",
+          "threat": "low",
+          "weakness": "撮影支援機能なし。照明・ピント補助は一切なく加工のみ"
+        },
+        {
+          "name": "Instagram カメラ",
+          "threat": "medium",
+          "weakness": "手芸向けフィルターなし。マクロ撮影支援なし。作品整理・フォルダ管理が弱い"
+        }
+      ],
+      "feasibility": {
+        "mvpWeeks": 7,
+        "legalRisk": "none",
+        "apiDependency": "Claude Vision API（照明診断・カテゴリ分類）"
+      },
+      "conclusion": "✅ minne/Creema の出品作家 100 万人超がターゲット。¥480 買い切りで月 500 DL でも ¥24 万。類似専用アプリが存在しない完全な空白地帯。",
+      "tags": ["手芸", "撮影", "minne", "Creema", "照明補正", "マクロ"]
+    },
+    {
+      "name": "PatternScan JP",
+      "emoji": "🧶",
+      "score": 74,
+      "overview": "紙の型紙・編み図をスキャンしてデジタル化するモバイルアプリ。歪み補正・スケール自動認識で「紙のまま」を卒業できる。",
+      "platform": "mobile",
+      "direction": "japan-to-overseas",
+      "source": "Grok C セクション2・4: X で「型紙をカメラで取り込むと歪んで使いにくい」いいね高。手芸コミュニティが紙の型紙・メモ帳を今でも使用。日本の手芸文化（編み物・折り紙・和裁）は海外に類似デジタル化ツールなし",
+      "market": {
+        "target": "編み物・刺繍・和裁・折り紙をする手芸ユーザー（20〜60代）",
+        "size": "日本の手芸市場 約 2,000 億円規模。型紙・編み図を紙で管理しているユーザーが多数",
+        "gap": "Adobe Scan は汎用スキャナーで手芸型紙の自動補正・スケール認識なし。Ravelry は英語のみかつ編み物限定"
+      },
+      "revenue": {
+        "free": "月 5 枚まで保存",
+        "model": "SaaS",
+        "price": "¥480/月"
+      },
+      "features": [
+        "型紙・編み図の自動歪み補正",
+        "実寸スケール自動認識（コイン・定規を基準に）",
+        "PDF・SVG 書き出し",
+        "パターンライブラリ（自分の型紙を一括管理）",
+        "拡大表示・メモ書き込み"
+      ],
+      "aiUsage": "Claude Vision でスキャン画像の輪郭・格子線を検出し自動補正。スケールマーカーからの実寸計算。手芸カテゴリ（和裁・洋裁・編み物）の自動タグ付け。",
+      "competitors": [
+        {
+          "name": "Adobe Scan",
+          "threat": "medium",
+          "weakness": "手芸型紙向けの歪み補正・スケール認識がない。月額 $9.99 と高価"
+        },
+        {
+          "name": "Ravelry",
+          "threat": "low",
+          "weakness": "英語のみ・編み物専用。型紙スキャン機能は一切なし"
+        },
+        {
+          "name": "Microsoft Lens",
+          "threat": "low",
+          "weakness": "ビジネス文書向け。手芸型紙のスケール認識・パターン分類に非対応"
+        }
+      ],
+      "feasibility": {
+        "mvpWeeks": 8,
+        "legalRisk": "none",
+        "apiDependency": "Claude Vision API（輪郭検出・スケール計算）"
+      },
+      "conclusion": "✅ 日本固有の手芸文化（和裁・編み図）×デジタル化の組み合わせで海外展開余地大。MVP は歪み補正＋PDF 書き出しに絞れば 8 週以内。",
+      "tags": ["手芸", "型紙", "スキャン", "編み物", "刺繍", "PDF"]
+    },
+    {
+      "name": "CraftLog",
+      "emoji": "🪡",
+      "score": 72,
+      "overview": "ハンドメイド作品の進捗を写真タイムラインで記録・管理するアプリ。材料メモ・費用管理・SNS 共有まで一元化。",
+      "platform": "mobile",
+      "direction": "cheaper-alternative",
+      "source": "Grok C セクション4: 手芸コミュニティが Excel・LINE・紙ノートで進捗管理。Ravelry は英語のみで編み物特化。汎用ノートアプリでは写真整理が弱い",
+      "market": {
+        "target": "趣味の手芸ユーザー・ハンドメイド作家（20〜50代）",
+        "size": "minne 月間流通額 約 30 億円。趣味としての手芸人口 約 1,000 万人（日本）",
+        "gap": "Ravelry は英語のみ・編み物限定。Canva/Notion は汎用すぎて手芸の進捗管理に特化していない"
+      },
+      "revenue": {
+        "free": "プロジェクト 3 件・写真 30 枚まで",
+        "model": "買い切り",
+        "price": "¥380"
+      },
+      "features": [
+        "プロジェクト別写真タイムライン",
+        "材料・費用メモ（利益計算）",
+        "完成までの進捗率バー",
+        "タイムラプス自動生成（写真をスライドショーに）",
+        "minne/Creema 向け作品説明文テンプレ生成"
+      ],
+      "aiUsage": "Claude で材料名から費用目安・販売価格を提案。完成写真から作品説明文を自動生成（minne/Creema 投稿用）。進捗写真からカテゴリ自動分類。",
+      "competitors": [
+        {
+          "name": "Ravelry",
+          "threat": "low",
+          "weakness": "英語のみ・編み物専用。刺繍・レジン・縫製には非対応。日本語 UI なし"
+        },
+        {
+          "name": "Notion / メモアプリ",
+          "threat": "medium",
+          "weakness": "手芸向けテンプレートなし。写真整理・費用計算・SNS 連携が個別設定必要"
+        },
+        {
+          "name": "LINE アルバム",
+          "threat": "low",
+          "weakness": "プロジェクト管理概念なし。材料・費用メモ不可。検索・タグ付けが弱い"
+        }
+      ],
+      "feasibility": {
+        "mvpWeeks": 5,
+        "legalRisk": "none",
+        "apiDependency": "Claude API（説明文生成・カテゴリ分類）"
+      },
+      "conclusion": "✅ MVP は写真タイムライン＋材料メモのみで 5 週。minne/Creema 出品者向け説明文生成を差別化に。¥380 買い切りで敷居を下げて広く普及を狙う。",
+      "tags": ["手芸", "ハンドメイド", "進捗管理", "minne", "Creema", "記録"]
+    }
+  ]
+}

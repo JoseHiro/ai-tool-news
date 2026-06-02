@@ -8,6 +8,7 @@ import Image from 'next/image'
 import { DM_Sans } from 'next/font/google'
 import { sessionOptions, type SessionData } from '@/lib/session'
 import { getDocDates } from '@/lib/docs'
+import { BRAND_SUBLINE, BRAND_TAGLINE } from '@/lib/brand'
 
 const dmSans = DM_Sans({ subsets: ['latin'], weight: ['300', '400', '500'], display: 'swap' })
 
@@ -75,20 +76,18 @@ export default async function LandingPage() {
             {/* Badge */}
             <div className="mb-5 inline-flex items-center gap-1.5 rounded-full bg-indigo-100 px-3.5 py-1.5 text-xs font-semibold text-indigo-600">
               <span>★</span>
-              <span>AI・個人開発の最新ニュースを毎日お届け</span>
+              <span>{BRAND_TAGLINE}</span>
             </div>
 
             {/* Headline */}
             <h1 className="mb-5 text-4xl font-bold leading-tight tracking-tight text-gray-900 md:text-5xl lg:text-[3.25rem]">
-              開発の「今」を、
-              <br />
-              毎日{' '}
-              <span style={{ color: '#6366f1' }}>あなたのもとへ。</span>
+              {BRAND_SUBLINE}
             </h1>
 
             {/* Description */}
             <p className="mb-8 max-w-lg text-base leading-relaxed text-gray-600 lg:mx-0 mx-auto">
-              DevKnow は、AI・テック・個人開発に関する最新情報を毎日厳選してお届けするニュースアプリです。
+              ニュース・アイデア・ワークフローを、明日の開発に変える。
+              毎日届くダイジェストから、コピペして今日試せる Tips まで。
             </p>
 
             {/* Buttons */}
@@ -260,7 +259,7 @@ export default async function LandingPage() {
               {
                 icon: '⚡',
                 title: '毎日の厳選ニュース',
-                desc: 'AI・テック・個人開発の最新ニュースを毎日厳選してお届けします。',
+                desc: 'AI アップデートを Tips・ワークフローまで落とし込み。読んだその日に試せる形で届けます。',
               },
               {
                 icon: '🗂',
@@ -303,7 +302,7 @@ export default async function LandingPage() {
           <div className="grid gap-8 md:grid-cols-3">
             {[
               { step: '01', title: '無料登録', desc: 'メールアドレスだけで30秒で登録完了。クレジットカード不要。' },
-              { step: '02', title: '毎日チェック', desc: '毎朝更新されるダイジェストをブラウザで確認。お気に入りは保存。' },
+              { step: '02', title: '毎日チェック', desc: '毎朝更新されるダイジェストを確認。今日の一手からすぐ実践へ。' },
               { step: '03', title: 'すぐ実践', desc: 'ガイドやTipsを参照しながら、今日の開発にすぐ活かせる。' },
             ].map((item) => (
               <div key={item.step} className="text-center">
@@ -420,7 +419,7 @@ export default async function LandingPage() {
               />
               <span className="text-sm font-medium text-gray-800">DevKnow</span>
             </Link>
-            <p className="mt-1 text-xs text-gray-400">AI・個人開発の最新情報を毎日お届け</p>
+            <p className="mt-1 text-xs text-gray-400">{BRAND_TAGLINE}</p>
           </div>
 
           {/* Links */}

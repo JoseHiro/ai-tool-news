@@ -1,0 +1,82 @@
+{
+  "date": "2026-06-02",
+  "actionPrompt": "Cursor + Claude Opus 4.8 Max Thinking + Multitask でサブエージェントを使った大規模リファクタを試す",
+  "tools": ["Windsurf", "Codex", "GitHub Copilot", "Cursor", "Claude"],
+  "updates": [
+    {
+      "tool": "Windsurf",
+      "title": "Devin Desktop 発表 — ローカル/クラウドエージェントを1画面で管理",
+      "body": "Windsurf が次世代版「Devin Desktop」を発表。ローカル・クラウドの複数 AI エージェントをフリート管理できる 1 画面 UI、ACP（Agent Communication Protocol）互換エージェント対応、フルIDE搭載が特徴。Cognition 傘下で再編された新体制での最初の大型リリース。\n\nマルチエージェント並列実行ワークフローを検討している開発者は注目。",
+      "importance": "high"
+    },
+    {
+      "tool": "Codex",
+      "title": "「Sites」機能追加 — アプリをワークスペースから即公開",
+      "body": "Codex アプリ内で作成した Web サイト・アプリを OpenAI ホストの URL で直接公開・共有できる「Sites」機能が追加。「@ Sites」でデプロイ URL を自動取得。ChatGPT Business / Enterprise 向け。プロトタイプの共有がさらに速くなる。",
+      "importance": "medium"
+    },
+    {
+      "tool": "GitHub Copilot",
+      "title": "MAI-Code-1-Flash — Microsoft 製 137B MoE コーディングモデルが VS Code で利用可能",
+      "body": "Microsoft が自社開発の MAI-Code-1-Flash（137B パラメータの MoE、256K コンテキスト、10T+ トークン学習）をリリース。GitHub Copilot（VS Code）で利用可能になった。Claude Haiku 4.5 より性能・効率が高いとの評価あり。",
+      "importance": "medium"
+    },
+    {
+      "tool": "Codex",
+      "title": "iOS アップデート — Face ID ロック・Windows SSH 対応",
+      "body": "ChatGPT アプリの Codex 機能が iOS でアップデート。Face ID / パスコードロック追加、Queue / Steer のデフォルト動作設定、コード diff 折り返し切り替え、Windows マシンへの SSH 接続サポートが追加。",
+      "importance": "low"
+    }
+  ],
+  "tips": [
+    {
+      "title": "Cursor + Opus 4.8 Max Thinking + Multitask で大規模リファクタを攻略",
+      "description": "サブエージェントを活用して「調査（リポジトリクローンして参照）→ フェーズ別計画＋受け入れテスト → 手渡しプロンプト生成 → 計画更新」を繰り返す。Swift 大規模リファクタなど複雑な実装に最適。人間が主導権を握りつつ AI に調査・実装を並列化させるのがポイント。@RayFernando1337 が詳細ワークフローを公開。"
+    },
+    {
+      "title": "Anthropic 公式「Claude Cowork」無料コースが公開",
+      "description": "Anthropic が公式の Claude 活用コース「Claude Cowork」を無料公開。サードパーティのチュートリアルより信頼性が高く、ビルダーズガイドと併せて読むと Claude を使ったプロダクト開発の全体像が掴める。@Av1dlive が紹介。"
+    },
+    {
+      "title": "Claude でプレゼン資料を 60 秒以内に作る 6 つのプロンプト",
+      "description": "Claude 4.7 を使ったプロ級プレゼン資料生成のプロンプト集。構成→スライドタイトル→本文→図解指示→デザイン指定→最終チェックの 6 ステップで PowerPoint レベルの資料が短時間で完成する。"
+    }
+  ],
+  "workflow": {
+    "title": "Cursor + Opus 4.8 Multitask で大規模タスクをサブエージェント分割する",
+    "steps": [
+      {
+        "label": "CLAUDE.md にリポジトリ構造・禁止操作・コーディング規約を定義してエージェントに共有"
+      },
+      {
+        "label": "Multitask モードで「調査エージェント」を起動。リポジトリをクローンして関連コードを洗い出す"
+      },
+      {
+        "label": "調査結果を受け取り、フェーズ別実装計画と受け入れテストを作成"
+      },
+      {
+        "label": "各フェーズを別サブエージェントに手渡しプロンプトで渡して並列実行。完了後に統合テスト"
+      }
+    ]
+  },
+  "modelGuide": [
+    {
+      "model": "Claude Opus 4.7",
+      "useCase": "大規模リファクタ・アーキテクチャ設計・複数ファイルにまたがる複雑な実装",
+      "cost": "high",
+      "when": "Max Thinking モードで深い推論が必要な設計フェーズ"
+    },
+    {
+      "model": "Claude Sonnet 4.6",
+      "useCase": "日常的なコード生成・レビュー・ドキュメント作成",
+      "cost": "medium",
+      "when": "通常の開発タスク全般"
+    },
+    {
+      "model": "Claude Haiku 4.5",
+      "useCase": "コード補完・クイック質問・軽量タスク",
+      "cost": "low",
+      "when": "速度優先・大量リクエスト"
+    }
+  ]
+}
