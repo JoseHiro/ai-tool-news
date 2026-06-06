@@ -22,7 +22,7 @@ export async function POST(req: Request) {
     session.isAdmin = isAdmin(user.email as string)
     await session.save()
 
-    return Response.json({ ok: true, email: user.email })
+    return Response.json({ ok: true, email: user.email, redirectTo: '/digests' })
   } catch (e) {
     console.error(e)
     return Response.json({ error: 'サーバーエラー' }, { status: 500 })

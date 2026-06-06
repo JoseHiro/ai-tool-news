@@ -2,6 +2,7 @@
 
 import { useState } from 'react'
 import { DISCLAIMER_PAYWALL } from '@/lib/disclaimer'
+import { Spinner } from '@/components/Spinner'
 
 export function Paywall() {
   const [loading, setLoading] = useState(false)
@@ -66,7 +67,11 @@ export function Paywall() {
         disabled={loading}
         className="w-full rounded-lg bg-[var(--accent)] py-2.5 text-sm font-semibold text-white transition hover:opacity-90 disabled:opacity-60"
       >
-        {loading ? '処理中...' : 'プランを見る'}
+        {loading ? (
+          <span className="flex items-center justify-center gap-2">
+            <Spinner /> 処理中...
+          </span>
+        ) : 'プランを見る'}
       </button>
 
       <p style={{ color: 'var(--text-muted)' }} className="mt-4 text-[11px] leading-relaxed">

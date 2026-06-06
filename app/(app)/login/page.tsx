@@ -1,13 +1,15 @@
 'use client'
 
 import { useState, Suspense } from 'react'
-import { useSearchParams } from 'next/navigation'
+import { useSearchParams, useRouter } from 'next/navigation'
 import Link from 'next/link'
 import { BrandMark } from '@/components/BrandMark'
 import { PasswordInput } from '@/components/PasswordInput'
+import { Spinner } from '@/components/Spinner'
 
 function LoginForm() {
   const params = useSearchParams()
+  const router = useRouter()
   const passwordReset = params.get('reset') === '1'
   const [email, setEmail] = useState('')
   const [password, setPassword] = useState('')
@@ -29,7 +31,7 @@ function LoginForm() {
         setError(data.error)
         return
       }
-      window.location.href = '/'
+      router.push(data.redirectTo ?? '/digests')
     } catch {
       setError('ログインに失敗しました')
     } finally {
@@ -85,7 +87,11 @@ function LoginForm() {
             disabled={loading}
             className="w-full rounded-lg bg-[var(--accent)] py-2.5 text-sm font-semibold text-white transition hover:opacity-90 disabled:opacity-60"
           >
-            {loading ? 'ログイン中...' : 'ログイン'}
+            {loading ? (
+              <span className="flex items-center justify-center gap-2">
+                <Spinner /> ログイン中...
+              </span>
+            ) : 'ログイン'}
           </button>
         </form>
         <p style={{ color: 'var(--text-muted)' }} className="mt-4 text-center text-xs">

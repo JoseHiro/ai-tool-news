@@ -1,0 +1,59 @@
+{
+  "date": "2026-06-05",
+  "actionPrompt": "Cursor Design Mode で UI 要素をクリックして音声で直接編集してみる",
+  "tools": ["Cursor", "Claude Code", "Codex"],
+  "updates": [
+    {
+      "tool": "Cursor",
+      "title": "Design Mode 正式リリース — UI をポイント・描画・音声で直接編集",
+      "body": "Cursor が Design Mode を正式リリース。テキストプロンプトだけでは伝わりにくかった「ここのパディングを広げて」「このボタンを右揃えに」といった視覚的な意図を、要素をクリック→描画→音声/テキストで直接伝えるだけでエージェントがコードに落とし込む。Canvas（サイト全体プレビュー）機能とアプリ内ブラウザの改善も同時公開。",
+      "importance": "high"
+    },
+    {
+      "tool": "Claude Code",
+      "title": "Dynamic Workflows がマルチエージェント構成の新定番に",
+      "body": "Claude Code の dynamic workflows 機能がエージェントオーケストレーションに「正しくて強力」と評価されている。従来のサブエージェント呼び出しより整理されたアーキテクチャで、複数タスクの並行処理や条件分岐が設計しやすくなっている。",
+      "importance": "medium"
+    }
+  ],
+  "tips": [
+    {
+      "title": "Codex を本気で使うための AGENTS.md 設計",
+      "description": "Codex（またはどのエージェントでも）を効果的に使うには、リポジトリに AGENTS.md を置いてプロジェクト固有ルールを短く明確に書く。「コードを書かせる前に計画を先に説明させる」「Isolated Worktrees で並行作業しながら本番ブランチを守る」の2つが特に効果的。",
+      "code": {
+        "lang": "markdown",
+        "code": "# AGENTS.md\n## Rules\n- 実装前に必ずステップを説明すること\n- テスト → 実装 → レビューの順を守る\n- 外部 API を使う場合は事前に商用利用条件を確認\n\n## Stack\n- Framework: Next.js 15 (App Router)\n- DB: Postgres (Supabase)\n- Auth: Iron Session"
+      }
+    }
+  ],
+  "workflow": {
+    "title": "Cursor Design Mode で UI 修正を10倍速にする",
+    "steps": [
+      { "label": "Cursor を最新版にアップデート（Design Mode は最新ビルド必須）" },
+      { "label": "編集したいコンポーネントを開き、Design Mode ボタン（左サイドバー）をクリック" },
+      { "label": "変更したい UI 要素をクリックして選択 → 「ここのパディングを広げて」と音声またはテキストで指示" },
+      { "label": "Canvas プレビューで変更を確認 → 問題なければ「Apply」でコードに反映" },
+      { "label": "複数要素を一括変更する場合は描画ツールで範囲を囲んで一括指示" }
+    ]
+  },
+  "modelGuide": [
+    {
+      "model": "Claude Opus 4.8",
+      "useCase": "Design Mode で生成されたコードのアーキテクチャレビュー・大規模リファクタリング",
+      "cost": "high",
+      "when": "大きな UI 変更後、設計の整合性を確認したい時"
+    },
+    {
+      "model": "Claude Sonnet 4.6",
+      "useCase": "日常的なコード補完・デバッグ・AGENTS.md の最適化",
+      "cost": "medium",
+      "when": "通常の開発作業全般"
+    },
+    {
+      "model": "Claude Haiku 4.5",
+      "useCase": "シンプルなテキスト変換・フォーマット整形・定型処理",
+      "cost": "low",
+      "when": "ループ処理・バッチ変換など高頻度の軽いタスク"
+    }
+  ]
+}

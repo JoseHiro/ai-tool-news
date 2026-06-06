@@ -1,11 +1,14 @@
 'use client'
 
 import { useState } from 'react'
+import { useRouter } from 'next/navigation'
 import Link from 'next/link'
+import { Spinner } from '@/components/Spinner'
 import { BrandMark } from '@/components/BrandMark'
 import { PasswordInput } from '@/components/PasswordInput'
 
 export default function SignupPage() {
+  const router = useRouter()
   const [email, setEmail] = useState('')
   const [password, setPassword] = useState('')
   const [confirm, setConfirm] = useState('')
@@ -27,7 +30,7 @@ export default function SignupPage() {
         setError(data.error)
         return
       }
-      window.location.href = '/'
+      router.push('/digests')
     } catch {
       setError('アカウント作成に失敗しました')
     } finally {
@@ -85,7 +88,11 @@ export default function SignupPage() {
             disabled={loading}
             className="w-full rounded-lg bg-[var(--accent)] py-2.5 text-sm font-semibold text-white transition hover:opacity-90 disabled:opacity-60"
           >
-            {loading ? '作成中...' : 'アカウントを作成'}
+            {loading ? (
+              <span className="flex items-center justify-center gap-2">
+                <Spinner /> 作成中...
+              </span>
+            ) : 'アカウントを作成'}
           </button>
         </form>
         <p style={{ color: 'var(--text-muted)' }} className="mt-4 text-center text-xs">

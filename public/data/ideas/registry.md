@@ -9,6 +9,7 @@
 
 | 日付 | テーマ | ドメイン |
 |---|---|---|
+| 2026-06-05 | X でバズった成功事例が証明する「機能より発想・見た目」のシンプル・デザイン主役アプリ | design/visual/mental-health |
 | 2026-06-02 | 「なっぷ」の不満と海外ヒットアプリの空白地帯から見えるキャンプ特化の非アプリ行動を置き換える | camping |
 | 2026-05-31 | 写真・記録・整理に「紙と感覚」を使い続ける手芸コミュニティの非アプリ行動を置き換える | craft/photo |
 | 2026-05-30 | 海外成功事例（Grok B）が証明する「習慣・文化体験」の日本語版空白地帯を埋める | spiritual/culture・health・consumer-finance |
@@ -26,6 +27,10 @@
 
 ## 使用済みターゲット層
 
+- 子育て中の親（3〜12歳の子がいる30〜40代）・シニア塗り絵愛好家
+- iPhone ホーム画面カスタマイズ愛好家（10〜25代女性）
+- 不安障害・パニック発作を経験したことがある20〜50代
+- Figma・Canva を使う個人デザイナー・フロントエンドエンジニア
 - キャンパー・車中泊愛好家（20〜60代、非エンジニア）
 - ハンドメイド作家・手芸愛好家（30〜50代女性、minne/Creema 出品者）
 - 登山者・アウトドア愛好家（40〜60代、非IT）
@@ -55,6 +60,7 @@
 
 ## 使用済み競合起点（直近30日）
 
+Widgetsmith / Color Widgets / Coolors / Adobe Color / Breathwrk / Calm / Headspace /
 The Dyrt / CAMP NOTE / なっぷ / hinata / Carstay / iOverlander /
 PhotoPills / Moment Pro Camera / Ravelry / Adobe Scan / Microsoft Lens /
 ホトカミ / 御朱印マップ / 神社がいいね / Camino de Santiago系巡礼アプリ /
@@ -98,6 +104,7 @@ HotSchedules / 英検公式アプリ / スタディサプリ英語
 
 ## 使用済みアイデア名
 
+PaintSnap / HomeCanvas JP / CalmTap / PaletteSnap /
 CampKit JP / SotoMap / VanLog JP /
 CraftCam JP / PatternScan JP / CraftLog /
 GoShuinBook JP / SoberLog JP / CashFlow JP /

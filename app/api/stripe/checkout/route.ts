@@ -9,7 +9,9 @@ export async function POST(req: Request) {
     return Response.json({ error: 'ログインが必要です' }, { status: 401 })
   }
 
-  const priceId = process.env.STRIPE_PRICE_ID
+  const priceId = process.env.NODE_ENV === 'development'
+    ? (process.env.STRIPE_TEST_PRICE_ID ?? process.env.STRIPE_PRICE_ID)
+    : process.env.STRIPE_PRICE_ID
   if (!priceId) {
     return Response.json({ error: 'Stripe が設定されていません' }, { status: 500 })
   }

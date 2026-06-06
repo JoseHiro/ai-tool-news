@@ -1,0 +1,39 @@
+{
+  "date": "2026-06-05",
+  "cases": [
+    {
+      "name": "devutils.com",
+      "platform": "web",
+      "category": "開発者向けユーティリティ",
+      "metricLabel": "MRR",
+      "metricValue": 8000,
+      "metricDisplay": "$8,000 MRR",
+      "metricCurrency": "USD",
+      "developer": "@tdinh_me",
+      "url": "https://devutils.com",
+      "notes": "URL エンコード・JSON 整形・Base64 など開発者が毎日使うシンプルツールを1サイトに集約。ほぼメンテナンス不要でこの収益を維持。"
+    },
+    {
+      "name": "Waku",
+      "platform": "mobile",
+      "category": "ブックマーク管理",
+      "metricLabel": "その他",
+      "metricValue": 130,
+      "metricDisplay": "130ユーザー（有料10人）",
+      "metricCurrency": "count",
+      "developer": "@AlexStudio44",
+      "notes": "散らばったブックマークを1箇所に集めるシンプル iOS アプリ。まだ初期段階だが実データ公開中。"
+    },
+    {
+      "name": "妊娠・育児記録アプリ（2本）",
+      "platform": "mobile",
+      "category": "ヘルスケア・育児",
+      "metricLabel": "MRR",
+      "metricValue": 77,
+      "metricDisplay": "$77 MRR",
+      "metricCurrency": "USD",
+      "developer": "@KCodes7777",
+      "notes": "妊娠期向けと育児記録の2アプリを個人開発。収益は小さいが実際の数字を公開しており成長中。"
+    }
+  ]
+}

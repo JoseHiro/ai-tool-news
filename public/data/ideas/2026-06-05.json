@@ -1,0 +1,187 @@
+{
+  "date": "2026-06-05",
+  "theme": "「え、これが売れるの？」シンプル発想とデザインが主役のアプリ",
+  "perspective": "X でバズった成功事例が証明する「機能より発想・見た目」の個人開発アプリ。Grok E の調査から、1〜2機能に絞って突き抜けたものと、スクリーンショットを見た瞬間に欲しくなる UI が共通の勝ちパターンとして見えてきた。",
+  "ideas": [
+    {
+      "name": "PaintSnap",
+      "emoji": "🖼️",
+      "score": 75,
+      "overview": "写真を1枚選ぶだけで「大人・子供向け塗り絵シート」に変換するシンプルアプリ。機能はこれだけ。AI のエッジ検出で輪郭を抽出し、難易度（細かさ）を3段階で選んで PNG/PDF で書き出しプリントできる。",
+      "platform": "mobile",
+      "direction": "simple-viral",
+      "source": "Grok E: Starter Story 投稿「パニック発作関連の1機能アプリが400万DL・$1M以上収益」(https://x.com/starter_story/status/1965081973539635270, 416 likes) が示す「1機能特化の爆発力」 / 塗り絵変換の日本語特化版は現状ほぼ未確認",
+      "market": {
+        "target": "子育て中の親（3〜12歳の子がいる30〜40代）・シニア塗り絵愛好家（60〜70代）",
+        "size": "要調査。参考: 米国 coloring book カテゴリ上位アプリは各10万〜100万DL",
+        "gap": "既存の塗り絵変換アプリは英語UIのみ・操作が複雑・子供向けビジュアルデザインが弱い"
+      },
+      "revenue": {
+        "free": "1日3枚まで変換可能・広告表示あり",
+        "model": "広告+IAP",
+        "price": "広告なし+無制限変換 ¥370 買い切り"
+      },
+      "features": [
+        "写真1枚 → 塗り絵シートに変換（エッジ検出AI）",
+        "難易度3段階（子供向けシンプル・標準・細密）",
+        "PNG/PDF で書き出してプリント可能",
+        "変換履歴10件まで保存"
+      ],
+      "aiUsage": "Core ML（オンデバイス）または Replicate の HED/MLSD モデルでエッジ検出。サーバー不要で無料枠でも動く",
+      "competitors": [
+        {
+          "name": "Photo to Coloring Page（US App Store）",
+          "threat": "medium",
+          "weakness": "英語UIのみ・日本語非対応・子供向けデザインが弱く親世代に訴求しにくい"
+        },
+        {
+          "name": "Procreate / 多機能お絵かきアプリ",
+          "threat": "low",
+          "weakness": "塗り絵変換に特化しておらず多機能すぎてシニア・子育て世代には難しい"
+        }
+      ],
+      "feasibility": {
+        "mvpWeeks": 2,
+        "legalRisk": "none",
+        "apiDependency": "Core ML（オンデバイス）または Replicate API（商用利用: 有料プランで可）"
+      },
+      "conclusion": "✅ 2週間で出せるシンプルさと明確なターゲット（親×子供・シニア）が強み。App Store スクショで変換ビフォーアフターを並べるだけで訴求完結",
+      "tags": ["塗り絵", "写真変換", "子供", "シニア", "AI画像処理"]
+    },
+    {
+      "name": "HomeCanvas JP",
+      "emoji": "🎴",
+      "score": 78,
+      "overview": "iOS ホーム画面ウィジェットの「季節・美しさ」に特化したカスタマイズアプリ。Widgetsmith と違い、桜・紅葉・雪など日本の24節気テーマと和モダンデザインに特化したウィジェットセットを毎月更新で提供する。",
+      "platform": "mobile",
+      "direction": "quirky-design",
+      "source": "Grok E: Yukee（ミニマルToDoアプリ @pJacquelDesign, 299 likes）のデザイン評価 + Widgetsmith の日本語・和テーマギャップ / X でのホーム画面カスタマイズ投稿人気（iOS 14 以降で急増）",
+      "market": {
+        "target": "10〜25代女性・iPhone ホーム画面カスタマイズ愛好家",
+        "size": "Widgetsmith は米国 App Store 上位常連・日本でも人気だが日本語UI不完全。ウィジェットカスタマイズ系カテゴリは iOS 14 以降で急成長",
+        "gap": "Widgetsmith は英語・汎用デザインで日本の季節感・和モダン系テーマが存在しない。Color Widgets はシーズナルテーマの定期更新なし"
+      },
+      "revenue": {
+        "free": "基本ウィジェット5種・標準テーマのみ",
+        "model": "広告+IAP",
+        "price": "シーズナルテーマパック ¥480 / 全テーマ買い切り ¥980"
+      },
+      "features": [
+        "季節テーマウィジェット（春夏秋冬・24節気対応、毎月更新）",
+        "時計・天気・カレンダー・カウントダウンウィジェット",
+        "フォント・カラーパレット・背景テクスチャをカスタマイズ",
+        "ホーム画面プレビューで配置確認してからリリース"
+      ],
+      "aiUsage": "Claude でユーザーが「春らしい雰囲気で」と入力するとフォント・色・背景テクスチャのセットを自動提案",
+      "competitors": [
+        {
+          "name": "Widgetsmith",
+          "threat": "medium",
+          "weakness": "英語UIメイン・日本語フォント対応が限定的・和テーマ・季節テーマなし"
+        },
+        {
+          "name": "Color Widgets",
+          "threat": "medium",
+          "weakness": "シーズナルテーマの定期更新なし・カスタマイズ自由度が低くマンネリ化しやすい"
+        }
+      ],
+      "feasibility": {
+        "mvpWeeks": 4,
+        "legalRisk": "none",
+        "apiDependency": "iOS WidgetKit（Apple 標準、商用利用可）"
+      },
+      "conclusion": "✅ App Store スクショがそのまま広告になる「見た目が主役」の典型。季節ごとのテーマ更新でリピート購入が生まれる構造",
+      "tags": ["ウィジェット", "ホーム画面", "デザイン", "iOS", "季節", "和モダン"]
+    },
+    {
+      "name": "CalmTap",
+      "emoji": "🌬️",
+      "score": 72,
+      "overview": "パニック・不安発作専用の「タップして落ち着く」1機能アプリ。箱呼吸（4秒吸う→4秒止める→4秒吐く→4秒止める）を美しいアニメーションでガイドするだけ。操作はロック画面から1タップで起動。",
+      "platform": "mobile",
+      "direction": "overseas-to-japan",
+      "source": "Grok E: Starter Story 投稿「パニック発作関連の1機能アプリが400万DL・$1M以上収益」(https://x.com/starter_story/status/1965081973539635270, 416 likes) / 米国 App Store の呼吸法アプリ（Breathwrk）は日本語版なし",
+      "market": {
+        "target": "不安障害・パニック発作・過呼吸を経験したことがある20〜50代（国内推計: 不安障害有病率 約7%、約870万人）",
+        "size": "要調査。参考: 米国の呼吸法・メンタルヘルスアプリ市場は年率20%成長",
+        "gap": "日本語×発作時に即使える1タップUI に特化したアプリがほぼ存在しない。既存の瞑想アプリは起動操作が多く発作中に使えない"
+      },
+      "revenue": {
+        "free": "基本の箱呼吸のみ・セッション記録7日分",
+        "model": "買い切り",
+        "price": "追加呼吸法セット + 無制限記録 ¥480 買い切り"
+      },
+      "features": [
+        "箱呼吸ガイド（アニメーション＋振動フィードバック）",
+        "4-7-8呼吸法・腹式呼吸もアンロックで追加",
+        "ロック画面ショートカット対応（1タップで即起動）",
+        "セッション記録（いつ・何回使ったか）"
+      ],
+      "aiUsage": "Claude で呼吸ガイドのナレーションテキストを状況別に生成（「職場で突然」「眠れない夜に」など場面別の穏やかな短い文章）",
+      "competitors": [
+        {
+          "name": "Breathwrk（米国）",
+          "threat": "low",
+          "weakness": "英語のみ・日本語UI完全なし・機能が多すぎて発作中に起動しにくい"
+        },
+        {
+          "name": "Calm / Headspace",
+          "threat": "low",
+          "weakness": "サブスク高額（¥1,500〜/月）・発作時に使える即効性UIではなくコンテンツ消費型"
+        }
+      ],
+      "feasibility": {
+        "mvpWeeks": 3,
+        "legalRisk": "low",
+        "apiDependency": "なし（アニメーションのみ。医療行為ではなく「リラクゼーションガイド」として設計すれば薬機法非対象）"
+      },
+      "conclusion": "✅ 「発作時に1タップで使える」UX が既存アプリにない最大の差別化。薬機法・医療機器規制は非対象だが App Store の説明文に「医療目的ではありません」の記載を必ず入れること",
+      "tags": ["メンタルヘルス", "呼吸法", "パニック", "不安", "1機能"]
+    },
+    {
+      "name": "PaletteSnap",
+      "emoji": "🎨",
+      "score": 74,
+      "overview": "写真・スクリーンショット・URL から色を抽出して「デザインシステム用カラーパレット」を即生成する Web アプリ。Figma 変数・Tailwind config・CSS カスタムプロパティ形式でそのままコピーできる。",
+      "platform": "web",
+      "direction": "quirky-design",
+      "source": "Grok E: devutils.com「開発者向けシンプルツール $8,000/month ほぼメンテなし」(@tdinh_me, 458 likes) のデザイナー版発想 / Coolors・Adobe Color の Figma 変数エクスポート非対応ギャップ",
+      "market": {
+        "target": "Figma・Canva を使う個人デザイナー・フロントエンドエンジニア・ブランド立ち上げ中のスタートアップ",
+        "size": "Figma ユーザー数: 国内400万人以上（2024年推計）。Coolors は月間2,000万PV以上",
+        "gap": "Coolors は写真からの抽出精度が低く Figma 変数・Tailwind 形式での直接エクスポートがない。Adobe Color は Adobe CC 前提で重くフローが長い"
+      },
+      "revenue": {
+        "free": "月10回まで抽出・HEX/RGB コピーのみ",
+        "model": "SaaS",
+        "price": "¥490/月（無制限 + Figma変数/Tailwind/CSS変数エクスポート + チーム共有）"
+      },
+      "features": [
+        "写真・スクリーンショット・URL からカラー抽出",
+        "Figma 変数・Tailwind config・CSS custom properties 形式でワンクリックコピー",
+        "ライト/ダーク両対応パレット自動生成",
+        "ブランドカラーセットとして保存・共有リンク発行"
+      ],
+      "aiUsage": "Claude でカラーパレットに「ブランド名・雰囲気」を入力するとアクセシビリティ（WCAG AA）チェックと改善提案を自動生成",
+      "competitors": [
+        {
+          "name": "Coolors",
+          "threat": "medium",
+          "weakness": "写真からの抽出精度が低い・Figma 変数形式でのエクスポートなし・日本語 UI なし"
+        },
+        {
+          "name": "Adobe Color",
+          "threat": "medium",
+          "weakness": "Adobe CC 前提で重い・Tailwind/CSS 変数エクスポートなし・フローが長い"
+        }
+      ],
+      "feasibility": {
+        "mvpWeeks": 3,
+        "legalRisk": "none",
+        "apiDependency": "Color Thief（OSS、商用利用可）/ Figma REST API（Figma 開発者登録必要）"
+      },
+      "conclusion": "✅ devutils.com スタイルの「毎日使うシンプル Web ツール」路線。Figma 変数エクスポートは競合がほぼ未対応の明確な差別化ポイント",
+      "tags": ["カラーパレット", "デザイン", "Figma", "Tailwind", "CSS"]
+    }
+  ]
+}
