@@ -1,0 +1,51 @@
+{
+  "date": "2026-06-07",
+  "actionPrompt": "Codex でバックエンド・Claude Code でフロントの2分業でMVPを2週間で出す",
+  "tools": ["Claude Code", "Codex", "Cursor"],
+  "updates": [],
+  "tips": [
+    {
+      "title": "2エージェント分業がMVP最速 — Codex backend + Claude Code frontend",
+      "description": "複雑なマルチエージェント構成より「Codex でバックエンド API、Claude Code でフロントエンド UI」のシンプルな2分業がMVPには最適という実務者の声。役割を明確に分けるほうが競合・干渉が起きにくく、2週間リリースに向いている。",
+      "code": {
+        "lang": "markdown",
+        "code": "# AGENTS.md\n## Codex の担当\n- API ルート・DB スキーマ・マイグレーション\n- 入力バリデーション・エラーハンドリング\n\n## Claude Code の担当\n- UI コンポーネント・ページ実装\n- スタイリング・アニメーション\n- E2E テスト\n\n## 共通ルール\n- 実装前に計画を説明する\n- 外部 API は1本以内に絞る"
+      }
+    },
+    {
+      "title": "最新ツールを自腹で試す習慣が1〜2年後の差になる",
+      "description": "大手 SIer のエンジニアでも Claude in Chrome / Claude Code を知らない人が多いという現場報告。社内標準ツールだけ使っているエンジニアと、個人で最新ツールを試している開発者の生産性差は今後さらに広がる。月数千円の自腹投資が最も ROI が高い。"
+    }
+  ],
+  "workflow": {
+    "title": "2週間でシンプルアプリをリリースする最小構成",
+    "steps": [
+      { "label": "Day 1: AGENTS.md を書く（スタック・役割・禁止事項を各3行）", "code": "# Stack\n- Next.js 15 / React Native（Expo）\n- Postgres (Supabase) + Iron Session\n# Rules\n- 外部 API は1本以内\n- 機能は MVP で3つまで" },
+      { "label": "Day 2–3: Codex で API エンドポイント2〜3本だけ生成（機能を絞る）" },
+      { "label": "Day 4–7: Claude Code で UI を実装（Design Mode があれば使う）" },
+      { "label": "Day 8: Stripe 買い切り or AdMob を1日で組み込む" },
+      { "label": "Day 9–10: App Store / Vercel にデプロイしてスクショを撮る" },
+      { "label": "Day 11–14: X に「作りました」投稿してフィードバックを収集する" }
+    ]
+  },
+  "modelGuide": [
+    {
+      "model": "Claude Opus 4.8",
+      "useCase": "AGENTS.md の設計レビュー・アーキテクチャ判断・複雑な実装方針の相談",
+      "cost": "high",
+      "when": "MVP の設計フェーズや行き詰まった時の相談役として"
+    },
+    {
+      "model": "Claude Sonnet 4.6",
+      "useCase": "日常的なコード実装・デバッグ・UI 生成",
+      "cost": "medium",
+      "when": "通常の開発作業全般"
+    },
+    {
+      "model": "Claude Haiku 4.5",
+      "useCase": "定型テキスト生成・フォーマット変換・軽量なデータ処理",
+      "cost": "low",
+      "when": "繰り返し処理・バッチ変換・コスト重視の軽いタスク"
+    }
+  ]
+}

@@ -1,0 +1,27 @@
+{
+  "date": "2026-06-07",
+  "cases": [
+    {
+      "name": "Workout Duolingo",
+      "platform": "mobile",
+      "category": "フィットネス・習慣化",
+      "metricLabel": "レビュー数",
+      "metricValue": 200,
+      "metricDisplay": "200レビュー（急成長中）",
+      "metricCurrency": "count",
+      "developer": "@ErnestoSOFTWARE",
+      "notes": "Duolingo スタイルの1機能ワークアウト習慣化アプリ。$5k未満 MRR だが viral 中。シンプルな1機能設計がバズの起点になっている典型例。"
+    },
+    {
+      "name": "Cal AI",
+      "platform": "mobile",
+      "category": "ダイエット・カロリー管理",
+      "metricLabel": "MRR",
+      "metricValue": 50000,
+      "metricDisplay": "$50k MRR（$10k から急成長）",
+      "metricCurrency": "USD",
+      "developer": "複数X投稿者",
+      "notes": "写真を撮るだけでカロリーを計算するシンプル AI アプリ。$10k → $50k MRR へ急成長。シンプル1機能 + viral loop の典型事例として複数投稿者が言及。"
+    }
+  ]
+}
