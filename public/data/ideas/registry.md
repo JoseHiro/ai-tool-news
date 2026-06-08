@@ -9,6 +9,7 @@
 
 | 日付 | テーマ | ドメイン |
 |---|---|---|
+| 2026-06-08 | Grok B 成功事例 + 654いいね不満ツイートから拾ったリリース後の売り方 | devtools/marketing / content-creation / social |
 | 2026-06-07 | X の「こんなアプリ欲しい」不満ツイートから見えるユニーク1機能アプリ | food-drink / humor / astronomy / parenting |
 | 2026-06-05 | X でバズった成功事例が証明する「機能より発想・見た目」のシンプル・デザイン主役アプリ | design/visual/mental-health |
 | 2026-06-02 | 「なっぷ」の不満と海外ヒットアプリの空白地帯から見えるキャンプ特化の非アプリ行動を置き換える | camping |
@@ -28,6 +29,9 @@
 
 ## 使用済みターゲット層
 
+- 個人アプリ開発者・インディーゲームクリエイター（プレスキット・スクショ作成）
+- AI コーディングツールを使う個人開発者・副業エンジニア
+- 20〜30代 SNS疲れ層（ゆるいソーシャルコミュニケーション）
 - 日本酒愛好家（30〜60代男女、居酒屋・地酒巡り好き）
 - 20〜35代ゲーマー・ネットミーム好きな一般ユーザー
 - 星空観察好き（20〜50代、キャンパー・天文ファン）
@@ -65,6 +69,7 @@
 
 ## 使用済み競合起点（直近30日）
 
+dopresskit.com / AppFollow / Shotbot / AppLaunchpad / trackmy.codes / WakaTime / BeReal /
 Vivino / Sakenomy / SkyView Lite / Star Walk 2 / ぴよログ / Baby Tracker系 /
 Widgetsmith / Color Widgets / Coolors / Adobe Color / Breathwrk / Calm / Headspace /
 The Dyrt / CAMP NOTE / なっぷ / hinata / Carstay / iOverlander /
@@ -110,6 +115,7 @@ HotSchedules / 英検公式アプリ / スタディサプリ英語
 
 ## 使用済みアイデア名
 
+PressKit.jp / AppShot / CodePulse JP / CheerBoard JP /
 SakeFolio / スキルイシュー / StarMichi JP / KodomoBabel /
 PaintSnap / HomeCanvas JP / CalmTap / PaletteSnap /
 CampKit JP / SotoMap / VanLog JP /

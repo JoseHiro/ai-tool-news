@@ -1,0 +1,69 @@
+{
+  "date": "2026-06-08",
+  "actionPrompt": "Claude Code auto mode + /loop でゴール達成まで自律実行させてみる",
+  "tools": ["Claude Code", "Codex", "Grok Build"],
+  "updates": [
+    {
+      "tool": "Claude Code",
+      "title": "リリース1周年公式まとめ — auto mode・/loop・dynamic workflows がベストプラクティスに",
+      "body": "Claude Code 公式（@ClaudeDevs）が1周年を振り返る YouTube 動画を公開。現時点のベストプラクティスとして ① auto mode で承認待ちを排除して自律実行、② /loop・/goal でゴール達成まで走らせる、③ dynamic workflows で複数エージェントを連携、④ スマホからのリモートコーディングが実用段階——の4点が強調された。",
+      "importance": "high"
+    },
+    {
+      "tool": "Codex",
+      "title": "\"Approve for me\" 常時 ON + 成果目標の事前指定でビルド時間13%短縮",
+      "body": "「Approve for me」設定を常時オンにすることで各ツールコールの手動承認を排除。さらに「何をもって完了とみなすか」を最初に明記することで本番ビルド時間を13%短縮した実例が報告されている。指示の質が精度に直結する。",
+      "importance": "medium"
+    },
+    {
+      "tool": "Grok Build",
+      "title": "v0.2.36 リリース",
+      "body": "Grok Build が v0.2.36 にアップデート。v0.2.34 からの変更点は公式動画で公開されている。",
+      "importance": "low"
+    }
+  ],
+  "tips": [
+    {
+      "title": "claude.md + メモリ + 並列セッションの3点セットで Claude Code を最大活用",
+      "description": "Claude Code を本番レベルで使う3点セット: ① claude.md にプロジェクト固有ルールを書く、② /remember でコンテキストを永続化する、③ 独立タスクを並列セッションで同時進行させる。この3つを組み合わせると自律度が大幅に上がる。",
+      "code": {
+        "lang": "bash",
+        "code": "# 並列セッションの例: フロントとバックを同時進行\ntmux new-session -d -s frontend 'claude --goal \"Login UI を実装して\"'\ntmux new-session -d -s backend  'claude --goal \"Login API エンドポイントを実装して\"'\n# フロント側の進捗を確認\ntmux attach-session -t frontend"
+      }
+    },
+    {
+      "title": "完了条件を先に書くと AI エージェントの精度が上がる",
+      "description": "「〇〇を実装して」より「〇〇を実装して。完了条件: テストが全部グリーン / localhost:3000/api/test が 200 を返す」のように検証方法を先に書く。Codex でビルド時間13%短縮の実例あり。曖昧な指示は途中で止まる原因になる。"
+    }
+  ],
+  "workflow": {
+    "title": "Claude Code auto mode + /loop でタスクを最後まで自律実行させる",
+    "steps": [
+      { "label": "claude.md に「完了条件」を書く（例: テスト全グリーン / API が 200 を返す）" },
+      { "label": "/goal でゴールを一文で設定する", "code": "/goal ユーザー登録フローを実装して。完了条件: signup テストが全グリーン" },
+      { "label": "Settings → auto mode をオンにして承認プロンプトを排除" },
+      { "label": "/loop で完了まで繰り返し実行させる", "code": "/loop" },
+      { "label": "スマホ・別端末でセッションの進捗をリモート確認（外出中でも実行可）" }
+    ]
+  },
+  "modelGuide": [
+    {
+      "model": "Claude Opus 4.8",
+      "useCase": "auto mode での長時間自律タスク・dynamic workflows の設計・アーキテクチャ判断",
+      "cost": "high",
+      "when": "複雑なマルチステップ実装・設計フェーズの相談"
+    },
+    {
+      "model": "Claude Sonnet 4.6",
+      "useCase": "日常的なコード補完・デバッグ・claude.md の最適化",
+      "cost": "medium",
+      "when": "通常の開発作業全般"
+    },
+    {
+      "model": "Claude Haiku 4.5",
+      "useCase": "軽量な変換・フォーマット整形・高頻度のバッチ処理",
+      "cost": "low",
+      "when": "ループ処理・定型タスク・コスト重視の軽い処理"
+    }
+  ]
+}

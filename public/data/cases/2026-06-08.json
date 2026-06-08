@@ -1,0 +1,50 @@
+{
+  "date": "2026-06-08",
+  "cases": [
+    {
+      "name": "旅行思い出マップ（複数アプリ）",
+      "platform": "mobile",
+      "category": "旅行・思い出記録",
+      "metricLabel": "売上",
+      "metricValue": 405198,
+      "metricDisplay": "¥405,198/月（App Store ¥285k + AdMob ¥117k + Play ¥2.5k）",
+      "metricCurrency": "JPY",
+      "developer": "@tsuzuki817",
+      "notes": "旅行思い出マップを含む複数の個人開発アプリで月¥405k超。App Store 収益が主軸でAdMob を補完に使う構成。収益スクショあり・複数投稿で実績確認済み。"
+    },
+    {
+      "name": "勇者60秒RPG",
+      "platform": "mobile",
+      "category": "ゲーム",
+      "metricLabel": "売上",
+      "metricValue": 85000,
+      "metricDisplay": "¥85,000（リリース約2ヶ月、1日¥10,000超の実績あり）",
+      "metricCurrency": "JPY",
+      "developer": "@punimaru_dev",
+      "notes": "App Store 約¥69k + Stripe ¥22k + AdMob ¥4k の合計。シンプルな60秒 RPG で有料 + 広告のハイブリッド収益モデル。収益スクショあり。"
+    },
+    {
+      "name": "release.wtf",
+      "platform": "web",
+      "category": "スタートアップ向けディレクトリ",
+      "metricLabel": "MRR",
+      "metricValue": 8,
+      "metricDisplay": "$8 MRR（30日収益 $776、累計 $978、成長率 +283%）",
+      "metricCurrency": "USD",
+      "developer": "@maxime_username",
+      "url": "https://release.wtf",
+      "notes": "TrustMRR 経由で収益データ公開。小規模だが30日で+283%成長。ローンチ直後のトラクション事例として参考になる。"
+    },
+    {
+      "name": "trackmy.codes",
+      "platform": "web",
+      "category": "AI コーディング生産性トラッカー",
+      "metricLabel": "その他",
+      "metricValue": 29,
+      "metricDisplay": "$29/年（ローンチ直後・Claude/Codex/Cursor 対応）",
+      "metricCurrency": "USD",
+      "developer": "@kenbuildsalone",
+      "notes": "AI コーディングツールの実際の使用時間・ストリークを自動トラッキング。$29/年 or ライフタイムプランでローンチ。スクショ・説明あり。"
+    }
+  ]
+}
