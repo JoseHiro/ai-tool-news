@@ -1,0 +1,71 @@
+{
+  "date": "2026-06-16",
+  "actionPrompt": "awesome-design-md の DESIGN.md を Claude に渡してブランド忠実 UI を一発生成",
+  "tools": ["Claude Code", "Cursor", "Codex"],
+  "updates": [
+    {
+      "tool": "Cursor",
+      "title": "SpaceX が Cursor（Anysphere）を 600 億ドルで買収 — Grok Build と共同モデルを近日リリース",
+      "body": "SpaceX が Anysphere（Cursor 開発元）を全株式交換で約 600 億ドルで買収。過去数ヶ月で Cursor と共同訓練したモデルが「Cursor と Grok Build の両方で近日リリース予定」と公式発表。AI コーディングツール市場に大きな再編をもたらす可能性がある。",
+      "importance": "high"
+    },
+    {
+      "tool": "Cursor",
+      "title": "Cursor Origin 発表 — チーム・エージェント向けコードストレージ & Git ホスティング",
+      "body": "Cursor 公式が新製品「Cursor Origin」を発表。チームやエージェントがコードのホスト・レビュー・コラボレーションを行うための専用プラットフォーム。秋頃の提供開始を予定しており、waitlist を受付中。",
+      "importance": "medium"
+    }
+  ],
+  "tips": [
+    {
+      "title": "Claude Code /loop で PR をリモート監視 — PC を閉じてもスマホから確認",
+      "description": "/loop を使うと Claude Code がバックグラウンドで PR を継続監視・自動レビューする。PC を閉じてもスマホから進捗を確認できる実用段階のセットアップ。Claude Code 作成者 Boris Cherny 本人も「数百のエージェントを /loop と dynamic workflows で運用し、コードの 90% をモデルに書かせている」と語る（@0xRicker, 55 likes）。",
+      "code": {
+        "lang": "bash",
+        "code": "# Claude Code チャット内で /loop を実行してから指示を渡す\n# /loop\n# 「PR #123 をレビューして。問題があれば GitHub にコメントして。完了条件: レビューコメント投稿済み」\n\n# 別端末・スマホからも同じセッションを参照できる"
+      }
+    },
+    {
+      "title": "awesome-design-md の DESIGN.md を渡すだけでブランド忠実 UI が生成できる",
+      "description": "GitHub リポジトリ awesome-design-md に Apple・Stripe・Linear などの実在ブランドの DESIGN.md が収録されている。これを Claude に渡すだけでブランドガイドラインに忠実な UI を生成できる。デザインシステムを一から説明する手間がなくなる（@undefinedKi, 69 likes）。",
+      "code": {
+        "lang": "bash",
+        "code": "# awesome-design-md から使いたいブランドの DESIGN.md をダウンロードして\n# Claude Code の claude.md に include する\necho '@path/to/stripe-DESIGN.md' >> .claude/CLAUDE.md\n\n# Claude Code チャット:\n# 「DESIGN.md のガイドラインに従って決済フォームの UI を実装して」"
+      }
+    },
+    {
+      "title": "Codex はアニメーション重視のウェブサイト制作に特に強い",
+      "description": "GPT-5.5 + Codex の組み合わせはアニメーションを多用するウェブサイト構築に特に優位性がある。Cursor や Claude Code との使い分けポイントは「アニメーション・インタラクション実装」に絞ること。11 分チュートリアル動画（@viktoroddy, 490 likes）で具体的なプロンプトが公開されている。"
+    }
+  ],
+  "workflow": {
+    "title": "awesome-design-md + Claude でブランド忠実 UI をゼロから生成する",
+    "steps": [
+      { "label": "awesome-design-md リポジトリから使いたいブランドの DESIGN.md を取得する" },
+      { "label": "Claude Code に DESIGN.md を渡して「このガイドに従って〇〇 UI を実装して」と指示" },
+      { "label": "自社ブランドを定義する場合は DESIGN.md フォーマットで自作する", "code": "# DESIGN.md の基本フォーマット\n# Primary Color: #0070F3\n# Font: Inter\n# Border radius: 8px\n# Tone: minimal, clean" },
+      { "label": "毎回渡す手間をなくすため claude.md に include パスを追記する", "code": "echo '@DESIGN.md' >> .claude/CLAUDE.md" },
+      { "label": "Cursor または Claude Code で既存コンポーネントにスタイルを統合する" }
+    ]
+  },
+  "modelGuide": [
+    {
+      "model": "Claude Opus 4.8",
+      "useCase": "長時間自律タスク・アーキテクチャ設計・dynamic workflows の構成判断",
+      "cost": "high",
+      "when": "複雑なマルチエージェント構成・大規模システム設計の相談"
+    },
+    {
+      "model": "Claude Sonnet 4.6",
+      "useCase": "日常の UI 実装・デバッグ・DESIGN.md ベースのコード生成",
+      "cost": "medium",
+      "when": "通常の開発作業・awesome-design-md を使った UI 生成"
+    },
+    {
+      "model": "Claude Haiku 4.5",
+      "useCase": "定型フォーマット変換・ログ解析・軽量バッチ処理",
+      "cost": "low",
+      "when": "高頻度の繰り返し処理・コスト重視のパイプライン"
+    }
+  ]
+}

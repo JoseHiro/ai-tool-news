@@ -9,6 +9,8 @@
 
 | 日付 | テーマ | ドメイン |
 |---|---|---|
+| 2026-06-18 | Apple Design Award 受賞・3,000 いいね超えバイラル事例が証明する「体験のひねり」で成熟市場を再定義する | language-learning / weather-visual / fitness / couple-finance |
+| 2026-06-16 | X の要望投稿と海外バズ事例が示す「学習・機材管理・ネタバレ保護・日課習慣」の空白地帯 | education-traditional-games / photography / entertainment-tracking / widget-lifestyle |
 | 2026-06-08 | Grok B 成功事例 + 654いいね不満ツイートから拾ったリリース後の売り方 | devtools/marketing / content-creation / social |
 | 2026-06-07 | X の「こんなアプリ欲しい」不満ツイートから見えるユニーク1機能アプリ | food-drink / humor / astronomy / parenting |
 | 2026-06-05 | X でバズった成功事例が証明する「機能より発想・見た目」のシンプル・デザイン主役アプリ | design/visual/mental-health |
@@ -29,6 +31,14 @@
 
 ## 使用済みターゲット層
 
+- 3〜8 歳の英語学習を始めさせたい親（30〜40 代共働き世帯）
+- ピクセルアート好き・ホーム画面カスタム好き 15〜35 代（ゲーマー・レトロ好き）
+- 運動習慣がない 20〜40 代の在宅ワーカー・デスクワーク層
+- 同棲・共働き・新婚の 20〜35 代カップル（二人で家計管理したい）
+- 囲碁に興味があるが入門できない 25〜45 代（ヒカルの碁世代・ボードゲーム好き）
+- カメラ愛好家・写真家 20〜50 代（機材が増えた趣味層・出張撮影フリーランス）
+- アニメ・マンガ・ドラマを複数同時視聴中で追いかけが遅れがちな 15〜35 代
+- ウィジェットカスタマイズ好き・毎日の習慣に「言葉」を取り入れたい 15〜35 代 iPhone ユーザー
 - 個人アプリ開発者・インディーゲームクリエイター（プレスキット・スクショ作成）
 - AI コーディングツールを使う個人開発者・副業エンジニア
 - 20〜30代 SNS疲れ層（ゆるいソーシャルコミュニケーション）
@@ -69,6 +79,8 @@
 
 ## 使用済み競合起点（直近30日）
 
+Duolingo / Google翻訳(カメラモード) / Mondly Kids / Yahoo!天気 / Weathertune / Nike Training Club / Streaks / マネーフォワードME / Zaim / HouseBook /
+囲碁クエスト / OGS (Online Go Server) / KitTrack / Camera Bag (海外) / Anti-Spoiler (Chrome拡張) / Spoiler Shield / Widgetsmith / Daily Quote (海外) / Samak /
 dopresskit.com / AppFollow / Shotbot / AppLaunchpad / trackmy.codes / WakaTime / BeReal /
 Vivino / Sakenomy / SkyView Lite / Star Walk 2 / ぴよログ / Baby Tracker系 /
 Widgetsmith / Color Widgets / Coolors / Adobe Color / Breathwrk / Calm / Headspace /
@@ -115,6 +127,8 @@ HotSchedules / 英検公式アプリ / スタディサプリ英語
 
 ## 使用済みアイデア名
 
+CamLearn JP / PixelSeason / YurureKin / FutariKakei /
+GoFlow JP / LensKeeper / SpoilShield / TodayWord /
 PressKit.jp / AppShot / CodePulse JP / CheerBoard JP /
 SakeFolio / スキルイシュー / StarMichi JP / KodomoBabel /
 PaintSnap / HomeCanvas JP / CalmTap / PaletteSnap /

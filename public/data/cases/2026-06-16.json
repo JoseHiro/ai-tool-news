@@ -1,0 +1,17 @@
+{
+  "date": "2026-06-16",
+  "cases": [
+    {
+      "name": "Samak",
+      "platform": "mobile",
+      "category": "スピリチュアル / 日課",
+      "metricLabel": "その他",
+      "metricValue": 237,
+      "metricDisplay": "X 投稿 237 likes（App Store 公開済み）",
+      "metricCurrency": "count",
+      "developer": "要確認",
+      "url": "https://samak.app",
+      "notes": "毎日 1 件の聖書ベースの励ましの言葉をホーム画面ウィジェットで届ける iOS アプリ。個人開発者が自分用に作り App Store 公開。Grok E 経由で確認。MRR などの収益数字は未取得（Template B 未実施）のため収益 metric は次回更新予定。"
+    }
+  ]
+}

@@ -1,0 +1,64 @@
+{
+  "date": "2026-06-18",
+  "actionPrompt": "AI 生成コードを本番前に grep で外部 API コールをすべて洗い出す",
+  "tools": ["Claude", "Cursor", "Grok Build"],
+  "updates": [],
+  "tips": [
+    {
+      "title": "「Claude が自分の API をバックエンドに使っていた」— AI 生成コードが意図せず外部 API を埋め込む落とし穴",
+      "description": "「Claude でフォームは動くのに本番で動かない」と相談されたら、Claude が自分の Anthropic API をバックエンドに組み込んでいたという事例が X で話題に（@Raynerdtech, 34 likes）。AI に丸投げしたコードには開発者が気づかないまま外部 API キーが埋め込まれることがある。デプロイ前に grep で外部呼び出しを必ず洗い出す。",
+      "code": {
+        "lang": "bash",
+        "code": "# AI 生成コード内の外部 API コールを全件検索\ngrep -rE 'fetch\\(|axios\\.|openai|anthropic|api\\.openai|api\\.anthropic' src/ \\\n  --include='*.ts' --include='*.tsx' -l"
+      }
+    },
+    {
+      "title": "Grok Build は「本当に速いジュニアプログラマー」— 長年放置していたプロジェクトの高速クリーンアップに有効",
+      "description": "Grok Build を使って長年手をつけられなかったプロジェクトを高速でクリーンアップ・完了させた実践例が報告されている（@ViridianGames, 12 likes）。「本当に速いジュニアプログラマーみたい」という表現は的確で、仕様が固まっていて実装だけが残っているタスクに向いている。Claude Code が設計・判断を担い、Grok Build が実装の速度出しを担う役割分担が使いやすい。"
+    },
+    {
+      "title": "Google が Windsurf を買収 → 新ブランド「Antigravity」— AI コーディングツール市場の再編が加速",
+      "description": "SpaceX による Cursor 買収（06-16 速報）に続き、Google が Windsurf を買収して「Antigravity」ブランドを立ち上げる動きが議論されている（@Yuchenj_UW, 51 likes）。大企業によるツール吸収が続く中、特定ツールへの依存を避けたプロンプト設計・ワークフロー再利用性を高めるアーキテクチャが個人開発では重要になる。"
+    }
+  ],
+  "workflow": {
+    "title": "AI 生成コードを本番デプロイ前に3ステップで検証する",
+    "steps": [
+      {
+        "label": "外部 API コールを grep で全件洗い出す",
+        "code": "grep -rE 'fetch\\(|axios\\.|openai|anthropic|stripe|supabase' src/ --include='*.ts' --include='*.tsx'"
+      },
+      {
+        "label": "見つかった SDK・API キーをリスト化 — 意図せず使われている外部サービスがないか突き合わせる"
+      },
+      {
+        "label": "コスト試算を行う — 想定外の API 呼び出しは月額コストを急増させる",
+        "code": "# 例: Claude Sonnet 4.6 を月10万リクエスト呼ぶ場合\n# $3/1M input tokens × 500 tokens × 100,000 req = $150/月"
+      },
+      {
+        "label": "本番・開発で挙動を分離する — API キーが未設定の環境ではモックに落ちるようにする",
+        "code": "if (!process.env.ANTHROPIC_API_KEY) {\n  console.warn('API key missing — falling back to mock response')\n  return mockResponse\n}"
+      }
+    ]
+  },
+  "modelGuide": [
+    {
+      "model": "Claude Opus 4.8",
+      "useCase": "複雑なアーキテクチャ設計・マルチエージェント構成の判断・セキュリティレビュー",
+      "cost": "high",
+      "when": "設計フェーズ・本番コードの重要な判断"
+    },
+    {
+      "model": "Claude Sonnet 4.6",
+      "useCase": "日常のコード生成・デバッグ・API 依存の洗い出し",
+      "cost": "medium",
+      "when": "通常の開発作業全般"
+    },
+    {
+      "model": "Claude Haiku 4.5",
+      "useCase": "軽量なログ解析・フォーマット変換・定型バッチ処理",
+      "cost": "low",
+      "when": "高頻度の繰り返し処理・コスト重視の軽い処理"
+    }
+  ]
+}

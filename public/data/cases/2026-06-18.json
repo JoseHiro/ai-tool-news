@@ -1,0 +1,89 @@
+{
+  "date": "2026-06-18",
+  "cases": [
+    {
+      "name": "Inset",
+      "platform": "mobile",
+      "category": "写真・余白編集",
+      "metricLabel": "DL",
+      "metricValue": 4000,
+      "metricDisplay": "4,000 DL（ver1.1.0 リリース後 1 週間）",
+      "metricCurrency": "count",
+      "developer": "@aritakakanazawa",
+      "url": "https://x.com/aritakakanazawa/status/2065569957237457097",
+      "notes": "初 iOS アプリ。写真の余白を編集するシンプルなアプリで ver1.1.0 で急増。日本人開発者。"
+    },
+    {
+      "name": "非公開 iOS アプリ",
+      "platform": "mobile",
+      "category": "各種",
+      "metricLabel": "MRR",
+      "metricValue": 409,
+      "metricDisplay": "$409 MRR（$828 売上 / 28 日・100+ サブスク）",
+      "metricCurrency": "USD",
+      "developer": "@cesaralvarezll",
+      "url": "https://x.com/cesaralvarezll/status/2050543350617341962",
+      "notes": "アプリ名非公開。リリース 28 日で $828 売上・100 名以上サブスク。スクリーンショットで確認。"
+    },
+    {
+      "name": "PufferPages",
+      "platform": "web",
+      "category": "ページビルダー",
+      "metricLabel": "MRR",
+      "metricValue": 26,
+      "metricDisplay": "€24 MRR（≈$26）",
+      "metricCurrency": "USD",
+      "developer": "@bas_fijneman",
+      "url": "https://x.com/bas_fijneman/status/2058518312779239462",
+      "notes": "Web ページビルダー。Bio にリンクあり。成長初期段階。"
+    },
+    {
+      "name": "複数アプリ（3 本運営）",
+      "platform": "mobile",
+      "category": "ユーティリティ各種",
+      "metricLabel": "売上",
+      "metricValue": 50000,
+      "metricDisplay": "¥5 万/月相当（カップラーメン 250 杯分）・1,500 DL/月",
+      "metricCurrency": "JPY",
+      "developer": "@o_shinworks",
+      "url": "https://x.com/o_shinworks/status/2067026546695798854",
+      "notes": "日本人個人開発者。3 本のアプリを 1 年運用。月 1,500 DL を継続中。"
+    },
+    {
+      "name": "複数有料アプリ（10 本）",
+      "platform": "mobile",
+      "category": "各種",
+      "metricLabel": "MRR",
+      "metricValue": 171,
+      "metricDisplay": "$171 MRR（10 本中 6 本で収益化）",
+      "metricCurrency": "USD",
+      "developer": "@indiemark_",
+      "url": "https://x.com/indiemark_/status/2066573993898017018",
+      "notes": "10 本のうち 6 本が収益化。小さく多く出すポートフォリオ戦略の事例。"
+    },
+    {
+      "name": "きろくと。",
+      "platform": "mobile",
+      "category": "家計簿（AI チャット）",
+      "metricLabel": "DL",
+      "metricValue": 10,
+      "metricDisplay": "リリース初日 10 DL（その後改善中）",
+      "metricCurrency": "count",
+      "developer": "@nekoyaapps",
+      "url": "https://x.com/nekoyaapps/status/2065787951280226357",
+      "notes": "日本人開発者による AI チャット式家計簿アプリ。初日 DL は少ないが継続的に改善中。"
+    },
+    {
+      "name": "App Store Pulse（ポートフォリオ）",
+      "platform": "web",
+      "category": "分析ツール（Shopify アプリ）",
+      "metricLabel": "売上",
+      "metricValue": 50000,
+      "metricDisplay": "$600k+/年（≈$50k/月）ポートフォリオ全体",
+      "metricCurrency": "USD",
+      "developer": "@DsMatie",
+      "url": "https://x.com/DsMatie/status/2066955408862773564",
+      "notes": "$600k+/年は App Store Pulse を含む複数 Shopify アプリのポートフォリオ全体の数字。"
+    }
+  ]
+}
